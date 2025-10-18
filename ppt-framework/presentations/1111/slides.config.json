@@ -1,0 +1,20 @@
+{
+  "title": "New Presentation",
+  "author": "",
+  "description": "",
+  "theme": {
+    "primaryColor": "#3b82f6",
+    "fontFamily": "system-ui",
+    "transition": "slide"
+  },
+  "settings": {
+    "autoPlay": false,
+    "autoPlayInterval": 5000,
+    "loop": false,
+    "showProgress": true,
+    "showThumbnails": true,
+    "enableKeyboardNav": true,
+    "enableTouchNav": true
+  },
+  "slides": []
+}
