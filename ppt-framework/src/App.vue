@@ -192,6 +192,29 @@ function onKeydown(e) {
   }
 }
 
+// Listen to ESC bridge from SlideLoader content
+function onEscBridge() {
+  const evt = new KeyboardEvent('keydown', { key: 'Escape' })
+  onKeydown(evt)
+}
+
+onMounted(async () => {
+  // Ensure we are on example group by default, load its config
+  if (!store.currentGroup) store.setGroup('example')
+  await store.loadConfig()
+  document.addEventListener('fullscreenchange', onFullscreenChange)
+  document.addEventListener('keydown', onKeydown)
+  document.addEventListener('slide-esc', onEscBridge)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('fullscreenchange', onFullscreenChange)
+  document.removeEventListener('keydown', onKeydown)
+  document.removeEventListener('slide-esc', onEscBridge)
+  if (numberBufferTimer) { clearTimeout(numberBufferTimer); numberBufferTimer = null }
+})
+
+
 
 // 排序：支持 before/after 和持久化
 function onReorder({ from, to, position }) {

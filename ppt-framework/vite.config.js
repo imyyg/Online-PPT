@@ -272,6 +272,23 @@ function fileOpsPlugin() {
             return sendJson(res, { ok: false, error: e.message || String(e) }, 500)
           }
         }
+        if (req.url === '/api/slides/save') {
+          const body = await readBody(req)
+          const file = String(body.file || '').trim()
+          const group = String(body.group || '').trim()
+          const html = String(body.html || '')
+          if (!file || !file.endsWith('.html')) {
+            return sendJson(res, { ok: false, error: 'Invalid file' }, 400)
+          }
+          try {
+            const { slidesDir: targetSlidesDir } = resolvePaths(group)
+            const targetPath = path.join(targetSlidesDir, file)
+            fs.writeFileSync(targetPath, html, 'utf-8')
+            return sendJson(res, { ok: true })
+          } catch (e) {
+            return sendJson(res, { ok: false, error: e.message || String(e) }, 500)
+          }
+        }
         return next()
       })
     }
