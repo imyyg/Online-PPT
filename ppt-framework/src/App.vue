@@ -181,7 +181,8 @@ function onKeydown(e) {
       break
     case 'Escape':
       e.preventDefault()
-      // Exit fullscreen first, then presentation if active
+      // Stop autoplay and exit fullscreen/presentation
+      store.config.settings.autoPlay = false
       if (document.fullscreenElement) {
         document.exitFullscreen?.()
       } else if (store.isPresenting) {

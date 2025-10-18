@@ -159,7 +159,16 @@ function toggleFullscreen() {
 }
 
 function toggleAutoplay() {
-  store.config.settings.autoPlay = !store.config.settings.autoPlay
+  const next = !store.config.settings.autoPlay
+  store.config.settings.autoPlay = next
+  if (next) {
+    // Align with presentation mode: enter presentation and fullscreen
+    if (!store.isPresenting) store.isPresenting = true
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen?.()
+        ?.catch?.((err) => console.warn('Failed to request fullscreen:', err))
+    }
+  }
 }
 
 let autoplayTimer = null
