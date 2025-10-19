@@ -15,7 +15,7 @@
     <!-- Centered popup for dev notice -->
     <div v-if="showToast" class="fixed inset-0 z-50 flex items-center justify-center">
       <div class="px-3 py-2 text-sm bg-gray-800 border border-gray-700 rounded-lg text-gray-100 shadow-xl">
-        Under development
+        {{ toastMessage }}
       </div>
     </div>
 
@@ -53,47 +53,47 @@
           <h3 class="text-lg font-semibold">Settings</h3>
           <button class="close-btn" @click="showSettings=false">✕</button>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" @focusout="scheduleAutoSave">
           <label class="form-row">
             <span>Autoplay</span>
-            <input type="checkbox" v-model="store.config.settings.autoPlay" />
+            <input type="checkbox" v-model="store.config.settings.autoPlay" @change="saveSettings" />
           </label>
           <label class="form-row">
             <span>Autoplay Interval (ms)</span>
-            <input type="number" min="500" step="500" v-model.number="store.config.settings.autoPlayInterval" />
+            <input type="number" min="500" step="500" v-model.number="store.config.settings.autoPlayInterval" @blur="saveSettings" />
           </label>
           <label class="form-row">
             <span>Loop Slides</span>
-            <input type="checkbox" v-model="store.config.settings.loop" />
+            <input type="checkbox" v-model="store.config.settings.loop" @change="saveSettings" />
           </label>
           <label class="form-row">
             <span>Show Progress</span>
-            <input type="checkbox" v-model="store.config.settings.showProgress" />
+            <input type="checkbox" v-model="store.config.settings.showProgress" @change="saveSettings" />
           </label>
           <label class="form-row">
             <span>Show Thumbnails</span>
-            <input type="checkbox" v-model="store.config.settings.showThumbnails" />
+            <input type="checkbox" v-model="store.config.settings.showThumbnails" @change="saveSettings" />
           </label>
           <label class="form-row">
             <span>Keyboard Navigation</span>
-            <input type="checkbox" v-model="store.config.settings.enableKeyboardNav" />
+            <input type="checkbox" v-model="store.config.settings.enableKeyboardNav" @change="saveSettings" />
           </label>
           <label class="form-row">
             <span>Touch Navigation</span>
-            <input type="checkbox" v-model="store.config.settings.enableTouchNav" />
+            <input type="checkbox" v-model="store.config.settings.enableTouchNav" @change="saveSettings" />
           </label>
           <label class="form-row">
             <span>Auto Start on Home</span>
-            <input type="checkbox" v-model="store.config.settings.autoStartOnHome" />
+            <input type="checkbox" v-model="store.config.settings.autoStartOnHome" @change="saveSettings" />
           </label>
           <label class="form-row">
             <span>Auto Fullscreen on Home</span>
-            <input type="checkbox" v-model="store.config.settings.autoFullscreenOnHome" />
+            <input type="checkbox" v-model="store.config.settings.autoFullscreenOnHome" @change="saveSettings" />
           </label>
 
           <div class="form-row">
             <span>Transition</span>
-            <select v-model="store.config.theme.transition">
+            <select v-model="store.config.theme.transition" @change="saveSettings">
               <option value="slide">Slide</option>
               <option value="zoom">Zoom</option>
               <option value="blur">Blur</option>
@@ -112,12 +112,14 @@
           </div>
           <label class="form-row">
             <span>Primary Color</span>
-            <input type="color" v-model="store.config.theme.primaryColor" />
+            <input type="color" v-model="store.config.theme.primaryColor" @input="saveSettings" />
           </label>
           <label class="form-row">
             <span>Font Family</span>
-            <input type="text" v-model="store.config.theme.fontFamily" placeholder="system-ui" />
+            <input type="text" v-model="store.config.theme.fontFamily" placeholder="system-ui" @blur="saveSettings" />
           </label>
+
+          <!-- Removed manual Save button -->
         </div>
       </div>
     </div>
@@ -131,8 +133,10 @@ import { useSlidesStore } from '../stores/slides'
 
 const store = useSlidesStore()
 const showToast = ref(false)
+const toastMessage = ref('Under development')
 let toastTimer = null
 function showDevToast() {
+  toastMessage.value = 'Under development'
   showToast.value = true
   clearTimeout(toastTimer)
   toastTimer = setTimeout(() => { showToast.value = false }, 1000)
@@ -146,6 +150,15 @@ const showCreate = ref(false)
 const createForm = ref({ name: '', title: '', description: '' })
 function openCreateModal() { showCreate.value = true }
 function closeCreate() { showCreate.value = false; createForm.value = { name: '', title: '', description: '' } }
+
+// Auto-save debounce on blur within settings panel
+let autoSaveTimer = null
+function scheduleAutoSave() {
+  clearTimeout(autoSaveTimer)
+  autoSaveTimer = setTimeout(() => {
+    saveSettings()
+  }, 300)
+}
 
 async function createPpt() {
   const name = (createForm.value.name || '').trim()
@@ -172,6 +185,28 @@ async function createPpt() {
     closeCreate()
   } catch (e) {
     console.error('Create presentation error:', e)
+  }
+}
+
+async function saveSettings() {
+  try {
+    const res = await fetch('/api/config/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ group: store.currentGroup, config: store.config })
+    })
+    const json = await res.json()
+    if (!json.ok) {
+      console.error('Save settings failed:', json.error)
+      return
+    }
+    // Show saved toast
+    toastMessage.value = 'Saved'
+    showToast.value = true
+    clearTimeout(toastTimer)
+    toastTimer = setTimeout(() => { showToast.value = false }, 800)
+  } catch (e) {
+    console.error('Save settings error:', e)
   }
 }
 </script>

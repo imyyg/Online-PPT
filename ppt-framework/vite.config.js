@@ -35,7 +35,7 @@ function fileOpsPlugin() {
               title: 'Example Presentation',
               author: '',
               description: '',
-              theme: { primaryColor: '#3b82f6', fontFamily: 'system-ui', transition: 'slide' },
+              theme: { primaryColor: '#3b82f6', fontFamily: 'system-ui', transition: 'random' },
               settings: { autoPlay: false, autoPlayInterval: 5000, loop: false, showProgress: true, showThumbnails: true, enableKeyboardNav: true, enableTouchNav: true },
               slides: []
             }
@@ -68,7 +68,7 @@ function fileOpsPlugin() {
               title: 'New Presentation',
               author: '',
               description: '',
-              theme: { primaryColor: '#3b82f6', fontFamily: 'system-ui', transition: 'slide' },
+              theme: { primaryColor: '#3b82f6', fontFamily: 'system-ui', transition: 'random' },
               settings: { autoPlay: false, autoPlayInterval: 5000, loop: false, showProgress: true, showThumbnails: true, enableKeyboardNav: true, enableTouchNav: true },
               slides: []
             }
@@ -263,7 +263,7 @@ function fileOpsPlugin() {
                 title: title || 'New Presentation',
                 author: '',
                 description: description || '',
-                theme: { primaryColor: '#3b82f6', fontFamily: 'system-ui', transition: 'slide' },
+                theme: { primaryColor: '#3b82f6', fontFamily: 'system-ui', transition: 'random' },
                 settings: { autoPlay: false, autoPlayInterval: 5000, loop: false, showProgress: true, showThumbnails: true, enableKeyboardNav: true, enableTouchNav: true },
                 slides: []
               }
@@ -275,7 +275,7 @@ function fileOpsPlugin() {
                   title: title || 'New Presentation',
                   author: '',
                   description: description || '',
-                  theme: { primaryColor: '#3b82f6', fontFamily: 'system-ui', transition: 'slide' },
+                  theme: { primaryColor: '#3b82f6', fontFamily: 'system-ui', transition: 'random' },
                   settings: { autoPlay: false, autoPlayInterval: 5000, loop: false, showProgress: true, showThumbnails: true, enableKeyboardNav: true, enableTouchNav: true },
                   slides: []
                 }
@@ -289,6 +289,23 @@ function fileOpsPlugin() {
             return sendJson(res, { ok: false, error: e.message || String(e) }, 500)
           }
         }
+        if (req.url === '/api/config/save') {
+          const body = await readBody(req)
+          const group = String(body.group || '').trim()
+          const cfg = body.config
+          if (!group) {
+            return sendJson(res, { ok: false, error: 'Missing group' }, 400)
+          }
+          try {
+            const { configPath: targetConfigPath } = resolvePaths(group)
+            const finalCfg = (cfg && typeof cfg === 'object') ? cfg : {}
+            fs.writeFileSync(targetConfigPath, JSON.stringify(finalCfg, null, 2))
+            return sendJson(res, { ok: true })
+          } catch (e) {
+            return sendJson(res, { ok: false, error: e.message || String(e) }, 500)
+          }
+        }
+
         if (req.url === '/api/slides/save') {
           const body = await readBody(req)
           const file = String(body.file || '').trim()
