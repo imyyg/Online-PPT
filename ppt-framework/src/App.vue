@@ -155,15 +155,18 @@ function onKeydown(e) {
   if (isInput || isEditable) return
   if (showDeleteConfirm.value) return
 
+  // Bridge from slide iframe/shadow: accept custom slide-keydown events
+  const key = e.detail?.key || e.key
+
   // Numeric jump: accumulate digits then jump after short delay
-  if (e.key >= '0' && e.key <= '9') {
+  if (key >= '0' && key <= '9') {
     e.preventDefault()
-    numberBuffer.value += e.key
+    numberBuffer.value += key
     scheduleCommit()
     return
   }
 
-  switch (e.key) {
+  switch (key) {
     case 'ArrowRight':
       e.preventDefault()
       store.nextSlide()
@@ -205,12 +208,14 @@ onMounted(() => {
   document.addEventListener('fullscreenchange', onFullscreenChange)
   document.addEventListener('keydown', onKeydown)
   document.addEventListener('slide-esc', onEscBridge)
+  document.addEventListener('slide-keydown', onKeydown)
 })
 
 onUnmounted(() => {
   document.removeEventListener('fullscreenchange', onFullscreenChange)
   document.removeEventListener('keydown', onKeydown)
   document.removeEventListener('slide-esc', onEscBridge)
+  document.removeEventListener('slide-keydown', onKeydown)
   if (numberBufferTimer) { clearTimeout(numberBufferTimer); numberBufferTimer = null }
 })
 

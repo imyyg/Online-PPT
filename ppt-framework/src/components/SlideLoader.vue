@@ -419,6 +419,19 @@ function attachEditingFeatures(containerRoot) {
     if ((e.ctrlKey || e.metaKey) && (key === 'y')) { e.preventDefault(); onRedo(); return }
     if (e.key === 'Escape' && editorState.editingEl) { e.preventDefault(); finishEditing() }
     if (e.key === 'Escape') { try { window.top?.document?.dispatchEvent(new CustomEvent('slide-esc')) } catch {} }
+
+    // Bridge navigation keys to top document when not editing within slide content
+    const isInput = ['INPUT','TEXTAREA','SELECT'].includes((e.target?.tagName) || '')
+    const isEditable = !!editorState.editingEl || isInput || (e.target && e.target.isContentEditable)
+    if (!isEditable) {
+      const k = e.key
+      const isDigit = k >= '0' && k <= '9'
+      if (isDigit || ['ArrowLeft','ArrowRight',' ','Enter'].includes(k)) {
+        e.preventDefault()
+        try { window.top?.document?.dispatchEvent(new CustomEvent('slide-keydown', { detail: { key: k } })) } catch {}
+        return
+      }
+    }
   }
   const onMouseMove = (e) => {
     if (editorState.dragging) { updateDrag(e.clientX, e.clientY); return }

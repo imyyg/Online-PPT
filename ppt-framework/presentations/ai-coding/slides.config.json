@@ -1,6 +1,6 @@
 {
-  "title": "团队利用AI将开发效率提升80%汇报",
-  "author": "EBD开发团队",
+  "title": "AI Coding",
+  "author": "Yuan Yan Gang",
   "description": "基于团队实践与AI Coding发展历程的总结，展示效率提升路径与可复制方法",
   "theme": {
     "primaryColor": "#3b82f6",
@@ -97,6 +97,14 @@
       "file": "slide-10.html",
       "visible": true,
       "notes": "结论与组织能力建设",
+      "duration": null
+    },
+    {
+      "id": "slide-11",
+      "title": "谢谢",
+      "file": "slide-11.html",
+      "visible": true,
+      "notes": "结束页与交流",
       "duration": null
     }
   ]
