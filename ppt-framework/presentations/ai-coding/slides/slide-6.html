@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>效率提升与关键指标</title>
+  <style>
+    body { height:100vh; margin:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #0b1220 0%, #0e1628 50%, #0a0f1a 100%); color:#e5e7eb; font-family: system-ui, -apple-system, Segoe UI, PingFang SC, Microsoft YaHei, sans-serif; }
+    .card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); }
+    .progress-ring::before { background: conic-gradient(#60a5fa var(--val), rgba(255,255,255,.08) 0); }
+    .decor-one { position: fixed; top: -80px; right: -80px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(255,255,255,.10), rgba(255,255,255,0) 60%); filter: blur(2px); }
+    .decor-two { position: fixed; bottom: -90px; left: -90px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,.08), rgba(255,255,255,0) 60%); filter: blur(3px); }
+    .card { width:96%; max-width:1400px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 36px 48px; box-shadow: 0 10px 50px rgba(0,0,0,.35); backdrop-filter: blur(6px); }
+    h2 { font-size: 2.2rem; margin-bottom: 10px; color:#fff; display:flex; align-items:center; gap:10px; }
+    .ico { width:22px; height:22px; stroke:#fff; stroke-width:1.8; fill:none; opacity:.95; }
+    .divider { width:100%; height: 10px; background: linear-gradient(90deg, rgba(255,255,255,.0), rgba(255,255,255,.22), rgba(255,255,255,.0)); border-radius:999px; margin: 8px 0 18px; }
+    .grid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .metric { background: rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.18); border-radius: 12px; padding: 18px; text-align:center; }
+    .value { font-size: 1.1rem; font-weight: 700; color:#fff; margin-top: 6px; }
+    .progress { display:flex; align-items:center; justify-content:center; margin-bottom: 8px; }
+    .ring { position: relative; width: 120px; height: 120px; }
+    .ring svg { width: 120px; height: 120px; transform: rotate(-90deg); }
+    .ring .val { position: absolute; inset: 0; display:flex; align-items:center; justify-content:center; font-size: 1.4rem; font-weight: 800; color:#fff; }
+    .notes { margin-top: 16px; opacity:.95; }
+    ul { margin: 8px 0 0; padding-left: 20px; line-height:1.8; }
+    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } .card { width:94%; padding:24px; } .ring { width: 96px; height: 96px; } .ring svg { width: 96px; height: 96px; } .ring .val { font-size: 1.2rem; } }
+    .bg-lines { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    
+    .card { position: relative; z-index: 1; }
+  </style>
+</head>
+<body>
+
+  <div class="decor-one"></div><div class="decor-two"></div>
+  <div class="card">
+    <h2>
+      <svg class="ico" viewBox="0 0 24 24"><path d="M3 12l6 6L21 6"/></svg>
+      效率提升与关键指标
+    </h2>
+    <div class="divider"></div>
+    <div class="grid">
+      <div class="metric">
+        <div class="progress">
+          <div class="ring">
+            <svg viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="52" stroke="rgba(255,255,255,.2)" stroke-width="12" fill="none"/>
+              <circle cx="60" cy="60" r="52" stroke="#fff" stroke-width="12" fill="none" stroke-linecap="round" stroke-dasharray="261.4 65.3" />
+            </svg>
+            <div class="val">80%</div>
+          </div>
+        </div>
+        <div class="value">整体开发效率提升</div>
+      </div>
+      <div class="metric">
+        <div class="progress">
+          <div class="ring">
+            <svg viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="52" stroke="rgba(255,255,255,.2)" stroke-width="12" fill="none"/>
+              <circle cx="60" cy="60" r="52" stroke="#fff" stroke-width="12" fill="none" stroke-linecap="round" stroke-dasharray="310.4 16.3" />
+            </svg>
+            <div class="val">95%+</div>
+          </div>
+        </div>
+        <div class="value">单元测试覆盖率（AI辅助）</div>
+      </div>
+      <div class="metric">
+        <div class="progress">
+          <div class="ring">
+            <svg viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="52" stroke="rgba(255,255,255,.2)" stroke-width="12" fill="none"/>
+              <circle cx="60" cy="60" r="52" stroke="#fff" stroke-width="12" fill="none" stroke-linecap="round" stroke-dasharray="228.7 98.0" />
+            </svg>
+            <div class="val">60-80%</div>
+          </div>
+        </div>
+        <div class="value">新功能AI代码采用率</div>
+      </div>
+    </div>
+    <div class="notes">
+      <ul>
+        <li>PR前AI预评审：静态分析、契约校验、UT检查</li>
+        <li>UT由AI初稿生成，开发者完善边界与异常场景</li>
+        <li>Specs驱动：从产品文档到API与模型的自动化串联</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>目录与汇报目标</title>
+  <style>
+    body { height:100vh; margin:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #0b1220 0%, #0e1628 50%, #0a0f1a 100%); color:#e5e7eb; font-family: system-ui, -apple-system, Segoe UI, PingFang SC, Microsoft YaHei, sans-serif; }
+    .decor-one { position: fixed; top: -80px; right: -80px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(255,255,255,.15), rgba(255,255,255,0) 60%); filter: blur(2px); }
+    .decor-two { position: fixed; bottom: -90px; left: -90px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,.12), rgba(255,255,255,0) 60%); filter: blur(3px); }
+    /* 去卡片化：全屏内容布局 */
+    .content { width: 96%; max-width: 1400px; padding: 20px 0; }
+    .strip { width: 100%; padding: 14px 0; border-top: 1px solid rgba(255,255,255,.18); border-bottom: 1px solid rgba(255,255,255,.18); background: linear-gradient(90deg, rgba(255,255,255,.10), rgba(255,255,255,.04)); border-radius: 10px; }
+    h2 { font-size: 2.2rem; margin: 0 0 .4rem; color:#ffffff; display:flex; align-items:center; gap:10px; padding: 0 6px; }
+    .ico { width:22px; height:22px; stroke:#fff; stroke-width:1.8; fill:none; opacity:.95; }
+    .body { margin-top: 16px; }
+    ul { columns: 2; column-gap: 60px; list-style: none; }
+    li { margin: .8rem 0; font-size: 1.1rem; position: relative; padding-left: 26px; line-height: 1.8; }
+    li::before { content:""; position:absolute; left:0; top:.35rem; width:12px; height:12px; border-radius:50%; background:#fff; box-shadow:0 0 0 3px rgba(255,255,255,.25); }
+    .note { margin-top: 18px; font-size: .98rem; opacity: .92; }
+    @media (max-width: 1024px) {
+      ul { columns: 1; }
+    }
+    @media (max-width: 768px) {
+      .content { width: 94%; }
+      h2 { font-size: 1.8rem; }
+      li { font-size: 1rem; }
+    }
+    .bg-lines { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .bg-lines::before, .bg-lines::after { content:""; position:absolute; inset:0; }
+    .bg-lines::before { background: repeating-linear-gradient(130deg, rgba(96,165,250,0.06) 0px, rgba(96,165,250,0.06) 2px, rgba(96,165,250,0) 2px, rgba(96,165,250,0) 12px); background-size: 1000px 1000px; animation: moveLinesA 24s linear infinite; }
+    .bg-lines::after { background: repeating-linear-gradient(210deg, rgba(139,92,246,0.05) 0px, rgba(139,92,246,0.05) 2px, rgba(139,92,246,0) 2px, rgba(139,92,246,0) 18px); background-size: 1000px 1000px; animation: moveLinesB 36s linear infinite; }
+    @keyframes moveLinesA { 0% { background-position: 0 0; } 100% { background-position: 200px 0; } }
+    @keyframes moveLinesB { 0% { background-position: 0 0; } 100% { background-position: -150px 0; } }
+    .wrap { position: relative; z-index: 1; }
+  </style>
+</head>
+<body>
+
+  <div class="decor-one"></div><div class="decor-two"></div>
+  <div class="content">
+    <div class="strip">
+      <h2>
+        <svg class="ico" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+        目录与汇报目标
+      </h2>
+    </div>
+    <div class="body">
+      <ul>
+        <li>背景：为何推进AI Coding</li>
+        <li>发展历程与关键节点</li>
+        <li>团队落地实践（4个阶段）</li>
+        <li>效率提升指标与证据</li>
+        <li>方法论：6A + SOLO + Specs</li>
+        <li>典型应用场景（UT、Code Review、API）</li>
+        <li>挑战与痛点及解决方案</li>
+        <li>下一步计划与KPI</li>
+      </ul>
+      <p class="note">目标：向领导清晰展示我们通过制度与工具结合，实现80%效率提升的具体路径与可复制方法。</p>
+    </div>
+  </div>
+</body>
+</html>
