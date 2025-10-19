@@ -1,5 +1,7 @@
 <template>
   <div id="app" :class="{ 'presentation-mode': store.isPresenting }">
+    <!-- Left menu column -->
+    <LeftMenu />
     <!-- Sidebar -->
     <aside 
       v-if="!store.isPresenting"
@@ -92,6 +94,7 @@ import { useSlidesStore } from './stores/slides'
 import SlidePreview from './components/SlidePreview.vue'
 import SlideLoader from './components/SlideLoader.vue'
 import PresentationControls from './components/PresentationControls.vue'
+import LeftMenu from './components/LeftMenu.vue'
 import { ChevronLeft, ChevronRight, FileX, AlertTriangle, Trash2 } from 'lucide-vue-next'
 
 const store = useSlidesStore()
@@ -198,10 +201,7 @@ function onEscBridge() {
   onKeydown(evt)
 }
 
-onMounted(async () => {
-  // Ensure we are on example group by default, load its config
-  if (!store.currentGroup) store.setGroup('example')
-  await store.loadConfig()
+onMounted(() => {
   document.addEventListener('fullscreenchange', onFullscreenChange)
   document.addEventListener('keydown', onKeydown)
   document.addEventListener('slide-esc', onEscBridge)
@@ -342,14 +342,6 @@ async function confirmDelete() {
   }
 }
 
-onMounted(async () => {
-  // Ensure we are on example group by default, load its config
-  if (!store.currentGroup) store.setGroup('example')
-  await store.loadConfig()
-  document.addEventListener('fullscreenchange', onFullscreenChange)
-  document.addEventListener('keydown', onKeydown)
-})
-
 onUnmounted(() => {
   document.removeEventListener('fullscreenchange', onFullscreenChange)
   document.removeEventListener('keydown', onKeydown)
@@ -390,6 +382,9 @@ onUnmounted(() => {
 .sidebar-action { @apply w-full flex items-center justify-center px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors; }
 
 .main-content { @apply flex-1 relative overflow-hidden; }
+
+/* Ensure left menu overlays within slide container nicely */
+.main-content { position: relative; }
 
 .slide-container { padding: calc(var(--spacing, 0.25rem) * 3); @apply w-full h-full flex items-center justify-center; }
 

@@ -10,7 +10,7 @@
     <iframe
       v-if="loadMode === 'iframe'"
       ref="slideFrame"
-      :src="slideUrl"
+      :src="frameSrc"
       :title="slide.title"
       class="slide-frame"
       @load="onFrameLoad"
@@ -29,14 +29,24 @@
       <p class="mt-4 text-gray-400">Loading slide...</p>
     </div>
 
+    <!-- Undo/Redo overlay when there are unsaved changes -->
+    <div v-if="isDirty" class="edit-actions">
+      <button class="toolbar-btn" @click="onUndo" :disabled="!canUndo" :title="'撤消'">
+        <RotateCcw class="w-5 h-5" />
+      </button>
+      <button class="toolbar-btn" @click="onRedo" :disabled="!canRedo" :title="'恢复'">
+        <RotateCw class="w-5 h-5" />
+      </button>
+    </div>
+
     <!-- Save button overlay when there are unsaved changes -->
-    <button v-if="isDirty" class="save-btn" @click="onSaveClick">保存</button>
+    <button v-if="isDirty" class="save-btn" @click="onSaveClick">Save</button>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
-import { AlertCircle, Loader2 } from 'lucide-vue-next'
+import { ref, computed, watch, onMounted, onUnmounted, onBeforeUnmount } from 'vue'
+import { AlertCircle, Loader2, RotateCcw, RotateCw } from 'lucide-vue-next'
 import { useSlidesStore } from '../stores/slides'
 
 const store = useSlidesStore()
@@ -66,13 +76,14 @@ const shadowHost = ref(null)
 const loading = ref(true)
 const loadingError = ref('')
 const isDirty = ref(false)
+const frameSrc = ref('')
 
 // resolve slide path within current group
 const slidePath = computed(() => props.slide?.file || '')
+// Keep original URL for computation; do not bind directly to iframe
 const slideUrl = computed(() => {
   const base = store.groupBasePath || ''
   const normalizedBase = typeof base === 'string' ? base : base.value
-  // Always require group base path; no legacy fallback
   return `${normalizedBase}/slides/${slidePath.value}`
 })
 
@@ -108,6 +119,85 @@ let lastFetchedHtml = ''
 let lastFetchedDoc = null
 let shadowBody = null
 
+// History for undo/redo within current unsaved session
+const HISTORY_LIMIT = 50
+const undoStack = []
+const redoStack = []
+const canUndo = ref(false)
+const canRedo = ref(false)
+function updateHistoryAvailability() {
+  canUndo.value = undoStack.length > 0
+  canRedo.value = redoStack.length > 0
+}
+function clearHistory() {
+  undoStack.length = 0
+  redoStack.length = 0
+  updateHistoryAvailability()
+}
+function getContainerRoot() {
+  const root = editorState.container
+  if (root) return root
+  const doc = slideFrame.value?.contentDocument
+  if (doc) return doc
+  if (shadowRoot) return shadowRoot
+  return null
+}
+function getRootHtml(root) {
+  try {
+    return root?.body ? root.body.innerHTML : root?.innerHTML
+  } catch { return '' }
+}
+function setRootHtml(root, html) {
+  try {
+    if (root.body) root.body.innerHTML = html
+    else root.innerHTML = html
+  } catch {}
+}
+function reattachAfterRestore(root) {
+  try {
+    if (root instanceof Document) {
+      attachEditingToIframe()
+    } else {
+      attachEditingToShadow()
+    }
+  } catch {}
+}
+function pushSnapshot() {
+  try {
+    const root = getContainerRoot()
+    if (!root) return
+    const html = getRootHtml(root)
+    if (undoStack.length === 0 || undoStack[undoStack.length - 1] !== html) {
+      undoStack.push(html)
+      if (undoStack.length > HISTORY_LIMIT) undoStack.shift()
+      redoStack.length = 0
+      updateHistoryAvailability()
+    }
+  } catch {}
+}
+function onUndo() {
+  const root = getContainerRoot()
+  if (!root || undoStack.length === 0) return
+  const current = getRootHtml(root)
+  const prev = undoStack.pop()
+  redoStack.push(current)
+  setRootHtml(root, prev)
+  reattachAfterRestore(root)
+  isDirty.value = true
+  updateHistoryAvailability()
+}
+function onRedo() {
+  const root = getContainerRoot()
+  if (!root || redoStack.length === 0) return
+  const current = getRootHtml(root)
+  const next = redoStack.pop()
+  undoStack.push(current)
+  setRootHtml(root, next)
+  reattachAfterRestore(root)
+  isDirty.value = true
+  updateHistoryAvailability()
+}
+
 function ensureEditorStyles(rootOrDoc) {
   try {
     const styleId = 'slide-editor-style'
@@ -133,14 +223,44 @@ function ensureEditorStyles(rootOrDoc) {
 }
 
 function findEditableTarget(el, container) {
-  const allowed = ['H1','H2','H3','H4','H5','H6','P','SPAN','DIV','LI','DT','DD','EM','STRONG']
+  // Prefer block-level containers so double-click selects the whole textual block
+  const blockPreferred = ['H1','H2','H3','H4','H5','H6','P','DIV','LI','DT','DD','SECTION','ARTICLE']
+  const inlineAllowed = ['SPAN','EM','STRONG','A']
   let cur = el
+  let inlineFallback = null
   while (cur && cur !== container) {
     const tag = cur.tagName || ''
     const hasText = (cur.innerText || '').trim().length > 0
-    if (allowed.includes(tag) && hasText) return cur
+    if (hasText && blockPreferred.includes(tag)) return cur
+    if (!inlineFallback && hasText && inlineAllowed.includes(tag)) inlineFallback = cur
     cur = cur.parentNode
   }
+  return inlineFallback
+}
+// For dragging, prefer the block container to move the whole line
+function findDragTarget(el, container) {
+  const blockPreferred = ['H1','H2','H3','H4','H5','H6','P','DIV','LI','DT','DD','SECTION','ARTICLE']
+  const inlineAllowed = ['SPAN','EM','STRONG','A','IMG']
+  let cur = el
+  let fallback = null
+  while (cur && cur !== container) {
+    const tag = cur.tagName || ''
+    if (blockPreferred.includes(tag)) return cur
+    if (!fallback && inlineAllowed.includes(tag)) fallback = cur
+    cur = cur.parentNode
+  }
+  return fallback
+}
+
+function detectEdgeTarget(containerRoot, e) {
+  const t = findDragTarget(e.target, containerRoot)
+  if (!t) return null
+  const rect = t.getBoundingClientRect()
+  const nearLeft = Math.abs(e.clientX - rect.left) <= EDGE_THRESHOLD
+  const nearRight = Math.abs(e.clientX - rect.right) <= EDGE_THRESHOLD
+  const nearTop = Math.abs(e.clientY - rect.top) <= EDGE_THRESHOLD
+  const nearBottom = Math.abs(e.clientY - rect.bottom) <= EDGE_THRESHOLD
+  if (nearLeft || nearRight || nearTop || nearBottom) return t
   return null
 }
 
@@ -181,8 +301,10 @@ function makeEditable(target) {
   try {
     target.setAttribute('contenteditable', 'true')
     target.classList.add('editable-active')
+    const onBeforeInput = () => { pushSnapshot(); isDirty.value = true }
     const onInput = () => { isDirty.value = true }
-    const onBlur = () => { finishEditing(); try { target.removeEventListener('input', onInput) } catch {} }
+    const onBlur = () => { finishEditing(); try { target.removeEventListener('input', onInput); target.removeEventListener('beforeinput', onBeforeInput) } catch {} }
+    target.addEventListener('beforeinput', onBeforeInput)
     target.addEventListener('input', onInput)
     target.addEventListener('blur', onBlur, { once: true })
     target.focus()
@@ -208,19 +330,8 @@ function toggleSelection(containerRoot, on) {
   } catch {}
 }
 
-function detectEdgeTarget(containerRoot, e) {
-  const t = findEditableTarget(e.target, containerRoot)
-  if (!t) return null
-  const rect = t.getBoundingClientRect()
-  const nearLeft = Math.abs(e.clientX - rect.left) <= EDGE_THRESHOLD
-  const nearRight = Math.abs(e.clientX - rect.right) <= EDGE_THRESHOLD
-  const nearTop = Math.abs(e.clientY - rect.top) <= EDGE_THRESHOLD
-  const nearBottom = Math.abs(e.clientY - rect.bottom) <= EDGE_THRESHOLD
-  if (nearLeft || nearRight || nearTop || nearBottom) return t
-  return null
-}
-
 function startDrag(target, startX, startY, containerRoot) {
+  pushSnapshot()
   editorState.dragging = true
   editorState.dragEl = target
   editorState.startX = startX
@@ -290,7 +401,7 @@ function endDrag(containerRoot) {
   clearGuides()
   toggleSelection(containerRoot, false)
   // Mark dirty only if moved; do not save immediately
-  if (editorState.hasMoved) isDirty.value = true
+  if (editorState.hasMoved) { isDirty.value = true }
 }
 
 function attachEditingFeatures(containerRoot) {
@@ -302,6 +413,10 @@ function attachEditingFeatures(containerRoot) {
     if (target) { e.preventDefault(); makeEditable(target) }
   }
   const onKeyDown = (e) => {
+    // Map keyboard undo/redo to our history
+    const key = (e.key || '').toLowerCase()
+    if ((e.ctrlKey || e.metaKey) && key === 'z') { e.preventDefault(); if (e.shiftKey) onRedo(); else onUndo(); return }
+    if ((e.ctrlKey || e.metaKey) && (key === 'y')) { e.preventDefault(); onRedo(); return }
     if (e.key === 'Escape' && editorState.editingEl) { e.preventDefault(); finishEditing() }
     if (e.key === 'Escape') { try { window.top?.document?.dispatchEvent(new CustomEvent('slide-esc')) } catch {} }
   }
@@ -316,9 +431,9 @@ function attachEditingFeatures(containerRoot) {
   }
   const onMouseDown = (e) => {
     if (e.button !== 0) return
-    // Only start drag when hovering near edge
-    if (!editorState.edgeHoverEl) return
-    const t = editorState.edgeHoverEl
+    // Recompute edge target at press time to avoid race with mousemove
+    const t = detectEdgeTarget(containerRoot, e)
+    if (!t) return
     e.preventDefault()
     startDrag(t, e.clientX, e.clientY, containerRoot)
   }
@@ -355,16 +470,24 @@ async function saveCurrentHtml(fileOverride) {
       if (!doc) return
       // Clone document for sanitization to avoid affecting live editing styles
       const cloneHtmlEl = doc.documentElement.cloneNode(true)
-      // Remove injected editor style and overlays
+      // Remove injected editor style and overlays (all instances)
       try { cloneHtmlEl.querySelector('#slide-editor-style')?.remove() } catch {}
-      try { cloneHtmlEl.querySelector('.guides-overlay')?.remove() } catch {}
-      // Strip contenteditable and temp editing classes
+      try { cloneHtmlEl.querySelectorAll('.guides-overlay')?.forEach(el => el.remove()) } catch {}
+      // Strip contenteditable and temp editing classes across all elements
       try {
         cloneHtmlEl.querySelectorAll('[contenteditable]')?.forEach(el => {
           el.removeAttribute('contenteditable')
+        })
+        cloneHtmlEl.querySelectorAll('*')?.forEach(el => {
           el.classList.remove('editable-active','edge-drag-cursor','edge-drag-active','draggable-activated','drag-managed')
+          el.style?.removeProperty?.('--drag-tx')
+          el.style?.removeProperty?.('--drag-ty')
+          const tf = el.style?.transform || ''
+          if (tf.includes('var(--drag-tx')) { try { el.style.removeProperty('transform') } catch {} }
         })
         cloneHtmlEl.querySelector('body')?.classList.remove('dragging-global')
+        // Remove dev client scripts injected by Vite
+        cloneHtmlEl.querySelectorAll('script[src*="/@vite/client"]')?.forEach(el => el.remove())
       } catch {}
       const doctype = '<!DOCTYPE html>'
       html = doctype + '\n' + cloneHtmlEl.outerHTML
@@ -377,9 +500,16 @@ async function saveCurrentHtml(fileOverride) {
       try {
         clone.querySelectorAll('[contenteditable]')?.forEach(el => {
           el.removeAttribute('contenteditable')
+        })
+        clone.querySelectorAll('*')?.forEach(el => {
           el.classList.remove('editable-active','edge-drag-cursor','edge-drag-active','draggable-activated','drag-managed')
+          el.style?.removeProperty?.('--drag-tx')
+          el.style?.removeProperty?.('--drag-ty')
+          const tf = el.style?.transform || ''
+          if (tf.includes('var(--drag-tx')) { try { el.style.removeProperty('transform') } catch {} }
         })
         clone.querySelector('body')?.classList.remove('dragging-global')
+        clone.querySelectorAll('script[src*="/@vite/client"]')?.forEach(el => el.remove())
       } catch {}
       const doctype = '<!DOCTYPE html>'
       html = doctype + '\n' + clone.documentElement.outerHTML
@@ -395,8 +525,10 @@ async function saveCurrentHtml(fileOverride) {
 }
 
 async function onSaveClick() {
-  await saveCurrentHtml()
+  // Save and clear history; keep UI responsive
+  saveCurrentHtml().catch(() => {})
   isDirty.value = false
+  clearHistory()
 }
 
 function dispatchMouseProxy(x) {
@@ -498,31 +630,24 @@ function onFrameError(error) {
 }
 
 function forceIframeReload() {
-  if (!slideFrame.value) return
   try {
-    const url = slideUrl.value
-    const glue = url.includes('?') ? '&' : '?'
-    const newUrl = `${url}${glue}v=${Date.now()}`
-    if (reloadTimer) { try { clearTimeout(reloadTimer) } catch {} }
-    reloadTimer = setTimeout(() => {
-      try { slideFrame.value.src = newUrl } catch {}
-      reloadTimer = null
-    }, 120)
+    // Set src directly to new slide URL; no cache-busting or delay
+    frameSrc.value = slideUrl.value
   } catch (e) {
     // ignore
   }
 }
 
-// Watch for slide file path changes (减少无谓重载) and save previous if dirty
+// Watch for slide file path changes (无感保存 + 无缝切换)
 watch(() => slidePath.value, async (newPath, oldPath) => {
-  // Save old slide first if there are unsaved changes
+  // Fire-and-forget save of old slide if there are unsaved changes
   if (oldPath && isDirty.value) {
-    await saveCurrentHtml(oldPath)
+    saveCurrentHtml(oldPath).catch((e) => console.error('Background save failed:', e))
     isDirty.value = false
+    clearHistory()
   }
   loading.value = true
   loadingError.value = ''
-  
   if (props.loadMode === 'shadow') {
     await loadShadowContent()
   } else {
@@ -540,13 +665,18 @@ watch(() => props.loadMode, () => {
 onMounted(() => {
   if (props.loadMode === 'shadow') {
     loadShadowContent()
+  } else {
+    // Ensure initial src is set without forced reload
+    try { frameSrc.value = slideUrl.value } catch {}
   }
 })
 
-onUnmounted(async () => {
+onBeforeUnmount(async () => {
   try {
-    if (isDirty.value) { await saveCurrentHtml(); isDirty.value = false }
+    if (isDirty.value) { await saveCurrentHtml(); isDirty.value = false; clearHistory() }
   } catch {}
+})
+onUnmounted(() => {
   shadowRoot = null
   if (removeIframeMouseListener) removeIframeMouseListener()
   if (removeShadowMouseListener) removeShadowMouseListener()
@@ -593,10 +723,21 @@ onUnmounted(async () => {
   z-index: 10;
   padding: 0.5rem 0.9rem;
   border-radius: 0.5rem;
-  background: rgba(96,165,250,0.25);
-  color: white;
-  border: 1px solid rgba(96,165,250,0.45);
-  backdrop-filter: blur(4px);
+  background: #3b82f6;
+  color: #fff;
 }
-.save-btn:hover { background: rgba(96,165,250,0.35); }
+
+.edit-actions {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 10;
+  display: flex;
+  gap: 0.5rem;
+}
+.toolbar-btn { 
+  @apply w-10 h-10 rounded-full flex items-center justify-center text-white transition-colors duration-150; 
+  @apply bg-white/5 hover:bg-white/10 border border-white/20 backdrop-blur-sm;
+}
+.toolbar-btn[disabled] { @apply opacity-50 cursor-not-allowed; }
 </style>

@@ -180,8 +180,8 @@ function fileOpsPlugin() {
               notes: '',
               duration: null
             }
-            cfg.slides.push(newSlide)
-            fs.writeFileSync(targetConfigPath, JSON.stringify(cfg, null, 2))
+              cfg.slides.push(newSlide)
+              fs.writeFileSync(targetConfigPath, JSON.stringify(cfg, null, 2))
 
             return sendJson(res, { ok: true, slide: newSlide })
           } catch (e) {
@@ -246,28 +246,45 @@ function fileOpsPlugin() {
           }
         }
 
-        // Create a new presentation group (folder and blank config)
         if (req.url === '/api/presentations/create') {
           const body = await readBody(req)
           const group = String(body.group || '').trim()
+          const title = String(body.title || '').trim()
+          const description = String(body.description || '').trim()
           if (!group || /[^a-zA-Z0-9-_]/.test(group)) {
             return sendJson(res, { ok: false, error: 'Invalid group name' }, 400)
           }
           try {
             const { slidesDir: groupSlidesDir, configPath: groupConfigPath } = resolvePaths(group)
-            // Ensure blank config exists (resolvePaths already created if missing)
+            // Create or update config with provided metadata
+            let cfg
             if (!fs.existsSync(groupConfigPath)) {
-              const defaultCfg = {
-                title: 'New Presentation',
+              cfg = {
+                title: title || 'New Presentation',
                 author: '',
-                description: '',
+                description: description || '',
                 theme: { primaryColor: '#3b82f6', fontFamily: 'system-ui', transition: 'slide' },
                 settings: { autoPlay: false, autoPlayInterval: 5000, loop: false, showProgress: true, showThumbnails: true, enableKeyboardNav: true, enableTouchNav: true },
                 slides: []
               }
-              fs.writeFileSync(groupConfigPath, JSON.stringify(defaultCfg, null, 2))
+            } else {
+              try {
+                cfg = JSON.parse(fs.readFileSync(groupConfigPath, 'utf-8'))
+              } catch (e) {
+                cfg = {
+                  title: title || 'New Presentation',
+                  author: '',
+                  description: description || '',
+                  theme: { primaryColor: '#3b82f6', fontFamily: 'system-ui', transition: 'slide' },
+                  settings: { autoPlay: false, autoPlayInterval: 5000, loop: false, showProgress: true, showThumbnails: true, enableKeyboardNav: true, enableTouchNav: true },
+                  slides: []
+                }
+              }
+              if (title) cfg.title = title
+              if (description) cfg.description = description
             }
-            return sendJson(res, { ok: true, group, paths: { slidesDir: groupSlidesDir, configPath: groupConfigPath } })
+            fs.writeFileSync(groupConfigPath, JSON.stringify(cfg, null, 2))
+            return sendJson(res, { ok: true, group, paths: { slidesDir: groupSlidesDir, configPath: groupConfigPath }, config: cfg })
           } catch (e) {
             return sendJson(res, { ok: false, error: e.message || String(e) }, 500)
           }
@@ -298,4 +315,10 @@ function fileOpsPlugin() {
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue(), fileOpsPlugin()],
+  server: {
+    watch: {
+      // Ignore changes inside presentations to prevent dev server full reloads
+      ignored: ['**/presentations/**']
+    }
+  }
 })
