@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summary Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a192f 0%, #112240 100%);
+            color: #ccd6f6;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1400px;
+            max-height: 90vh;
+            margin: 0 auto;
+            padding: 1.5rem 3rem;
+            z-index: 10;
+            position: relative;
+            overflow-y: auto;
+        }
+        
+        .container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .container::-webkit-scrollbar-track {
+            background: rgba(100, 255, 218, 0.1);
+            border-radius: 3px;
+        }
+        
+        .container::-webkit-scrollbar-thumb {
+            background: rgba(100, 255, 218, 0.5);
+            border-radius: 3px;
+        }
+
+        .insights-section {
+            margin-bottom: 2rem;
+        }
+
+        .insight-item {
+            background: rgba(17, 34, 64, 0.6);
+            border-left: 4px solid #64ffda;
+            border-radius: 12px;
+            padding: 1rem 1rem 1rem 2.5rem;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .insight-item:nth-child(1) { animation-delay: 0.2s; }
+        .insight-item:nth-child(2) { animation-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .insight-item::before {
+            content: '"';
+            position: absolute;
+            left: 0.5rem;
+            top: 0.5rem;
+            font-size: 2.5rem;
+            color: #64ffda;
+            opacity: 0.3;
+            font-family: Georgia, serif;
+        }
+
+        .insight-number {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #64ffda;
+            margin-bottom: 0.5rem;
+        }
+
+        .insight-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #ccd6f6;
+        }
+
+        .keyword {
+            color: #64ffda;
+            font-weight: 600;
+        }
+
+        .roles-section {
+            margin-top: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #64ffda;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .roles-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .role-card {
+            background: rgba(17, 34, 64, 0.6);
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            opacity: 0;
+            animation: cardSlideIn 0.8s ease-out forwards;
+        }
+
+        .role-card:nth-child(1) { animation-delay: 0.6s; }
+        .role-card:nth-child(2) { animation-delay: 0.8s; }
+
+        @keyframes cardSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .role-card.ai-card {
+            border-left: 4px solid #64ffda;
+        }
+
+        .role-card.human-card {
+            border-left: 4px solid #00d4ff;
+        }
+
+        .role-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(100, 255, 218, 0.2);
+        }
+
+        .role-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .role-icon {
+            font-size: 2rem;
+            color: #64ffda;
+        }
+
+        .role-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #64ffda;
+        }
+
+        .role-subtitle {
+            font-size: 1rem;
+            color: #8892b0;
+            margin-bottom: 1rem;
+        }
+
+        .role-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .role-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            font-size: 0.95rem;
+            color: #ccd6f6;
+            padding: 0.6rem;
+            background: rgba(100, 255, 218, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            line-height: 1.4;
+        }
+
+        .role-item:hover {
+            background: rgba(100, 255, 218, 0.1);
+            transform: translateX(10px);
+        }
+
+        .role-item-icon {
+            color: #64ffda;
+            margin-top: 0.2rem;
+            flex-shrink: 0;
+        }
+
+        .divider {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #64ffda, transparent);
+            margin: 1.5rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Content -->
+    <div class="container">
+        <div class="insights-section">
+            <div class="insight-item">
+                <div class="insight-number">1.</div>
+                <div class="insight-text">
+                    The future of AI-assisted development lies not in generating fancier code, but in <span class="keyword">more precise requirement expression</span>.
+                </div>
+            </div>
+
+            <div class="insight-item">
+                <div class="insight-number">2.</div>
+                <div class="insight-text">
+                    A personal thought: I believe it's not about choosing Vibe Specs or Context Engineering and completely abandoning "Vibe Coding". AI's knowledge base far exceeds that of humans. Overly strict limitations may prevent AI from unleashing its true potential. Within a small, controllable scope, letting AI freely explore might lead to winning the <span class="keyword">"jackpot"</span>.
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="roles-section">
+            <div class="section-title">AI's Role in the Development Process</div>
+
+            <div class="roles-grid">
+                <div class="role-card ai-card">
+                    <div class="role-header">
+                        <i class="fas fa-robot role-icon"></i>
+                        <div>
+                            <div class="role-title">AI is Good At</div>
+                        </div>
+                    </div>
+                    <div class="role-subtitle">What AI Should Handle</div>
+                    <div class="role-list">
+                        <div class="role-item">
+                            <i class="fas fa-check-circle role-item-icon"></i>
+                            <span>Assisted Design</span>
+                        </div>
+                        <div class="role-item">
+                            <i class="fas fa-check-circle role-item-icon"></i>
+                            <span>Code Generation</span>
+                        </div>
+                        <div class="role-item">
+                            <i class="fas fa-check-circle role-item-icon"></i>
+                            <span>Code Review</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="role-card human-card">
+                    <div class="role-header">
+                        <i class="fas fa-user-tie role-icon" style="color: #00d4ff;"></i>
+                        <div>
+                            <div class="role-title" style="color: #00d4ff;">Humans Should Control</div>
+                        </div>
+                    </div>
+                    <div class="role-subtitle">Critical Human Oversight</div>
+                    <div class="role-list">
+                        <div class="role-item">
+                            <i class="fas fa-brain role-item-icon" style="color: #00d4ff;"></i>
+                            <span>Requirements Clarification & Edge Cases, Exception Handling</span>
+                        </div>
+                        <div class="role-item">
+                            <i class="fas fa-sitemap role-item-icon" style="color: #00d4ff;"></i>
+                            <span>Architecture Design & Selection, Critical Paths & Performance</span>
+                        </div>
+                        <div class="role-item">
+                            <i class="fas fa-shield-alt role-item-icon" style="color: #00d4ff;"></i>
+                            <span>Security & Compliance, Privacy & Data Governance</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

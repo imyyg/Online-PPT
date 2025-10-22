@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto Completion & Multiline Autocompletion</title>
+  <style>
+    body { height:100vh; margin:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #0b1220 0%, #0e1628 50%, #0a0f1a 100%); color:#e5e7eb; font-family: system-ui, -apple-system, Segoe UI, PingFang SC, Microsoft YaHei, sans-serif; overflow: hidden; }
+    .decor-one { position: fixed; top: -80px; right: -80px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(96,165,250,.15), rgba(96,165,250,0) 60%); filter: blur(2px); }
+    .decor-two { position: fixed; bottom: -90px; left: -90px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(139,92,246,.12), rgba(139,92,246,0) 60%); filter: blur(3px); }
+    .card { width:96%; max-width:1200px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 48px 56px; box-shadow: 0 10px 50px rgba(0,0,0,.35); backdrop-filter: blur(6px); position: relative; z-index: 1; }
+    h2 { font-size: 2.4rem; margin: 0 0 24px; color:#ffffff; font-weight: 700; }
+    .content { font-size: 1.2rem; line-height: 2; opacity: .95; padding: 24px; background: rgba(96,165,250,.08); border-left: 4px solid #60a5fa; border-radius: 8px; }
+    .comparison { margin-top: 24px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .comp-item { padding: 20px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.15); border-radius: 12px; }
+    .comp-item.highlight { background: rgba(34,197,94,.10); border-color: rgba(34,197,94,.3); }
+    .comp-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; color: #60a5fa; }
+    .comp-item.highlight .comp-title { color: #86efac; }
+    .comp-desc { font-size: 1rem; line-height: 1.8; }
+    @media (max-width: 768px) { .card { width:94%; padding:32px; } h2 { font-size: 1.9rem; } .comparison { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="decor-one"></div>
+  <div class="decor-two"></div>
+  <div class="card">
+    <h2>Auto Completion & Multiline Autocompletion</h2>
+    <div class="content">
+      这个阶段各个IDE都支持代码补全，区别在于谁的优化做的更好。
+    </div>
+    <div class="comparison">
+      <div class="comp-item">
+        <div class="comp-title">GitHub Copilot</div>
+        <div class="comp-desc">Basic single-line completion</div>
+      </div>
+      <div class="comp-item highlight">
+        <div class="comp-title">Cursor (Early Stage)</div>
+        <div class="comp-desc">✨ Multiline Autocompletion<br>Better context understanding</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

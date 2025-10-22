@@ -13,8 +13,11 @@ app.use(pinia)
 const store = useSlidesStore(pinia)
 // Read PPT name from path before loading config
 const pathname = window.location.pathname || '/'
+const BASE_URL = import.meta.env.BASE_URL || '/'
 const parts = pathname.split('/').filter(Boolean)
-const nameFromPath = parts[0] || 'example'
+const baseParts = BASE_URL.split('/').filter(Boolean)
+const groupParts = parts.slice(baseParts.length)
+const nameFromPath = groupParts[0] || 'example'
 store.setGroup(nameFromPath)
 
 // Preload slides config before first render
@@ -30,10 +33,10 @@ if (slideParam) {
   }
 }
 
-// Sync current PPT name to path (example -> "/")
+// Sync current PPT name to path (example -> BASE_URL)
 watch(() => store.currentGroup, (val) => {
   const url = new URL(window.location.href)
-  const newPath = (val === 'example') ? '/' : `/${val}`
+  const newPath = (val === 'example') ? BASE_URL : `${BASE_URL}${val}`
   url.pathname = newPath
   window.history.replaceState(null, '', url.toString())
 })

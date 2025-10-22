@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Context Engineering</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a192f 0%, #112240 100%);
+            color: #ccd6f6;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Multi-layer architecture background */
+        .architecture-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            opacity: 0.08;
+        }
+
+        .arch-layer {
+            width: 80%;
+            height: 80px;
+            border: 2px solid #64ffda;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #64ffda;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 3rem;
+            z-index: 10;
+            position: relative;
+        }
+
+        .title-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .title-icon {
+            font-size: 2.5rem;
+            color: #64ffda;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #64ffda;
+            text-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+            text-align: center;
+        }
+
+        .consensus-section {
+            background: rgba(17, 34, 64, 0.6);
+            border: 2px solid #64ffda;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .consensus-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #64ffda;
+            margin-bottom: 0.5rem;
+        }
+
+        .consensus-text {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #8892b0;
+        }
+
+        .advantages-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #64ffda;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .three-pillars {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pillar-card {
+            background: rgba(17, 34, 64, 0.8);
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .pillar-card:hover {
+            border-color: rgba(100, 255, 218, 0.6);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(100, 255, 218, 0.3);
+        }
+
+        .pillar-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #64ffda;
+            margin-bottom: 0.5rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .pillar-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #64ffda;
+            margin-bottom: 0.8rem;
+        }
+
+        .pillar-items {
+            width: 100%;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .pillar-item {
+            font-size: 0.85rem;
+            color: #8892b0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .pillar-item i {
+            color: #64ffda;
+            margin-top: 0.3rem;
+            flex-shrink: 0;
+        }
+
+        .representative-section {
+            background: rgba(100, 255, 218, 0.1);
+            border: 2px solid #64ffda;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .representative-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #8892b0;
+            margin-bottom: 0.5rem;
+        }
+
+        .representative-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #64ffda;
+            text-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
+        }
+
+        /* Connecting lines animation */
+        .connection-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #64ffda, transparent);
+            opacity: 0.3;
+            animation: lineFlow 3s ease-in-out infinite;
+        }
+
+        @keyframes lineFlow {
+            0%, 100% {
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Architecture Background -->
+    <div class="architecture-background">
+        <div class="arch-layer">Context Layer</div>
+        <div class="arch-layer">Spec Layer</div>
+        <div class="arch-layer">Rules Layer</div>
+        <div class="arch-layer">Code Layer</div>
+    </div>
+
+    <!-- Connection Lines -->
+    <div class="connection-lines" id="connectionLines"></div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="title-wrapper">
+            <i class="fas fa-layer-group title-icon"></i>
+            <h1>Context Engineering</h1>
+        </div>
+
+        <div class="consensus-section">
+            <div class="consensus-title">Industry Consensus</div>
+            <div class="consensus-text">
+                Through upfront documentation and rules (specs, rules) constraints, reduce hallucinations and divergence, achieving engineering-controllable AI Coding.
+            </div>
+        </div>
+
+        <div class="advantages-title">Enhanced Advantages Beyond Vibe Specs</div>
+
+        <div class="three-pillars">
+            <div class="pillar-card">
+                <div class="pillar-number">01</div>
+                <div class="pillar-title">Unified Rules</div>
+                <div class="pillar-items">
+                    <div class="pillar-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Project and organization-wide specifications and boundaries</span>
+                    </div>
+                    <div class="pillar-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Clear input/output, style constraints, risk control</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pillar-card">
+                <div class="pillar-number">02</div>
+                <div class="pillar-title">Unified Specs</div>
+                <div class="pillar-items">
+                    <div class="pillar-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Documentation-first, structured requirements and interactions</span>
+                    </div>
+                    <div class="pillar-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Write specifications with "implementability" in mind</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pillar-card">
+                <div class="pillar-number">03</div>
+                <div class="pillar-title">Unified Context</div>
+                <div class="pillar-items">
+                    <div class="pillar-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Centralized context management, avoiding information fragmentation</span>
+                    </div>
+                    <div class="pillar-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Multiple models/agents share consistent context</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="representative-section">
+            <div class="representative-label">Representative:</div>
+            <div class="representative-name">Trae SOLO</div>
+        </div>
+    </div>
+
+    <script>
+        // Generate connection lines
+        const connectionLines = document.getElementById('connectionLines');
+        for (let i = 0; i < 5; i++) {
+            const line = document.createElement('div');
+            line.className = 'line';
+            line.style.width = Math.random() * 30 + 10 + '%';
+            line.style.top = Math.random() * 100 + '%';
+            line.style.left = Math.random() * 70 + '%';
+            line.style.animationDelay = Math.random() * 3 + 's';
+            connectionLines.appendChild(line);
+        }
+    </script>
+</body>
+</html>

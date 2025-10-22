@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Engineering</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a192f 0%, #112240 100%);
+            color: #ccd6f6;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Chat bubble background */
+        .chat-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .chat-bubble {
+            position: absolute;
+            padding: 15px 20px;
+            border-radius: 20px;
+            background: rgba(100, 255, 218, 0.05);
+            border: 1px solid rgba(100, 255, 218, 0.1);
+            font-size: 12px;
+            opacity: 0.3;
+            animation: bubbleFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes bubbleFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(2deg);
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem;
+            z-index: 10;
+            position: relative;
+            display: flex;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .content-section {
+            flex: 1;
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .icon-section {
+            flex: 0 0 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .title-icon {
+            font-size: 3rem;
+            color: #64ffda;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #64ffda;
+            text-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+        }
+
+        .content-box {
+            background: rgba(17, 34, 64, 0.4);
+            border-left: 4px solid #64ffda;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .description {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: #8892b0;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight-section {
+            background: rgba(17, 34, 64, 0.6);
+            border-left: 4px solid #ff6b6b;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .pain-point-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #ff6b6b;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .pain-point-text {
+            font-size: 1.3rem;
+            color: #ccd6f6;
+            line-height: 1.6;
+        }
+
+        /* Large decorative icon */
+        .large-icon {
+            font-size: 15rem;
+            color: #64ffda;
+            opacity: 0.15;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.15;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.25;
+            }
+        }
+
+        .technique-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .technique-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.2rem;
+            color: #8892b0;
+        }
+
+        .technique-icon {
+            color: #64ffda;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Chat Background -->
+    <div class="chat-background" id="chatBg"></div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="content-section">
+            <div class="title-wrapper">
+                <i class="fas fa-comments title-icon"></i>
+                <h1>Prompt Engineering</h1>
+            </div>
+            
+            <div class="content-box">
+                <div class="description">
+                    Emphasizes using accurate and specific prompts.
+                </div>
+                
+                <div class="technique-list">
+                    <div class="technique-item">
+                        <i class="fas fa-check-circle technique-icon"></i>
+                        <span>Common techniques: Role presetting (chatGPT)</span>
+                    </div>
+                    <div class="technique-item">
+                        <i class="fas fa-check-circle technique-icon"></i>
+                        <span>Structured instructions</span>
+                    </div>
+                    <div class="technique-item">
+                        <i class="fas fa-check-circle technique-icon"></i>
+                        <span>Step-by-step output</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-section">
+                <div class="pain-point-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Pain Point:</span>
+                </div>
+                <div class="pain-point-text">
+                    Limited context inevitably leads to AI hallucinations
+                </div>
+            </div>
+        </div>
+
+        <div class="icon-section">
+            <i class="fas fa-brain large-icon"></i>
+        </div>
+    </div>
+
+    <script>
+        // Generate chat bubbles
+        const chatBg = document.getElementById('chatBg');
+        const bubbleTexts = [
+            'You are an expert...',
+            'Step 1: Analyze...',
+            'Please explain...',
+            'Context: ...',
+            'Generate code for...',
+            'Based on the following...'
+        ];
+
+        for (let i = 0; i < 8; i++) {
+            const bubble = document.createElement('div');
+            bubble.className = 'chat-bubble';
+            bubble.textContent = bubbleTexts[i % bubbleTexts.length];
+            bubble.style.left = Math.random() * 80 + 10 + '%';
+            bubble.style.top = Math.random() * 80 + 10 + '%';
+            bubble.style.animationDelay = Math.random() * 3 + 's';
+            chatBg.appendChild(bubble);
+        }
+    </script>
+</body>
+</html>

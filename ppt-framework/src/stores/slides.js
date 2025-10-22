@@ -34,16 +34,18 @@ export const useSlidesStore = defineStore('slides', () => {
 
   // Current presentation group (folder under /presentations)
   const currentGroup = ref('example')
-  const groupBasePath = computed(() => currentGroup.value ? `/presentations/${currentGroup.value}` : '')
+  const baseUrl = import.meta.env.BASE_URL || '/'
+  const groupBasePath = computed(() => currentGroup.value ? `${baseUrl}presentations/${currentGroup.value}` : '')
   
   // Getters
   const currentSlide = computed(() => {
-    const visibleSlides = config.value.slides.filter(s => s.visible)
+    const visibleSlides = config.value.slides.filter(s => s.visible !== false)
     return visibleSlides[currentIndex.value] || null
   })
   
   const visibleSlides = computed(() => {
-    return config.value.slides.filter(s => s.visible)
+    // 未显式设置 visible 的幻灯片默认可见
+    return config.value.slides.filter(s => s.visible !== false)
   })
   
   const totalSlides = computed(() => {
@@ -129,37 +131,36 @@ export const useSlidesStore = defineStore('slides', () => {
   function addSlide(slide) {
     const newSlide = {
       id: `slide-${Date.now()}`,
-      title: slide.title || 'New Slide',
+      title: slide.title,
       file: slide.file,
       visible: true,
       notes: slide.notes || '',
-      duration: slide.duration || null
+      duration: null
     }
     config.value.slides.push(newSlide)
-    return newSlide
   }
   
   function removeSlide(id) {
-    // Soft delete - just hide the slide
-    const slide = config.value.slides.find(s => s.id === id)
-    if (slide) {
-      slide.visible = false
-    }
+    config.value.slides = config.value.slides.filter(s => s.id !== id)
   }
   
   function duplicateSlide(id) {
     const slide = config.value.slides.find(s => s.id === id)
     if (slide) {
+      const base = slide.file.replace(/\.html$/, '')
+      const newFile = `${base}-copy-${Date.now()}.html`
       const newSlide = {
-        ...slide,
         id: `slide-${Date.now()}`,
         title: `${slide.title} (Copy)`,
-        file: `${slide.file.replace('.html', '')}-copy-${Date.now()}.html`
+        file: newFile,
+        visible: true,
+        notes: slide.notes || '',
+        duration: null
       }
-      const index = config.value.slides.indexOf(slide)
-      config.value.slides.splice(index + 1, 0, newSlide)
+      config.value.slides.push(newSlide)
       return newSlide
     }
+    return null
   }
   
   function reorderSlides(fromIndex, toIndex) {

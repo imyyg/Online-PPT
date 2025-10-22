@@ -3,6 +3,11 @@ import vue from '@vitejs/plugin-vue'
 import fs from 'fs'
 import path from 'path'
 
+// Add dynamic base for GitHub Pages
+const isPages = process.env.GITHUB_PAGES === 'true'
+const repoName = 'online-simple-ppt'
+const base = isPages ? `/${repoName}/` : '/'
+
 function fileOpsPlugin() {
   return {
     name: 'file-ops-plugin',
@@ -56,42 +61,33 @@ function fileOpsPlugin() {
         // migration best-effort
       }
 
-      function resolvePaths(group) {
-        if (group) {
-          const groupDir = path.join(presentationsDir, group)
-          const groupSlidesDir = path.join(groupDir, 'slides')
-          const groupConfigPath = path.join(groupDir, 'slides.config.json')
-          if (!fs.existsSync(groupDir)) fs.mkdirSync(groupDir, { recursive: true })
-          if (!fs.existsSync(groupSlidesDir)) fs.mkdirSync(groupSlidesDir, { recursive: true })
-          if (!fs.existsSync(groupConfigPath)) {
-            const defaultCfg = {
-              title: 'New Presentation',
-              author: '',
-              description: '',
-              theme: { primaryColor: '#3b82f6', fontFamily: 'system-ui', transition: 'random' },
-              settings: { autoPlay: false, autoPlayInterval: 5000, loop: false, showProgress: true, showThumbnails: true, enableKeyboardNav: true, enableTouchNav: true },
-              slides: []
-            }
-            fs.writeFileSync(groupConfigPath, JSON.stringify(defaultCfg, null, 2))
-          }
-          return { slidesDir: groupSlidesDir, configPath: groupConfigPath }
-        }
-        return { slidesDir, configPath }
-      }
-
-      function readBody(req) {
-        return new Promise((resolve) => {
-          const chunks = []
-          req.on('data', (c) => chunks.push(c))
+      async function readBody(req) {
+        return await new Promise((resolve) => {
+          let data = ''
+          req.on('data', chunk => { data += chunk })
           req.on('end', () => {
-            try {
-              const raw = Buffer.concat(chunks).toString()
-              resolve(raw ? JSON.parse(raw) : {})
-            } catch (e) {
-              resolve({})
-            }
+            try { resolve(JSON.parse(data || '{}')) } catch { resolve({}) }
           })
         })
+      }
+
+      function resolvePaths(group) {
+        const targetGroup = String(group || '').trim() || 'example'
+        const slidesDir = path.join(presentationsDir, targetGroup, 'slides')
+        const configPath = path.join(presentationsDir, targetGroup, 'slides.config.json')
+        if (!fs.existsSync(path.join(presentationsDir, targetGroup))) {
+          fs.mkdirSync(path.join(presentationsDir, targetGroup, 'slides'), { recursive: true })
+          const blankCfg = {
+            title: targetGroup,
+            author: '',
+            description: '',
+            theme: { primaryColor: '#3b82f6', fontFamily: 'system-ui', transition: 'random' },
+            settings: { autoPlay: false, autoPlayInterval: 5000, loop: false, showProgress: true, showThumbnails: true, enableKeyboardNav: true, enableTouchNav: true },
+            slides: []
+          }
+          fs.writeFileSync(configPath, JSON.stringify(blankCfg, null, 2))
+        }
+        return { slidesDir, configPath }
       }
 
       function sendJson(res, data, status = 200) {
@@ -125,7 +121,7 @@ function fileOpsPlugin() {
             }
             let content = fs.readFileSync(tplPath, 'utf-8')
             // Simple title injection if placeholder exists
-            content = content.replace(/<title>.*?<\/title>/, `<title>${title}</title>`) 
+            content = content.replace(/<title>.*?<\/title>/, `<title>${title}<\/title>`) 
             content = content.replace(/<h1[^>]*>.*?<\/h1>/, `<h1>${title}</h1>`) 
 
             fs.writeFileSync(newFilePath, content, 'utf-8')
@@ -325,13 +321,72 @@ function fileOpsPlugin() {
         }
         return next()
       })
+
+      // Serve presentations files in dev for GET requests
+      server.middlewares.use((req, res, next) => {
+        if (req.method !== 'GET') return next()
+        const url = req.url || ''
+        if (url.startsWith('/presentations/')) {
+          const rel = decodeURIComponent(url.replace(/^\/presentations\//, ''))
+          const filePath = path.join(presentationsDir, rel)
+          const normalized = path.normalize(filePath)
+          if (normalized.startsWith(presentationsDir) && fs.existsSync(normalized)) {
+            const ext = path.extname(normalized).toLowerCase()
+            const type = (
+              ext === '.json' ? 'application/json' :
+              ext === '.html' ? 'text/html; charset=utf-8' :
+              ext === '.svg'  ? 'image/svg+xml' :
+              ext === '.png'  ? 'image/png' :
+              (ext === '.jpg' || ext === '.jpeg') ? 'image/jpeg' :
+              'text/plain'
+            )
+            res.statusCode = 200
+            res.setHeader('Content-Type', type)
+            try {
+              const buf = fs.readFileSync(normalized)
+              res.end(buf)
+            } catch (e) {
+              res.statusCode = 500
+              res.end(String(e))
+            }
+            return
+          }
+        }
+        return next()
+      })
+    }
+  }
+}
+
+// Copy presentations folder into dist for static hosting
+function copyPresentationsPlugin() {
+  return {
+    name: 'copy-presentations-plugin',
+    apply: 'build',
+    closeBundle() {
+      try {
+        const root = process.cwd()
+        const src = path.join(root, 'presentations')
+        const dest = path.join(root, 'dist', 'presentations')
+        if (fs.existsSync(src)) {
+          // Ensure exact sync: remove old dest then copy fresh
+          if (fs.existsSync(dest)) {
+            fs.rmSync(dest, { recursive: true, force: true })
+          }
+          fs.mkdirSync(path.join(root, 'dist'), { recursive: true })
+          fs.cpSync(src, dest, { recursive: true })
+        }
+      } catch (e) {
+        console.error('[copy-presentations-plugin] Failed to copy presentations:', e)
+      }
     }
   }
 }
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue(), fileOpsPlugin()],
+  base,
+  plugins: [vue(), fileOpsPlugin(), copyPresentationsPlugin()],
   server: {
     watch: {
       // Ignore changes inside presentations to prevent dev server full reloads

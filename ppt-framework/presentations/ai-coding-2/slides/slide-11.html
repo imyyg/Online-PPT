@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask & Context Awareness</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a192f 0%, #112240 100%);
+            color: #ccd6f6;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem;
+            z-index: 10;
+            position: relative;
+        }
+
+        .title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .title-icon {
+            font-size: 3rem;
+            color: #64ffda;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #64ffda;
+            text-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+        }
+
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .text-section {
+            background: rgba(17, 34, 64, 0.6);
+            border-left: 4px solid #64ffda;
+            border-radius: 12px;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .description {
+            font-size: 1.5rem;
+            line-height: 2;
+            color: #8892b0;
+        }
+
+        .keyword {
+            color: #64ffda;
+            font-weight: 600;
+        }
+
+        .visual-section {
+            position: relative;
+        }
+
+        .chat-demo {
+            background: rgba(17, 34, 64, 0.8);
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 500px;
+        }
+
+        .chat-message {
+            margin-bottom: 1.5rem;
+            animation: messageSlideIn 0.5s ease-out;
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-message.user {
+            text-align: right;
+        }
+
+        .message-bubble {
+            display: inline-block;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            line-height: 1.6;
+            max-width: 80%;
+        }
+
+        .message-bubble.user {
+            background: rgba(100, 255, 218, 0.2);
+            color: #ccd6f6;
+            border: 1px solid #64ffda;
+        }
+
+        .message-bubble.ai {
+            background: rgba(17, 34, 64, 0.8);
+            color: #8892b0;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+        }
+
+        .message-icon {
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+            color: #64ffda;
+        }
+
+        .context-indicator {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(100, 255, 218, 0.05);
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .context-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #64ffda;
+            margin-bottom: 1rem;
+        }
+
+        .context-items {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .context-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .context-icon {
+            font-size: 2rem;
+            color: #64ffda;
+        }
+
+        .context-label {
+            font-size: 0.9rem;
+            color: #8892b0;
+        }
+
+        .stage-badge {
+            position: absolute;
+            top: -1rem;
+            right: -1rem;
+            background: rgba(100, 255, 218, 0.2);
+            color: #64ffda;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 2px solid #64ffda;
+            box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Content -->
+    <div class="container">
+        <div class="title-wrapper">
+            <i class="fas fa-comments-question title-icon"></i>
+            <h1>Ask & Context Awareness</h1>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="text-section">
+                <div class="description">
+                    You can ask questions within the IDE and it has <span class="keyword">"context awareness"</span> capabilities. It can respond based on project context and provide code suggestions.
+                    <br><br>
+                    Corresponds to the <span class="keyword">Prompt Engineering</span> stage.
+                </div>
+
+                <div class="context-indicator">
+                    <div class="context-title">Context Awareness Sources</div>
+                    <div class="context-items">
+                        <div class="context-item">
+                            <i class="fas fa-file-code context-icon"></i>
+                            <span class="context-label">Current File</span>
+                        </div>
+                        <div class="context-item">
+                            <i class="fas fa-folder-open context-icon"></i>
+                            <span class="context-label">Project Structure</span>
+                        </div>
+                        <div class="context-item">
+                            <i class="fas fa-history context-icon"></i>
+                            <span class="context-label">Code History</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="visual-section">
+                <div class="stage-badge">Prompt Stage</div>
+                <div class="chat-demo">
+                    <div class="chat-message user">
+                        <div class="message-bubble user">
+                            <i class="fas fa-user message-icon"></i>
+                            How can I optimize this component's performance?
+                        </div>
+                    </div>
+
+                    <div class="chat-message">
+                        <div class="message-bubble ai">
+                            <i class="fas fa-robot message-icon"></i>
+                            Based on your component structure, I suggest using React.memo() and useMemo() hook to prevent unnecessary re-renders...
+                        </div>
+                    </div>
+
+                    <div class="chat-message user">
+                        <div class="message-bubble user">
+                            <i class="fas fa-user message-icon"></i>
+                            Can you show me an example?
+                        </div>
+                    </div>
+
+                    <div class="chat-message">
+                        <div class="message-bubble ai">
+                            <i class="fas fa-robot message-icon"></i>
+                            Sure! Looking at your UserList.tsx file, here's how you can apply it...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
