@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agenda</title>
+  <style>
+    body { height:100vh; margin:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #0b1220 0%, #0e1628 50%, #0a0f1a 100%); color:#e5e7eb; font-family: system-ui, -apple-system, Segoe UI, PingFang SC, Microsoft YaHei, sans-serif; overflow: hidden; }
+    .decor-one { position: fixed; top: -80px; right: -80px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(96,165,250,.15), rgba(96,165,250,0) 60%); filter: blur(2px); }
+    .decor-two { position: fixed; bottom: -90px; left: -90px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(139,92,246,.12), rgba(139,92,246,0) 60%); filter: blur(3px); }
+    .content { width: 96%; max-width: 1400px; padding: 20px 0; position: relative; z-index: 1; }
+    .strip { width: 100%; padding: 20px 24px; border-top: 1px solid rgba(255,255,255,.18); border-bottom: 1px solid rgba(255,255,255,.18); background: linear-gradient(90deg, rgba(96,165,250,.12), rgba(139,92,246,.08)); border-radius: 12px; backdrop-filter: blur(6px); }
+    h2 { font-size: 2.4rem; margin: 0; color:#ffffff; display:flex; align-items:center; gap:12px; font-weight: 700; }
+    .ico { width:28px; height:28px; stroke:#fff; stroke-width:1.8; fill:none; opacity:.95; }
+    .body { margin-top: 24px; }
+    ul { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    li { padding: 20px 24px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.15); border-radius: 12px; font-size: 1.15rem; position: relative; padding-left: 50px; line-height: 1.6; transition: all 0.3s; }
+    li:hover { background: rgba(96,165,250,.12); border-color: rgba(96,165,250,.3); transform: translateY(-2px); }
+    li::before { content:""; position:absolute; left:18px; top:50%; transform: translateY(-50%); width:16px; height:16px; border-radius:50%; background: linear-gradient(135deg, #60a5fa, #a78bfa); box-shadow:0 0 0 4px rgba(96,165,250,.2); }
+    @media (max-width: 1024px) { ul { grid-template-columns: 1fr; } }
+    @media (max-width: 768px) { .content { width: 94%; } h2 { font-size: 1.8rem; } li { font-size: 1rem; } }
+  </style>
+</head>
+<body>
+  <div class="decor-one"></div>
+  <div class="decor-two"></div>
+  <div class="content">
+    <div class="strip">
+      <h2>
+        <svg class="ico" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"></path></svg>
+        目录
+      </h2>
+    </div>
+    <div class="body">
+      <ul>
+        <li>Part 01 - AI Coding发展历程</li>
+        <li>Part 02 - AI Coding IDE的发展历程</li>
+        <li>Part 03 - 团队AI Coding技术实践分享</li>
+        <li>Part 04 - 总结</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

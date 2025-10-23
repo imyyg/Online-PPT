@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>落地实践：团队流程</title>
+  <style>
+    body { height:100vh; margin:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #0b1220 0%, #0e1628 50%, #0a0f1a 100%); color:#e5e7eb; font-family: system-ui, -apple-system, Segoe UI, PingFang SC, Microsoft YaHei, sans-serif; }
+    .card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); }
+    .icon { color: #60a5fa; }
+    .decor-one { position: fixed; top: -80px; right: -80px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(255,255,255,.15), rgba(255,255,255,0) 60%); filter: blur(2px); }
+    .decor-two { position: fixed; bottom: -90px; left: -90px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,.12), rgba(255,255,255,0) 60%); filter: blur(3px); }
+    .card { width:96%; max-width:1400px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 36px; box-shadow: 0 10px 50px rgba(0,0,0,.35); backdrop-filter: blur(6px); }
+    h2 { font-size: 2.2rem; margin-bottom: 0.75rem; color:#fff; display:flex; align-items:center; gap:10px; }
+    .ico { width:22px; height:22px; stroke:#fff; stroke-width:1.8; fill:none; opacity:.95; }
+    .divider { width:100%; height: 10px; background: linear-gradient(90deg, rgba(255,255,255,.0), rgba(255,255,255,.22), rgba(255,255,255,.0)); border-radius:999px; margin: 8px 0 18px; }
+    .grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:22px; }
+    .step { background: rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.18); border-radius: 12px; padding: 18px; }
+    .step h3 { margin:0 0 8px; color:#fff; font-size:1.05rem; display:flex; align-items:center; gap:8px; }
+    .step ul { margin: 8px 0 0; padding-left: 18px; }
+    .step li { line-height: 1.8; }
+    @media (max-width: 1024px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } .card { width:94%; padding: 24px; } }
+    .card { position: relative; z-index: 1; }
+  </style>
+</head>
+<body>
+
+  <div class="decor-one"></div><div class="decor-two"></div>
+  <div class="card">
+    <h2>
+      <svg class="ico" viewBox="0 0 24 24"><path d="M12 3l2.4 4.9L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.6-1.1L12 3z"/></svg>
+      落地实践：团队流程
+    </h2>
+    <div class="divider"></div>
+    <div class="grid">
+      <div class="step">
+        <h3>
+          <svg class="ico" viewBox="0 0 24 24"><path d="M4 6h16"/></svg>
+          需求→Specs→API骨架
+        </h3>
+        <ul>
+          <li>产品文档转结构化Specs</li>
+          <li>自动生成接口骨架与模型</li>
+        </ul>
+      </div>
+      <div class="step">
+        <h3>
+          <svg class="ico" viewBox="0 0 24 24"><path d="M3 12h18"/></svg>
+          SOLO开发与AI辅助
+        </h3>
+        <ul>
+          <li>个人端到端交付，减少沟通损耗</li>
+          <li>AI生成初稿，开发者完善边界</li>
+        </ul>
+      </div>
+      <div class="step">
+        <h3>
+          <svg class="ico" viewBox="0 0 24 24"><path d="M6 8l6 6 6-6"/></svg>
+          预评审与静态检查
+        </h3>
+        <ul>
+          <li>契约验证、Lint、UT自动化检查</li>
+          <li>AI对比差异并给出解释</li>
+        </ul>
+      </div>
+      <div class="step">
+        <h3>
+          <svg class="ico" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14"/></svg>
+          质量看板与复盘
+        </h3>
+        <ul>
+          <li>指标追踪：效率、缺陷率、覆盖率</li>
+          <li>月度复盘与案例沉淀</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

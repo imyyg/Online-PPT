@@ -1,0 +1,111 @@
+{
+  "title": "AI Coding",
+  "author": "Yuan Yan Gang",
+  "description": "基于团队实践与AI Coding发展历程的总结，展示效率提升路径与可复制方法",
+  "theme": {
+    "primaryColor": "#3b82f6",
+    "fontFamily": "system-ui",
+    "transition": "random"
+  },
+  "settings": {
+    "autoPlay": false,
+    "autoPlayInterval": 3000,
+    "loop": false,
+    "showProgress": true,
+    "showThumbnails": true,
+    "enableKeyboardNav": true,
+    "enableTouchNav": true,
+    "autoStartOnHome": false,
+    "autoFullscreenOnHome": false
+  },
+  "slides": [
+    {
+      "id": "slide-1",
+      "title": "封面",
+      "file": "slide-1.html",
+      "visible": true,
+      "notes": "标题页1",
+      "duration": null
+    },
+    {
+      "id": "slide-2",
+      "title": "目录与汇报目标",
+      "file": "slide-2.html",
+      "visible": true,
+      "notes": "目录与目标",
+      "duration": null
+    },
+    {
+      "id": "slide-3",
+      "title": "AI Coding发展历程",
+      "file": "slide-3.html",
+      "visible": true,
+      "notes": "Prompt→Vibe→Context",
+      "duration": null
+    },
+    {
+      "id": "slide-4",
+      "title": "团队落地实践四阶段",
+      "file": "slide-4.html",
+      "visible": true,
+      "notes": "四阶段与时间线",
+      "duration": null
+    },
+    {
+      "id": "slide-5",
+      "title": "方法论：6A + SOLO + Specs",
+      "file": "slide-5.html",
+      "visible": true,
+      "notes": "方法论与规范体系",
+      "duration": null
+    },
+    {
+      "id": "slide-6",
+      "title": "效率提升与关键指标",
+      "file": "slide-6.html",
+      "visible": true,
+      "notes": "80%效率、UT95%+、采用率",
+      "duration": null
+    },
+    {
+      "id": "slide-7",
+      "title": "典型应用场景",
+      "file": "slide-7.html",
+      "visible": true,
+      "notes": "UT、AI预审、API生成",
+      "duration": null
+    },
+    {
+      "id": "slide-8",
+      "title": "挑战与痛点",
+      "file": "slide-8.html",
+      "visible": true,
+      "notes": "幻觉、屎山、旧项目改造",
+      "duration": null
+    },
+    {
+      "id": "slide-9",
+      "title": "下一步计划与KPI",
+      "file": "slide-9.html",
+      "visible": true,
+      "notes": "季度目标与关键行动",
+      "duration": null
+    },
+    {
+      "id": "slide-10",
+      "title": "总结",
+      "file": "slide-10.html",
+      "visible": true,
+      "notes": "结论与组织能力建设",
+      "duration": null
+    },
+    {
+      "id": "slide-11",
+      "title": "谢谢",
+      "file": "slide-11.html",
+      "visible": true,
+      "notes": "结束页与交流",
+      "duration": null
+    }
+  ]
+}

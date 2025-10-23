@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <script type="module" src="/@vite/client"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 800px;
+            animation: slideIn 0.8s ease-out;
+        }
+        
+        h2 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .features {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature:hover {
+            transform: translateX(10px);
+        }
+        
+        .feature h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body class="" style="margin: 0px; padding: 0px; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+    <div class="container">
+        <h2 class="drag-managed">Key Features</h2>
+        <div class="features">
+            <div class="feature">
+                <h3 class="">HTML-Based Slides</h3>
+                <p class="">Each slide is a standalone HTML file with full creative freedom</p>
+            </div>
+            <div class="feature">
+                <h3>Dynamic Loading</h3>
+                <p>Slides are loaded dynamically with smooth transitions</p>
+            </div>
+            <div class="feature">
+                <h3>Easy Management</h3>
+                <p>Manage slides through an intuitive interface</p>
+            </div>
+        </div>
+    </div>
+
+
+
+<div class="guides-overlay"></div></body></html>

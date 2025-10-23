@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibe Specs</title>
+  <style>
+    body { height:100vh; margin:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #0b1220 0%, #0e1628 50%, #0a0f1a 100%); color:#e5e7eb; font-family: system-ui, -apple-system, Segoe UI, PingFang SC, Microsoft YaHei, sans-serif; overflow: hidden; }
+    .decor-one { position: fixed; top: -80px; right: -80px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(96,165,250,.15), rgba(96,165,250,0) 60%); filter: blur(2px); }
+    .decor-two { position: fixed; bottom: -90px; left: -90px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(139,92,246,.12), rgba(139,92,246,0) 60%); filter: blur(3px); }
+    .card { width:96%; max-width:1300px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 40px 48px; box-shadow: 0 10px 50px rgba(0,0,0,.35); backdrop-filter: blur(6px); position: relative; z-index: 1; max-height: 90vh; overflow-y: auto; }
+    h2 { font-size: 2.4rem; margin: 0 0 20px; color:#ffffff; font-weight: 700; }
+    .intro { font-size: 1.05rem; line-height: 1.8; opacity: .95; margin-bottom: 20px; padding: 16px; background: rgba(239,68,68,.10); border-left: 4px solid #ef4444; border-radius: 8px; }
+    .solution { padding: 16px 20px; background: rgba(34,197,94,.12); border-left: 4px solid #22c55e; border-radius: 8px; margin: 16px 0; }
+    .solution-title { font-size: 1.3rem; font-weight: 700; color: #86efac; margin-bottom: 10px; }
+    .flow { text-align: center; font-size: 1.4rem; font-weight: 700; margin: 16px 0; color: #60a5fa; letter-spacing: 4px; }
+    .advantages { margin-top: 20px; }
+    .adv-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; color: #a78bfa; }
+    .adv-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .adv-item { padding: 12px 16px; background: rgba(96,165,250,.08); border: 1px solid rgba(96,165,250,.2); border-radius: 8px; font-size: 0.95rem; line-height: 1.6; }
+    @media (max-width: 768px) { .card { width:94%; padding:24px; } h2 { font-size: 1.8rem; } .adv-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="decor-one"></div>
+  <div class="decor-two"></div>
+  <div class="card">
+    <h2>Vibe Specs</h2>
+    <div class="intro">
+      你是否也曾掉入AI编程的"氛围陷阱"? AI像一个过度热情的实习生，给你一堆看似合理但完全无用的"废话软件"(slop software)，让你陷入无尽的修改和挫败。
+    </div>
+    <div class="solution">
+      <div class="solution-title">✨ Core Solution: Spec-First</div>
+      Vibe Specs彻底颠覆了传统的 AI 编程流程。
+    </div>
+    <div class="flow">LLM → Spec → Code</div>
+    <div class="advantages">
+      <div class="adv-title">7 Major Advantages:</div>
+      <div class="adv-grid">
+        <div class="adv-item">📄 从"对话漂移"到"稳定文档"</div>
+        <div class="adv-item">👥 从"单人独舞"到"团队协作"</div>
+        <div class="adv-item">🔄 从"毫无章法"到"版本控制"</div>
+        <div class="adv-item">🎯 从"功能蔓延"到"范围明确"</div>
+        <div class="adv-item">💾 从"上下文丢失"到"即时恢复"</div>
+        <div class="adv-item">📝 从"空白页恐惧"到"结构化开始"</div>
+        <div class="adv-item">⚡从"Token浪费"到"高效利用"</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

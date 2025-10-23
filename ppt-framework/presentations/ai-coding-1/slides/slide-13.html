@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan & Collaborative Development</title>
+  <style>
+    body { height:100vh; margin:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #0b1220 0%, #0e1628 50%, #0a0f1a 100%); color:#e5e7eb; font-family: system-ui, -apple-system, Segoe UI, PingFang SC, Microsoft YaHei, sans-serif; overflow: hidden; }
+    .decor-one { position: fixed; top: -80px; right: -80px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(96,165,250,.15), rgba(96,165,250,0) 60%); filter: blur(2px); }
+    .decor-two { position: fixed; bottom: -90px; left: -90px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(139,92,246,.12), rgba(139,92,246,0) 60%); filter: blur(3px); }
+    .card { width:96%; max-width:1200px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 48px 56px; box-shadow: 0 10px 50px rgba(0,0,0,.35); backdrop-filter: blur(6px); position: relative; z-index: 1; }
+    h2 { font-size: 2.4rem; margin: 0 0 24px; color:#ffffff; font-weight: 700; }
+    .content { font-size: 1.15rem; line-height: 2; opacity: .95; padding: 24px; background: rgba(96,165,250,.08); border-left: 4px solid #60a5fa; border-radius: 8px; }
+    .highlight { color: #60a5fa; font-weight: 700; }
+    .paradigm-shift { margin-top: 24px; padding: 24px; background: rgba(139,92,246,.10); border: 1px solid rgba(139,92,246,.3); border-radius: 12px; }
+    .paradigm-title { font-size: 1.3rem; font-weight: 700; color: #c4b5fd; margin-bottom: 16px; }
+    .paradigm-content { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .paradigm-item { padding: 16px; background: rgba(255,255,255,.05); border-radius: 8px; }
+    .paradigm-label { font-size: 0.9rem; color: #9ca3af; margin-bottom: 6px; }
+    .paradigm-text { font-size: 1.1rem; font-weight: 600; }
+    .representative { margin-top: 20px; text-align: center; padding: 16px; background: rgba(34,197,94,.12); border: 1px solid rgba(34,197,94,.3); border-radius: 12px; }
+    .representative .label { font-size: 1rem; color: #86efac; font-weight: 600; }
+    .representative .name { font-size: 1.4rem; font-weight: 700; color: #ffffff; margin-top: 6px; }
+    @media (max-width: 768px) { .card { width:94%; padding:32px; } h2 { font-size: 1.9rem; } .paradigm-content { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="decor-one"></div>
+  <div class="decor-two"></div>
+  <div class="card">
+    <h2>Plan & Collaborative Development</h2>
+    <div class="content">
+      对应 "<span class="highlight">Vibe Specs</span>" 阶段，Plan的本质也是先生成规范文档，确认后开始开发。
+    </div>
+    <div class="paradigm-shift">
+      <div class="paradigm-title">🔄 Paradigm Shift</div>
+      <div class="paradigm-content">
+        <div class="paradigm-item">
+          <div class="paradigm-label">Previous Stages (1-3)</div>
+          <div class="paradigm-text">Tools drive humans</div>
+        </div>
+        <div class="paradigm-item">
+          <div class="paradigm-label">From This Stage (4+)</div>
+          <div class="paradigm-text">Humans drive tool evolution</div>
+        </div>
+      </div>
+    </div>
+    <div class="representative">
+      <div class="label">Representative</div>
+      <div class="name">Cursor Plan Mode</div>
+    </div>
+  </div>
+</body>
+</html>

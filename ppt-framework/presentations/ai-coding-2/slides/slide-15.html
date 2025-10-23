@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 03 - Team AI Coding Practice Sharing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a192f 0%, #112240 100%);
+            color: #ccd6f6;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Team collaboration network background */
+        .network-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .network-node {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(100, 255, 218, 0.1);
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #64ffda;
+            animation: nodePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes nodePulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        .network-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(100, 255, 218, 0.3), rgba(100, 255, 218, 0.1));
+            transform-origin: left center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem;
+            z-index: 10;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 5rem;
+            color: #64ffda;
+            text-shadow: 
+                0 0 20px rgba(100, 255, 218, 0.5),
+                0 4px 6px rgba(0, 0, 0, 0.3);
+            animation: titleDrop 0.8s ease-out;
+        }
+
+        @keyframes titleDrop {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .content-card {
+            background: rgba(17, 34, 64, 0.6);
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            border-radius: 16px;
+            padding: 3rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: cardSlideUp 0.6s ease-out backwards;
+        }
+
+        .content-card:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .content-card:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes cardSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(100, 255, 218, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            border-color: #64ffda;
+            box-shadow: 0 20px 60px rgba(100, 255, 218, 0.3);
+        }
+
+        .content-card:hover::before {
+            left: 100%;
+        }
+
+        .card-icon {
+            font-size: 4rem;
+            color: #64ffda;
+            margin-bottom: 1.5rem;
+            animation: iconBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .card-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #64ffda;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #ccd6f6;
+            line-height: 1.4;
+        }
+
+        /* Team icons decorations */
+        .team-decoration {
+            position: absolute;
+            color: #64ffda;
+            opacity: 0.2;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .team-decoration:nth-child(odd) {
+            animation-direction: alternate;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Network Background -->
+    <div class="network-bg" id="networkBg"></div>
+
+    <!-- Team Decorations -->
+    <i class="fas fa-user-friends team-decoration" style="top: 10%; left: 10%; font-size: 3rem;"></i>
+    <i class="fas fa-handshake team-decoration" style="top: 15%; right: 8%; font-size: 2.5rem; animation-delay: 0.5s;"></i>
+    <i class="fas fa-users-cog team-decoration" style="bottom: 20%; left: 12%; font-size: 2.8rem; animation-delay: 1s;"></i>
+    <i class="fas fa-network-wired team-decoration" style="bottom: 15%; right: 10%; font-size: 3rem; animation-delay: 1.5s;"></i>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Part 03 - Team AI Coding Practice Sharing</h1>
+        
+        <div class="content-grid">
+            <div class="content-card">
+                <i class="fas fa-trophy card-icon"></i>
+                <div class="card-number">01</div>
+                <div class="card-title">Current Achievements</div>
+            </div>
+
+            <div class="content-card">
+                <i class="fas fa-cogs card-icon"></i>
+                <div class="card-number">02</div>
+                <div class="card-title">How to Achieve</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate network nodes and connections
+        const networkBg = document.getElementById('networkBg');
+        const nodePositions = [
+            { top: '20%', left: '15%' },
+            { top: '25%', left: '85%' },
+            { top: '50%', left: '10%' },
+            { top: '55%', left: '90%' },
+            { top: '75%', left: '20%' },
+            { top: '80%', left: '80%' },
+        ];
+
+        const icons = ['fa-user', 'fa-user-tie', 'fa-user-graduate', 'fa-user-ninja', 'fa-user-astronaut', 'fa-user-secret'];
+
+        nodePositions.forEach((pos, index) => {
+            const node = document.createElement('div');
+            node.className = 'network-node';
+            node.style.top = pos.top;
+            node.style.left = pos.left;
+            node.style.animationDelay = (index * 0.5) + 's';
+            node.innerHTML = `<i class="fas ${icons[index]}"></i>`;
+            networkBg.appendChild(node);
+        });
+
+        // Create connecting lines between nodes
+        for (let i = 0; i < nodePositions.length - 1; i++) {
+            const line = document.createElement('div');
+            line.className = 'network-line';
+            
+            const start = nodePositions[i];
+            const end = nodePositions[i + 1];
+            
+            const startX = parseFloat(start.left);
+            const startY = parseFloat(start.top);
+            const endX = parseFloat(end.left);
+            const endY = parseFloat(end.top);
+            
+            const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+            const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+            
+            line.style.width = length + 'vw';
+            line.style.left = startX + '%';
+            line.style.top = startY + '%';
+            line.style.transform = `rotate(${angle}deg)`;
+            
+            networkBg.appendChild(line);
+        }
+    </script>
+</body>
+</html>

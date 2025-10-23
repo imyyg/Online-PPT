@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Context Engineering核心理念</title>
+  <style>
+    body { height:100vh; margin:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #0b1220 0%, #0e1628 50%, #0a0f1a 100%); color:#e5e7eb; font-family: system-ui, -apple-system, Segoe UI, PingFang SC, Microsoft YaHei, sans-serif; }
+    .decor-one { position: fixed; top: -80px; right: -80px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(255,255,255,.15), rgba(255,255,255,0) 60%); filter: blur(2px); }
+    .decor-two { position: fixed; bottom: -90px; left: -90px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,.12), rgba(255,255,255,0) 60%); filter: blur(3px); }
+    .card { width:96%; max-width:1400px; background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); border-radius:16px; padding: 36px; box-shadow: 0 10px 50px rgba(0,0,0,.35); backdrop-filter: blur(6px); }
+    h2 { font-size: 2.2rem; margin-bottom: 0.75rem; color:#ffffff; display:flex; align-items:center; gap:10px; }
+    .ico { width:22px; height:22px; stroke:#fff; stroke-width:1.8; fill:none; opacity:.95; }
+    .divider { width:100%; height: 10px; background: linear-gradient(90deg, rgba(255,255,255,.0), rgba(255,255,255,.22), rgba(255,255,255,.0)); border-radius:999px; margin: 8px 0 18px; }
+    .grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:22px; }
+    .item { background: rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.18); border-radius: 12px; padding: 18px; }
+    .item h3 { margin:0 0 8px; color:#fff; font-size:1.15rem; display:flex; align-items:center; gap:8px; }
+    .item ul { margin: 8px 0 0; padding-left: 18px; }
+    .item li { line-height: 1.8; }
+    @media (max-width: 1024px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } .card { width:94%; padding: 24px; } }
+    .card { position: relative; z-index: 1; }
+  </style>
+</head>
+<body>
+
+  <div class="decor-one"></div><div class="decor-two"></div>
+  <div class="card">
+    <h2>
+      <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>
+      Context Engineering核心理念
+    </h2>
+    <div class="divider"></div>
+    <div class="grid">
+      <div class="item">
+        <h3>
+          <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></svg>
+          统一规则（Rules）
+        </h3>
+        <ul>
+          <li>项目、组织统一的规范与边界</li>
+          <li>明确输入输出、风格约束、风险控制</li>
+        </ul>
+      </div>
+      <div class="item">
+        <h3>
+          <svg class="ico" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          统一规格（Specs）
+        </h3>
+        <ul>
+          <li>文档先行，结构化需求与交互</li>
+          <li>以“可实现”为导向编写规格</li>
+        </ul>
+      </div>
+      <div class="item">
+        <h3>
+          <svg class="ico" viewBox="0 0 24 24"><path d="M6 8l6 6 6-6"/></svg>
+          统一上下文（Context）
+        </h3>
+        <ul>
+          <li>上下文集中管理，避免信息碎片化</li>
+          <li>多模型/多代理共享一致的语境</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

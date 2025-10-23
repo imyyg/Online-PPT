@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6A规则：AI Coding团队协作标准</title>
+  <style>
+    body { height:100vh; margin:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #0b1220 0%, #0e1628 50%, #0a0f1a 100%); color:#e5e7eb; font-family: system-ui, -apple-system, Segoe UI, PingFang SC, Microsoft YaHei, sans-serif; }
+    .decor-one { position: fixed; top: -80px; right: -80px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(255,255,255,.15), rgba(255,255,255,0) 60%); filter: blur(2px); }
+    .decor-two { position: fixed; bottom: -90px; left: -90px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,.12), rgba(255,255,255,0) 60%); filter: blur(3px); }
+    .card { width:96%; max-width:1400px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 36px; box-shadow: 0 10px 50px rgba(0,0,0,.35); backdrop-filter: blur(6px); }
+    h2 { font-size: 2.2rem; margin-bottom: 0.75rem; color:#fff; display:flex; align-items:center; gap:10px; }
+    .ico { width:22px; height:22px; stroke:#fff; stroke-width:1.8; fill:none; opacity:.95; }
+    .divider { width:100%; height: 10px; background: linear-gradient(90deg, rgba(255,255,255,.0), rgba(255,255,255,.22), rgba(255,255,255,.0)); border-radius:999px; margin: 8px 0 18px; }
+    .two-col { display:grid; grid-template-columns: 1fr 1fr; gap:22px; }
+    .col { background: rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.18); border-radius: 12px; padding: 18px; }
+    .col h3 { margin:0 0 8px; color:#fff; font-size:1.15rem; display:flex; align-items:center; gap:8px; }
+    .col ul { margin: 8px 0 0; padding-left: 18px; }
+    .col li { line-height: 1.8; }
+    @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } .card { width:94%; padding: 24px; } }
+    .card { position: relative; z-index: 1; }
+  </style>
+</head>
+<body>
+
+  <div class="decor-one"></div><div class="decor-two"></div>
+  <div class="card">
+    <h2>
+      <svg class="ico" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      6A规则：AI Coding团队协作标准
+    </h2>
+    <div class="divider"></div>
+    <div class="two-col">
+      <div class="col">
+        <h3>
+          <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>
+          Alignment（对齐）
+        </h3>
+        <ul>
+          <li>目标一致：清晰的产品目标与技术方案</li>
+          <li>语境一致：共享Rules/Specs与上下文</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h3>
+          <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></svg>
+          Accountability（负责）
+        </h3>
+        <ul>
+          <li>明确角色：PM、Dev、QA、AI工程师职责</li>
+          <li>结果导向：交付质量、UT覆盖率、缺陷率</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h3>
+          <svg class="ico" viewBox="0 0 24 24"><path d="M6 8l6 6 6-6"/></svg>
+          Automation（自动化）
+        </h3>
+        <ul>
+          <li>CI/CD、预评审、契约测试与静态分析</li>
+          <li>数据看板与告警自动化</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h3>
+          <svg class="ico" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14"/></svg>
+          Auditability（可审计）
+        </h3>
+        <ul>
+          <li>变更留痕、模型输入输出可追溯</li>
+          <li>安全合规与隐私控制</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h3>
+          <svg class="ico" viewBox="0 0 24 24"><path d="M4 12h16"/></svg>
+          Adaptability（适应性）
+        </h3>
+        <ul>
+          <li>模型选择与策略可调整</li>
+          <li>灰度发布与回滚</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h3>
+          <svg class="ico" viewBox="0 0 24 24"><path d="M12 3l4 9-9 0 7 5-3-10z"/></svg>
+          Affordability（成本）
+        </h3>
+        <ul>
+          <li>成本监控：调用频次、上下文长度、缓存</li>
+          <li>ROI评估与优化</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

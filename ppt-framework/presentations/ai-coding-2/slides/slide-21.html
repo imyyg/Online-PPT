@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a192f 0%, #0f2847 50%, #1a3a52 100%);
+            color: #ccd6f6;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Animated gradient background */
+        .gradient-bg {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(100, 255, 218, 0.1) 0%, transparent 50%);
+            animation: gradientMove 15s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes gradientMove {
+            0%, 100% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            50% {
+                transform: translate(-50%, -50%) rotate(180deg);
+            }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #64ffda;
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleRise 8s ease-in infinite;
+        }
+
+        @keyframes particleRise {
+            0% {
+                transform: translateY(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem;
+            z-index: 10;
+            position: relative;
+            text-align: center;
+        }
+
+        .main-message {
+            margin-bottom: 3rem;
+            animation: messageFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes messageFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        h1 {
+            font-size: 6rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #64ffda 0%, #00d4ff 50%, #64ffda 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            text-shadow: 0 0 60px rgba(100, 255, 218, 0.5);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                background-position: 0% center;
+            }
+            50% {
+                background-position: 100% center;
+            }
+        }
+
+        .subtitle {
+            font-size: 2.5rem;
+            color: #8892b0;
+            font-weight: 500;
+            margin-bottom: 3rem;
+            animation: fadeIn 2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .divider {
+            width: 300px;
+            height: 3px;
+            margin: 0 auto 3rem auto;
+            background: linear-gradient(90deg, transparent, #64ffda, transparent);
+            box-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
+            animation: dividerGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes dividerGlow {
+            from {
+                box-shadow: 0 0 15px rgba(100, 255, 218, 0.4);
+            }
+            to {
+                box-shadow: 0 0 30px rgba(100, 255, 218, 0.7);
+            }
+        }
+
+        .contact-section {
+            margin-top: 4rem;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .contact-icons {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: rgba(17, 34, 64, 0.6);
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            border-radius: 16px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-item:hover {
+            transform: translateY(-10px) scale(1.05);
+            border-color: #64ffda;
+            box-shadow: 0 20px 60px rgba(100, 255, 218, 0.4);
+            background: rgba(17, 34, 64, 0.8);
+        }
+
+        .contact-icon {
+            font-size: 3rem;
+            color: #64ffda;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover .contact-icon {
+            transform: rotate(360deg) scale(1.2);
+        }
+
+        .contact-label {
+            font-size: 1.2rem;
+            color: #8892b0;
+            font-weight: 500;
+        }
+
+        /* Decorative circles */
+        .deco-circle {
+            position: absolute;
+            border: 2px solid rgba(100, 255, 218, 0.2);
+            border-radius: 50%;
+            z-index: 3;
+        }
+
+        .circle-1 {
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            left: -100px;
+            animation: rotateCircle 20s linear infinite;
+        }
+
+        .circle-2 {
+            width: 350px;
+            height: 350px;
+            bottom: -80px;
+            right: -80px;
+            animation: rotateCircle 25s linear infinite reverse;
+        }
+
+        @keyframes rotateCircle {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Thank you icon animation */
+        .thank-you-icon {
+            font-size: 5rem;
+            color: #64ffda;
+            margin-bottom: 2rem;
+            animation: iconPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Gradient Background -->
+    <div class="gradient-bg"></div>
+
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Decorative Circles -->
+    <div class="deco-circle circle-1"></div>
+    <div class="deco-circle circle-2"></div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-message">
+            <i class="fas fa-heart thank-you-icon"></i>
+            <h1>Thank You!</h1>
+            <div class="divider"></div>
+            <div class="subtitle">Welcome Questions & Discussion!</div>
+        </div>
+
+        <div class="contact-section">
+            <div class="contact-icons">
+                <div class="contact-item">
+                    <i class="fas fa-envelope contact-icon"></i>
+                    <span class="contact-label">Email</span>
+                </div>
+
+                <div class="contact-item">
+                    <i class="fas fa-comments contact-icon"></i>
+                    <span class="contact-label">Chat</span>
+                </div>
+
+                <div class="contact-item">
+                    <i class="fab fa-github contact-icon"></i>
+                    <span class="contact-label">GitHub</span>
+                </div>
+
+                <div class="contact-item">
+                    <i class="fas fa-handshake contact-icon"></i>
+                    <span class="contact-label">Collaborate</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 8 + 's';
+            particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Add click effect to contact items
+        document.querySelectorAll('.contact-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>

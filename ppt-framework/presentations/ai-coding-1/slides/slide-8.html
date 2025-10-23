@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Context Engineering</title>
+  <style>
+    body { height:100vh; margin:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #0b1220 0%, #0e1628 50%, #0a0f1a 100%); color:#e5e7eb; font-family: system-ui, -apple-system, Segoe UI, PingFang SC, Microsoft YaHei, sans-serif; overflow: hidden; }
+    .decor-one { position: fixed; top: -80px; right: -80px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(96,165,250,.15), rgba(96,165,250,0) 60%); filter: blur(2px); }
+    .decor-two { position: fixed; bottom: -90px; left: -90px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(139,92,246,.12), rgba(139,92,246,0) 60%); filter: blur(3px); }
+    .card { width:96%; max-width:1200px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 48px 56px; box-shadow: 0 10px 50px rgba(0,0,0,.35); backdrop-filter: blur(6px); position: relative; z-index: 1; }
+    h2 { font-size: 2.6rem; margin: 0 0 20px; color:#ffffff; font-weight: 700; }
+    .intro { font-size: 1.15rem; line-height: 1.9; opacity: .95; margin-bottom: 24px; padding: 20px; background: rgba(96,165,250,.08); border-left: 4px solid #60a5fa; border-radius: 8px; }
+    .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; }
+    .pillar { padding: 20px; background: rgba(139,92,246,.08); border: 1px solid rgba(139,92,246,.25); border-radius: 12px; transition: all 0.3s; }
+    .pillar:hover { background: rgba(139,92,246,.15); border-color: rgba(139,92,246,.4); transform: translateY(-4px); }
+    .pillar-title { font-size: 1.3rem; font-weight: 700; color: #a78bfa; margin-bottom: 12px; }
+    .pillar-items { font-size: 0.95rem; line-height: 1.8; }
+    .pillar-items div { margin: 6px 0; }
+    .representative { margin-top: 24px; text-align: center; padding: 16px; background: rgba(34,197,94,.12); border: 1px solid rgba(34,197,94,.3); border-radius: 12px; }
+    .representative .label { font-size: 1.1rem; color: #86efac; font-weight: 600; }
+    .representative .name { font-size: 1.5rem; font-weight: 700; color: #ffffff; margin-top: 6px; }
+    @media (max-width: 768px) { .card { width:94%; padding:32px; } h2 { font-size: 2rem; } .pillars { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="decor-one"></div>
+  <div class="decor-two"></div>
+  <div class="card">
+    <h2>Context Engineering</h2>
+    <div class="intro">
+      行业共识：通过前期文档与规则（specs、rules）约束，降低幻觉与发散，实现工程可控的AI Coding。
+    </div>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-title">1️⃣ Unified Rules</div>
+        <div class="pillar-items">
+          <div>• Project & Org Standards</div>
+          <div>• Clear I/O Definitions</div>
+          <div>• Style & Risk Control</div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-title">2️⃣ Unified Specs</div>
+        <div class="pillar-items">
+          <div>• Spec-First Approach</div>
+          <div>• Structured Requirements</div>
+          <div>• Implementation-Oriented</div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-title">3️⃣ Unified Context</div>
+        <div class="pillar-items">
+          <div>• Centralized Management</div>
+          <div>• Avoid Fragmentation</div>
+          <div>• Multi-Agent Sharing</div>
+        </div>
+      </div>
+    </div>
+    <div class="representative">
+      <div class="label">Representative</div>
+      <div class="name">Trae SOLO</div>
+    </div>
+  </div>
+</body>
+</html>

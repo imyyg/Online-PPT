@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Process</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a192f 0%, #112240 100%);
+            color: #ccd6f6;
+            overflow-y: auto;
+            min-height: 100vh;
+            padding: 3rem 0;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 2rem 4rem;
+            z-index: 10;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #64ffda;
+            text-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: #64ffda;
+            margin-bottom: 3rem;
+            font-weight: 600;
+        }
+
+        .process-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .process-item {
+            background: rgba(17, 34, 64, 0.8);
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            border-radius: 12px;
+            padding: 1.8rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            opacity: 0;
+            animation: itemSlideIn 0.5s ease-out forwards;
+        }
+
+        .process-item:nth-child(1) { animation-delay: 0.1s; }
+        .process-item:nth-child(2) { animation-delay: 0.2s; }
+        .process-item:nth-child(3) { animation-delay: 0.3s; }
+        .process-item:nth-child(4) { animation-delay: 0.4s; }
+        .process-item:nth-child(5) { animation-delay: 0.5s; }
+        .process-item:nth-child(6) { animation-delay: 0.6s; }
+        .process-item:nth-child(7) { animation-delay: 0.7s; }
+        .process-item:nth-child(8) { animation-delay: 0.8s; }
+
+        @keyframes itemSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .process-item.highlight {
+            border-color: #64ffda;
+            background: rgba(100, 255, 218, 0.1);
+            box-shadow: 0 0 30px rgba(100, 255, 218, 0.2);
+        }
+
+        .process-item:hover {
+            transform: translateX(10px);
+            border-color: #64ffda;
+            box-shadow: 0 5px 20px rgba(100, 255, 218, 0.3);
+        }
+
+        .checkbox {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #64ffda;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: rgba(100, 255, 218, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .process-item:hover .checkbox {
+            background: rgba(100, 255, 218, 0.2);
+        }
+
+        .checkmark {
+            color: #64ffda;
+            font-size: 1.5rem;
+            animation: checkPop 0.5s ease-out;
+        }
+
+        @keyframes checkPop {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .process-content {
+            flex: 1;
+        }
+
+        .process-letter {
+            font-size: 1rem;
+            color: #8892b0;
+            margin-bottom: 0.3rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .process-text {
+            font-size: 1.3rem;
+            color: #ccd6f6;
+            font-weight: 500;
+        }
+
+        .process-text.highlight-text {
+            color: #64ffda;
+            font-weight: 600;
+        }
+
+        .process-badge {
+            background: rgba(100, 255, 218, 0.2);
+            color: #64ffda;
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid #64ffda;
+        }
+
+        .emphasis-note {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(100, 255, 218, 0.05);
+            border: 2px solid #64ffda;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .emphasis-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #64ffda;
+            margin-bottom: 1rem;
+        }
+
+        .emphasis-text {
+            font-size: 1.2rem;
+            color: #ccd6f6;
+            line-height: 1.6;
+        }
+
+        .flow-arrow {
+            position: absolute;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            color: #64ffda;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Content -->
+    <div class="container">
+        <h1>How to Achieve</h1>
+        <div class="section-title">2. Team Process</div>
+
+        <div class="process-list">
+            <div class="process-item highlight">
+                <div class="checkbox">
+                    <i class="fas fa-check checkmark"></i>
+                </div>
+                <div class="process-content">
+                    <div class="process-letter">a.</div>
+                    <div class="process-text highlight-text">
+                        Unified User Rules & Project Rules
+                        <span class="process-badge">KEY</span>
+                    </div>
+                </div>
+                <i class="fas fa-star flow-arrow"></i>
+            </div>
+
+            <div class="process-item">
+                <div class="checkbox">
+                    <i class="fas fa-check checkmark"></i>
+                </div>
+                <div class="process-content">
+                    <div class="process-letter">b.</div>
+                    <div class="process-text">
+                        Standard AC Specifications (BDD, Gherkin)
+                    </div>
+                </div>
+            </div>
+
+            <div class="process-item">
+                <div class="checkbox">
+                    <i class="fas fa-check checkmark"></i>
+                </div>
+                <div class="process-content">
+                    <div class="process-letter">c.</div>
+                    <div class="process-text">
+                        Implementation Document Review
+                    </div>
+                </div>
+            </div>
+
+            <div class="process-item">
+                <div class="checkbox">
+                    <i class="fas fa-check checkmark"></i>
+                </div>
+                <div class="process-content">
+                    <div class="process-letter">d.</div>
+                    <div class="process-text">
+                        AI Coding (UT)
+                    </div>
+                </div>
+            </div>
+
+            <div class="process-item">
+                <div class="checkbox">
+                    <i class="fas fa-check checkmark"></i>
+                </div>
+                <div class="process-content">
+                    <div class="process-letter">e.</div>
+                    <div class="process-text">
+                        AI Code Review
+                    </div>
+                </div>
+            </div>
+
+            <div class="process-item">
+                <div class="checkbox">
+                    <i class="fas fa-check checkmark"></i>
+                </div>
+                <div class="process-content">
+                    <div class="process-letter">f.</div>
+                    <div class="process-text">
+                        Sonar Scan
+                    </div>
+                </div>
+            </div>
+
+            <div class="process-item">
+                <div class="checkbox">
+                    <i class="fas fa-check checkmark"></i>
+                </div>
+                <div class="process-content">
+                    <div class="process-letter">g.</div>
+                    <div class="process-text">
+                        Manual Code Review
+                    </div>
+                </div>
+            </div>
+
+            <div class="process-item">
+                <div class="checkbox">
+                    <i class="fas fa-check checkmark"></i>
+                </div>
+                <div class="process-content">
+                    <div class="process-letter">h.</div>
+                    <div class="process-text">
+                        QA Testing Involvement
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="emphasis-note">
+            <div class="emphasis-title">
+                <i class="fas fa-exclamation-circle"></i> Critical Success Factor
+            </div>
+            <div class="emphasis-text">
+                Unified User Rules and Project Rules form the foundation of team AI coding practices, ensuring consistency and quality across all development activities.
+            </div>
+        </div>
+    </div>
+</body>
+</html>
