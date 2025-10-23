@@ -4,9 +4,15 @@ import fs from 'fs'
 import path from 'path'
 
 // Add dynamic base for GitHub Pages
-const isPages = process.env.GITHUB_PAGES === 'true'
-const repoName = 'online-simple-ppt'
-const base = isPages ? `/${repoName}/` : '/'
+// 自动从 GitHub Actions 环境变量解析仓库名：owner/repo
+// - repo 为 owner.github.io 时，base='/'
+// - 其他项目页，base='/${repo}/'
+// - 本地/非 Pages 构建，base='/'
+const isPages = process.env.GITHUB_PAGES === 'true' || !!process.env.GITHUB_REPOSITORY
+const repoSlug = process.env.GITHUB_REPOSITORY || ''
+const [owner, repo] = repoSlug.split('/')
+const isUserOrOrgSiteRepo = owner && repo && repo.toLowerCase() === `${owner.toLowerCase()}.github.io`
+const base = isPages ? (isUserOrOrgSiteRepo ? '/' : (repo ? `/${repo}/` : '/')) : '/'
 
 function fileOpsPlugin() {
   return {

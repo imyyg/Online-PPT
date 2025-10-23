@@ -15,134 +15,178 @@
     "showProgress": true,
     "showThumbnails": true,
     "enableKeyboardNav": true,
-    "enableTouchNav": true
+    "enableTouchNav": true,
+    "autoStartOnHome": false,
+    "autoFullscreenOnHome": false
   },
   "slides": [
     {
       "id": "slide-1",
       "title": "AI Coding Technology Practice Sharing",
       "file": "slide-1.html",
-      "description": "Main title page with futuristic tech design"
+      "visible": true,
+      "notes": "Main title page with futuristic tech design",
+      "duration": null
     },
     {
       "id": "slide-2",
       "title": "Contents",
       "file": "slide-2.html",
-      "description": "Table of contents with four main parts"
+      "visible": true,
+      "notes": "Table of contents with four main parts",
+      "duration": null
     },
     {
       "id": "slide-3",
       "title": "Part 01 - AI Coding Development History",
       "file": "slide-3.html",
-      "description": "Overview of five stages in AI Coding evolution"
+      "visible": true,
+      "notes": "Overview of five stages in AI Coding evolution",
+      "duration": null
     },
     {
       "id": "slide-4",
       "title": "Code Completion",
       "file": "slide-4.html",
-      "description": "Early stage of AI Coding with simple code completion"
+      "visible": true,
+      "notes": "Early stage of AI Coding with simple code completion",
+      "duration": null
     },
     {
       "id": "slide-5",
       "title": "Prompt Engineering",
       "file": "slide-5.html",
-      "description": "Emphasis on accurate and specific prompts"
+      "visible": true,
+      "notes": "Emphasis on accurate and specific prompts",
+      "duration": null
     },
     {
       "id": "slide-6",
       "title": "Vibe Coding",
       "file": "slide-6.html",
-      "description": "Short prompts with high efficiency but potential code quality issues"
+      "visible": true,
+      "notes": "Short prompts with high efficiency but potential code quality issues",
+      "duration": null
     },
     {
       "id": "slide-7",
       "title": "Vibe Specs",
       "file": "slide-7.html",
-      "description": "Spec-first approach with seven major advantages"
+      "visible": true,
+      "notes": "Spec-first approach with seven major advantages",
+      "duration": null
     },
     {
       "id": "slide-8",
       "title": "Context Engineering",
       "file": "slide-8.html",
-      "description": "Unified rules, specs, and context for engineering-controllable AI Coding"
+      "visible": true,
+      "notes": "Unified rules, specs, and context for engineering-controllable AI Coding",
+      "duration": null
     },
     {
       "id": "slide-9",
       "title": "Part 02 - AI Coding IDE Evolution",
       "file": "slide-9.html",
-      "description": "Five stages of IDE development corresponding to AI Coding history"
+      "visible": true,
+      "notes": "Five stages of IDE development corresponding to AI Coding history",
+      "duration": null
     },
     {
       "id": "slide-10",
       "title": "Auto Completion & Multiline Autocompletion",
       "file": "slide-10.html",
-      "description": "IDE code completion with multiline support comparison"
+      "visible": true,
+      "notes": "IDE code completion with multiline support comparison",
+      "duration": null
     },
     {
       "id": "slide-11",
       "title": "Ask & Context Awareness",
       "file": "slide-11.html",
-      "description": "Context-aware AI assistance within IDE"
+      "visible": true,
+      "notes": "Context-aware AI assistance within IDE",
+      "duration": null
     },
     {
       "id": "slide-12",
       "title": "Agent & Code Generation",
       "file": "slide-12.html",
-      "description": "Agent mode enabling automatic code generation"
+      "visible": true,
+      "notes": "Agent mode enabling automatic code generation",
+      "duration": null
     },
     {
       "id": "slide-13",
       "title": "Plan & Collaborative Development",
       "file": "slide-13.html",
-      "description": "Plan mode with spec-first approach in Cursor"
+      "visible": true,
+      "notes": "Plan mode with spec-first approach in Cursor",
+      "duration": null
     },
     {
       "id": "slide-14",
       "title": "Trae Solo & Context Engineering",
       "file": "slide-14.html",
-      "description": "Trae Solo as representative of Context Engineering"
+      "visible": true,
+      "notes": "Trae Solo as representative of Context Engineering",
+      "duration": null
     },
     {
       "id": "slide-15",
       "title": "Part 03 - Team AI Coding Practice Sharing",
       "file": "slide-15.html",
-      "description": "Team practices including achievements and implementation methods"
+      "visible": true,
+      "notes": "Team practices including achievements and implementation methods",
+      "duration": null
     },
     {
       "id": "slide-16",
       "title": "Current Achievements",
       "file": "slide-16.html",
-      "description": "Key metrics showing efficiency improvements and adoption rates"
+      "visible": true,
+      "notes": "Key metrics showing efficiency improvements and adoption rates",
+      "duration": null
     },
     {
       "id": "slide-17",
       "title": "How to Achieve - 6A Workflow",
       "file": "slide-17.html",
-      "description": "Six-step workflow from Align to Assess"
+      "visible": true,
+      "notes": "Six-step workflow from Align to Assess",
+      "duration": null
     },
     {
       "id": "slide-18",
       "title": "How to Achieve - Team Process",
       "file": "slide-18.html",
-      "description": "Eight-step team process with unified rules as key"
+      "visible": true,
+      "notes": "Eight-step team process with unified rules as key",
+      "duration": null
     },
     {
       "id": "slide-19",
       "title": "Part 04 - Summary",
       "file": "slide-19.html",
-      "description": "Summary title page with elegant starry design"
+      "visible": true,
+      "notes": "Summary title page with elegant starry design",
+      "duration": null
     },
     {
       "id": "slide-20",
       "title": "Summary Details",
       "file": "slide-20.html",
-      "description": "Key insights and role division between AI and humans"
+      "visible": true,
+      "notes": "Key insights and role division between AI and humans",
+      "duration": null
     },
     {
       "id": "slide-21",
       "title": "Thank You",
       "file": "slide-21.html",
-      "description": "Closing page welcoming questions and discussion"
+      "visible": true,
+      "notes": "Closing page welcoming questions and discussion",
+      "duration": null
     }
   ]
 }

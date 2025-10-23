@@ -17,10 +17,12 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: linear-gradient(135deg, #0a192f 0%, #112240 100%);
             color: #ccd6f6;
-            overflow-y: auto;
-            min-height: 100vh;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: relative;
-            padding: 3rem 0;
         }
 
         /* Document & Code double arrow background */
@@ -45,10 +47,26 @@
 
         .container {
             max-width: 1400px;
+            max-height: 90vh;
             margin: 0 auto;
-            padding: 2rem 4rem;
+            padding: 1.5rem 3rem;
             z-index: 10;
             position: relative;
+            overflow-y: auto;
+        }
+        
+        .container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .container::-webkit-scrollbar-track {
+            background: rgba(100, 255, 218, 0.1);
+            border-radius: 3px;
+        }
+        
+        .container::-webkit-scrollbar-thumb {
+            background: rgba(100, 255, 218, 0.5);
+            border-radius: 3px;
         }
 
         .title-wrapper {
@@ -65,7 +83,7 @@
         }
 
         h1 {
-            font-size: 3.5rem;
+            font-size: 2.5rem;
             font-weight: 700;
             color: #64ffda;
             text-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
@@ -78,10 +96,10 @@
             border-radius: 8px;
             backdrop-filter: blur(10px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            font-size: 1.3rem;
-            line-height: 1.8;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            line-height: 1.5;
             color: #8892b0;
         }
 
@@ -89,31 +107,31 @@
             background: rgba(100, 255, 218, 0.1);
             border: 2px solid #64ffda;
             border-radius: 12px;
-            padding: 2rem;
-            margin: 2rem 0;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
             text-align: center;
         }
 
         .core-title {
-            font-size: 2rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: #64ffda;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.8rem;
         }
 
         .flow-diagram {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 2rem;
-            margin: 2rem 0;
-            font-size: 2.5rem;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            font-size: 1.8rem;
             font-weight: 700;
         }
 
         .flow-item {
             color: #ccd6f6;
-            padding: 1rem 2rem;
+            padding: 0.6rem 1.2rem;
             background: rgba(17, 34, 64, 0.6);
             border-radius: 8px;
             border: 2px solid rgba(100, 255, 218, 0.3);
@@ -121,36 +139,36 @@
 
         .flow-arrow {
             color: #64ffda;
-            font-size: 2rem;
+            font-size: 1.5rem;
         }
 
         .description-text {
-            font-size: 1.2rem;
-            line-height: 1.8;
+            font-size: 0.95rem;
+            line-height: 1.5;
             color: #8892b0;
-            margin-top: 1.5rem;
+            margin-top: 0.8rem;
         }
 
         .advantages-title {
-            font-size: 2.5rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #64ffda;
-            margin: 3rem 0 2rem 0;
+            margin: 1.5rem 0 1rem 0;
             text-align: center;
         }
 
         .advantages-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
         }
 
         .advantage-card {
             background: rgba(17, 34, 64, 0.6);
             border: 2px solid rgba(100, 255, 218, 0.2);
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 0.8rem 1rem;
             transition: all 0.3s ease;
             cursor: pointer;
         }
@@ -162,18 +180,22 @@
         }
 
         .advantage-title {
-            font-size: 1.3rem;
+            font-size: 0.95rem;
             font-weight: 600;
             color: #64ffda;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.4rem;
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 0.5rem;
+        }
+        
+        .advantage-title i {
+            font-size: 0.8rem;
         }
 
         .advantage-desc {
-            font-size: 1.1rem;
-            line-height: 1.6;
+            font-size: 0.85rem;
+            line-height: 1.4;
             color: #8892b0;
         }
 
@@ -181,22 +203,21 @@
             background: rgba(100, 255, 218, 0.05);
             border: 2px solid rgba(100, 255, 218, 0.3);
             border-radius: 12px;
-            padding: 2rem;
-            margin-top: 3rem;
-            font-size: 1.2rem;
-            line-height: 1.8;
+            padding: 1rem 1rem 1rem 2.5rem;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
             color: #ccd6f6;
             font-style: italic;
             position: relative;
-            padding-left: 3rem;
         }
 
         .conclusion::before {
             content: '"';
             position: absolute;
-            left: 1rem;
-            top: 1.5rem;
-            font-size: 4rem;
+            left: 0.5rem;
+            top: 0.5rem;
+            font-size: 2.5rem;
             color: #64ffda;
             opacity: 0.3;
         }
