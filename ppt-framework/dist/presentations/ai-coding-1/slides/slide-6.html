@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibe Coding</title>
+  <style>
+    body { height:100vh; margin:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #0b1220 0%, #0e1628 50%, #0a0f1a 100%); color:#e5e7eb; font-family: system-ui, -apple-system, Segoe UI, PingFang SC, Microsoft YaHei, sans-serif; overflow: hidden; }
+    .decor-one { position: fixed; top: -80px; right: -80px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(96,165,250,.15), rgba(96,165,250,0) 60%); filter: blur(2px); }
+    .decor-two { position: fixed; bottom: -90px; left: -90px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(139,92,246,.12), rgba(139,92,246,0) 60%); filter: blur(3px); }
+    .card { width:96%; max-width:1200px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 48px 56px; box-shadow: 0 10px 50px rgba(0,0,0,.35); backdrop-filter: blur(6px); position: relative; z-index: 1; }
+    h2 { font-size: 2.6rem; margin: 0 0 24px; color:#ffffff; font-weight: 700; display:flex; align-items:center; gap:12px; }
+    .ico { width:32px; height:32px; stroke:#a78bfa; stroke-width:2; fill:none; }
+    .content { font-size: 1.2rem; line-height: 2; opacity: .95; padding: 24px; background: rgba(139,92,246,.08); border-left: 4px solid #a78bfa; border-radius: 8px; }
+    .highlight { color: #a78bfa; font-weight: 600; }
+    .pain-point { margin-top: 24px; padding: 20px; background: rgba(251,191,36,.12); border-left: 4px solid #fbbf24; border-radius: 8px; }
+    .pain-point .label { font-weight: 700; color: #fde68a; margin-bottom: 8px; font-size: 1.1rem; }
+    .pain-point .desc { font-size: 1.1rem; line-height: 1.8; }
+    @media (max-width: 768px) { .card { width:94%; padding:32px; } h2 { font-size: 2rem; } .content { font-size: 1rem; } }
+  </style>
+</head>
+<body>
+  <div class="decor-one"></div>
+  <div class="decor-two"></div>
+  <div class="card">
+    <h2>
+      <svg class="ico" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+      Vibe Coding
+    </h2>
+    <div class="content">
+      随着<span class="highlight">Claude 3.5</span>等模型能力提升，简短提示即可完成大量开发，效率显著提升，但容易产生"屎山"代码。
+    </div>
+    <div class="pain-point">
+      <div class="label">⚠️ Pain Points</div>
+      <div class="desc">• 容易产生"屎山"代码<br>• 抽奖式结果，质量不稳定</div>
+    </div>
+  </div>
+</body>
+</html>

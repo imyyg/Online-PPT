@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Process</title>
+  <style>
+    body { height:100vh; margin:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #0b1220 0%, #0e1628 50%, #0a0f1a 100%); color:#e5e7eb; font-family: system-ui, -apple-system, Segoe UI, PingFang SC, Microsoft YaHei, sans-serif; overflow: hidden; }
+    .decor-one { position: fixed; top: -80px; right: -80px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(96,165,250,.15), rgba(96,165,250,0) 60%); filter: blur(2px); }
+    .decor-two { position: fixed; bottom: -90px; left: -90px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(139,92,246,.12), rgba(139,92,246,0) 60%); filter: blur(3px); }
+    .card { width:96%; max-width:1300px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 48px 56px; box-shadow: 0 10px 50px rgba(0,0,0,.35); backdrop-filter: blur(6px); position: relative; z-index: 1; max-height: 90vh; overflow-y: auto; }
+    h2 { font-size: 2.4rem; margin: 0 0 24px; color:#ffffff; font-weight: 700; text-align: center; }
+    .process-flow { display: flex; flex-direction: column; gap: 12px; }
+    .process-item { display: flex; align-items: center; padding: 16px 24px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.15); border-radius: 12px; transition: all 0.3s; }
+    .process-item:hover { background: rgba(96,165,250,.10); border-color: rgba(96,165,250,.25); }
+    .process-item.highlight { background: rgba(251,191,36,.12); border-color: rgba(251,191,36,.3); }
+    .process-number { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #60a5fa, #a78bfa); display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 800; flex-shrink: 0; margin-right: 16px; }
+    .process-item.highlight .process-number { background: linear-gradient(135deg, #fbbf24, #f59e0b); }
+    .process-content { flex: 1; }
+    .process-title { font-size: 1.2rem; font-weight: 700; color: #ffffff; margin-bottom: 4px; }
+    .process-desc { font-size: 0.9rem; color: #9ca3af; }
+    .arrow { text-align: center; color: #60a5fa; font-size: 1.5rem; margin: 4px 0; }
+    @media (max-width: 768px) { .card { width:94%; padding:32px; } h2 { font-size: 2rem; } }
+  </style>
+</head>
+<body>
+  <div class="decor-one"></div>
+  <div class="decor-two"></div>
+  <div class="card">
+    <h2>团队流程</h2>
+    <div class="process-flow">
+      <div class="process-item highlight">
+        <div class="process-number">1</div>
+        <div class="process-content">
+          <div class="process-title">Unified Rules</div>
+          <div class="process-desc">User Rules & Project Rules (Critical)</div>
+        </div>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="process-item">
+        <div class="process-number">2</div>
+        <div class="process-content">
+          <div class="process-title">Standard AC Specification</div>
+          <div class="process-desc">BDD & Gherkin Format</div>
+        </div>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="process-item">
+        <div class="process-number">3</div>
+        <div class="process-content">
+          <div class="process-title">Implementation Doc Review</div>
+          <div class="process-desc">Spec-First Approach</div>
+        </div>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="process-item">
+        <div class="process-number">4</div>
+        <div class="process-content">
+          <div class="process-title">AI Coding (UT)</div>
+          <div class="process-desc">AI-Generated Unit Tests</div>
+        </div>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="process-item">
+        <div class="process-number">5</div>
+        <div class="process-content">
+          <div class="process-title">AI Code Review</div>
+          <div class="process-desc">Automated Code Analysis</div>
+        </div>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="process-item">
+        <div class="process-number">6</div>
+        <div class="process-content">
+          <div class="process-title">Sonar Scan</div>
+          <div class="process-desc">Static Code Quality Check</div>
+        </div>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="process-item">
+        <div class="process-number">7</div>
+        <div class="process-content">
+          <div class="process-title">Manual Code Review</div>
+          <div class="process-desc">Human Expert Review</div>
+        </div>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="process-item">
+        <div class="process-number">8</div>
+        <div class="process-content">
+          <div class="process-title">QA Testing</div>
+          <div class="process-desc">Quality Assurance</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+{
+  "title": "My Presentation",
+  "author": "Author Name",
+  "description": "A presentation created with PPT Framework",
+  "theme": {
+    "primaryColor": "#3b82f6",
+    "fontFamily": "system-ui",
+    "transition": "random"
+  },
+  "settings": {
+    "autoPlay": false,
+    "autoPlayInterval": 5000,
+    "loop": false,
+    "showProgress": true,
+    "showThumbnails": true,
+    "enableKeyboardNav": true,
+    "enableTouchNav": true
+  },
+  "slides": [
+    {
+      "id": "slide-1",
+      "title": "Welcome Slide",
+      "file": "slide-1.html",
+      "visible": true,
+      "notes": "This is the welcome slide",
+      "duration": null
+    },
+    {
+      "id": "slide-2",
+      "title": "Introduction",
+      "file": "slide-2.html",
+      "visible": true,
+      "notes": "Introduction to the topic",
+      "duration": null
+    },
+    {
+      "id": "slide-3",
+      "title": "Thank You",
+      "file": "slide-3.html",
+      "visible": true,
+      "notes": "Closing slide",
+      "duration": null
+    },
+    {
+      "id": "slide-4",
+      "title": "Create Slides",
+      "file": "slide-4.html",
+      "visible": true,
+      "notes": "Final instruction slide",
+      "duration": null
+    }
+  ]
+}

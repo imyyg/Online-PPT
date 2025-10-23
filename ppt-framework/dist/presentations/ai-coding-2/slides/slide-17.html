@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Achieve - 6A Workflow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a192f 0%, #112240 100%);
+            color: #ccd6f6;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Abstract flowchart background */
+        .flowchart-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.05;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem;
+            z-index: 10;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #64ffda;
+            text-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: #64ffda;
+            margin-bottom: 3rem;
+            font-weight: 600;
+        }
+
+        .workflow-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .workflow-step {
+            background: rgba(17, 34, 64, 0.8);
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            opacity: 0;
+            animation: stepFadeIn 0.6s ease-out forwards;
+        }
+
+        .workflow-step:nth-child(1) { animation-delay: 0.1s; }
+        .workflow-step:nth-child(2) { animation-delay: 0.2s; }
+        .workflow-step:nth-child(3) { animation-delay: 0.3s; }
+        .workflow-step:nth-child(4) { animation-delay: 0.4s; }
+        .workflow-step:nth-child(5) { animation-delay: 0.5s; }
+        .workflow-step:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes stepFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .workflow-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .workflow-step:hover {
+            transform: translateY(-10px) scale(1.03);
+            border-color: #64ffda;
+            box-shadow: 0 15px 50px rgba(100, 255, 218, 0.3);
+        }
+
+        .workflow-step:hover::before {
+            opacity: 1;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-letter {
+            width: 60px;
+            height: 60px;
+            background: rgba(100, 255, 218, 0.2);
+            border: 2px solid #64ffda;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #64ffda;
+            font-family: 'Courier New', monospace;
+            flex-shrink: 0;
+        }
+
+        .step-title {
+            flex: 1;
+        }
+
+        .step-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #64ffda;
+            margin-bottom: 0.3rem;
+        }
+
+        .step-subtitle {
+            font-size: 1rem;
+            color: #8892b0;
+        }
+
+        .step-description {
+            font-size: 1.1rem;
+            color: #8892b0;
+            line-height: 1.6;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(100, 255, 218, 0.3);
+        }
+
+        .arrow-decoration {
+            position: absolute;
+            color: #64ffda;
+            opacity: 0.3;
+            font-size: 2rem;
+        }
+
+        .note {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(100, 255, 218, 0.05);
+            border: 2px solid rgba(100, 255, 218, 0.2);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            color: #8892b0;
+        }
+
+        .highlight {
+            color: #64ffda;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Flowchart Background -->
+    <div class="flowchart-bg">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <marker id="arrowhead2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#64ffda" opacity="0.3" />
+                </marker>
+            </defs>
+            <path d="M 100 100 L 300 100" stroke="#64ffda" stroke-width="2" fill="none" marker-end="url(#arrowhead2)" opacity="0.3" />
+            <path d="M 300 100 L 500 100" stroke="#64ffda" stroke-width="2" fill="none" marker-end="url(#arrowhead2)" opacity="0.3" />
+        </svg>
+    </div>
+
+    <!-- Arrow Decorations -->
+    <i class="fas fa-arrow-right arrow-decoration" style="top: 30%; right: 33%;"></i>
+    <i class="fas fa-arrow-right arrow-decoration" style="top: 30%; right: 1%;"></i>
+    <i class="fas fa-arrow-down arrow-decoration" style="top: 52%; right: 1%;"></i>
+    <i class="fas fa-arrow-left arrow-decoration" style="bottom: 30%; right: 33%;"></i>
+    <i class="fas fa-arrow-left arrow-decoration" style="bottom: 30%; right: 67%;"></i>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>How to Achieve</h1>
+        <div class="section-title">1. 6A Workflow</div>
+
+        <div class="workflow-container">
+            <div class="workflow-step">
+                <div class="step-header">
+                    <div class="step-letter">A</div>
+                    <div class="step-title">
+                        <div class="step-name">Align</div>
+                        <div class="step-subtitle">Requirements Alignment</div>
+                    </div>
+                </div>
+                <div class="step-description">
+                    Clarify requirements and ensure all parties have consistent understanding
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-header">
+                    <div class="step-letter">A</div>
+                    <div class="step-title">
+                        <div class="step-name">Architect</div>
+                        <div class="step-subtitle">Architecture Design</div>
+                    </div>
+                </div>
+                <div class="step-description">
+                    Design system architecture and technical solutions
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-header">
+                    <div class="step-letter">A</div>
+                    <div class="step-title">
+                        <div class="step-name">Atomize</div>
+                        <div class="step-subtitle">Task Breakdown</div>
+                    </div>
+                </div>
+                <div class="step-description">
+                    Break down large tasks into atomic, manageable units
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-header">
+                    <div class="step-letter">A</div>
+                    <div class="step-title">
+                        <div class="step-name">Approve</div>
+                        <div class="step-subtitle">Manual Review</div>
+                    </div>
+                </div>
+                <div class="step-description">
+                    Human review and approval of AI-generated plans
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-header">
+                    <div class="step-letter">A</div>
+                    <div class="step-title">
+                        <div class="step-name">Automate</div>
+                        <div class="step-subtitle">Automated Execution</div>
+                    </div>
+                </div>
+                <div class="step-description">
+                    AI executes implementation based on approved plans
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-header">
+                    <div class="step-letter">A</div>
+                    <div class="step-title">
+                        <div class="step-name">Assess</div>
+                        <div class="step-subtitle">Evaluation & Acceptance</div>
+                    </div>
+                </div>
+                <div class="step-description">
+                    Model cross-validation and quality assessment
+                </div>
+            </div>
+        </div>
+
+        <div class="note">
+            Each step is <span class="highlight">interconnected</span>, forming a complete <span class="highlight">closed-loop development process</span>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,191 @@
+{
+  "title": "AI Coding",
+  "author": "",
+  "description": "",
+  "theme": {
+    "primaryColor": "#3b82f6",
+    "fontFamily": "system-ui",
+    "transition": "random"
+  },
+  "settings": {
+    "autoPlay": false,
+    "autoPlayInterval": 5000,
+    "loop": false,
+    "showProgress": true,
+    "showThumbnails": true,
+    "enableKeyboardNav": true,
+    "enableTouchNav": true,
+    "autoStartOnHome": false,
+    "autoFullscreenOnHome": false
+  },
+  "slides": [
+    {
+      "id": "slide-1",
+      "title": "Cover Page",
+      "file": "slide-1.html",
+      "visible": true,
+      "notes": "AI Coding Technology Practice Sharing",
+      "duration": null
+    },
+    {
+      "id": "slide-2",
+      "title": "Agenda",
+      "file": "slide-2.html",
+      "visible": true,
+      "notes": "4 Parts Overview",
+      "duration": null
+    },
+    {
+      "id": "slide-3",
+      "title": "Part 01 - AI Coding Development History",
+      "file": "slide-3.html",
+      "visible": true,
+      "notes": "5 stages of AI Coding evolution",
+      "duration": null
+    },
+    {
+      "id": "slide-4",
+      "title": "Code Completion",
+      "file": "slide-4.html",
+      "visible": true,
+      "notes": "Stage 1: Basic automation",
+      "duration": null
+    },
+    {
+      "id": "slide-5",
+      "title": "Prompt Engineering",
+      "file": "slide-5.html",
+      "visible": true,
+      "notes": "Stage 2: Structured prompts, context limitation",
+      "duration": null
+    },
+    {
+      "id": "slide-6",
+      "title": "Vibe Coding",
+      "file": "slide-6.html",
+      "visible": true,
+      "notes": "Stage 3: High efficiency but unstable quality",
+      "duration": null
+    },
+    {
+      "id": "slide-7",
+      "title": "Vibe Specs",
+      "file": "slide-7.html",
+      "visible": true,
+      "notes": "Stage 4: Spec-First, LLM -> Spec -> Code",
+      "duration": null
+    },
+    {
+      "id": "slide-8",
+      "title": "Context Engineering",
+      "file": "slide-8.html",
+      "visible": true,
+      "notes": "Stage 5: Rules + Specs + Context, Trae SOLO",
+      "duration": null
+    },
+    {
+      "id": "slide-9",
+      "title": "Part 02 - AI Coding IDE Development History",
+      "file": "slide-9.html",
+      "visible": true,
+      "notes": "5 stages of IDE evolution",
+      "duration": null
+    },
+    {
+      "id": "slide-10",
+      "title": "Auto Completion & Multiline Autocompletion",
+      "file": "slide-10.html",
+      "visible": true,
+      "notes": "Copilot vs Cursor early stage",
+      "duration": null
+    },
+    {
+      "id": "slide-11",
+      "title": "Ask & Context Awareness",
+      "file": "slide-11.html",
+      "visible": true,
+      "notes": "Chat in IDE, context-aware suggestions",
+      "duration": null
+    },
+    {
+      "id": "slide-12",
+      "title": "Agent & Code Generation",
+      "file": "slide-12.html",
+      "visible": true,
+      "notes": "Foundation of Vibe Coding",
+      "duration": null
+    },
+    {
+      "id": "slide-13",
+      "title": "Plan & Collaborative Development",
+      "file": "slide-13.html",
+      "visible": true,
+      "notes": "Cursor Plan Mode, human drives tool evolution",
+      "duration": null
+    },
+    {
+      "id": "slide-14",
+      "title": "Trae Solo & Context Engineering",
+      "file": "slide-14.html",
+      "visible": true,
+      "notes": "Exemplary implementation of Context Engineering",
+      "duration": null
+    },
+    {
+      "id": "slide-15",
+      "title": "Part 03 - Team AI Coding Technology Practice",
+      "file": "slide-15.html",
+      "visible": true,
+      "notes": "2 topics: Current achievements & Implementation",
+      "duration": null
+    },
+    {
+      "id": "slide-16",
+      "title": "Current Achievements",
+      "file": "slide-16.html",
+      "visible": true,
+      "notes": "60-80% efficiency, 95%+ UT coverage, 85%+ adoption",
+      "duration": null
+    },
+    {
+      "id": "slide-17",
+      "title": "How We Achieve This - 6A Workflow",
+      "file": "slide-17.html",
+      "visible": true,
+      "notes": "Align, Architect, Atomize, Approve, Automate, Assess",
+      "duration": null
+    },
+    {
+      "id": "slide-18",
+      "title": "Team Process",
+      "file": "slide-18.html",
+      "visible": true,
+      "notes": "8 steps: Rules -> AC -> Spec Review -> AI Coding -> AI Review -> Sonar -> Manual Review -> QA",
+      "duration": null
+    },
+    {
+      "id": "slide-19",
+      "title": "Part 04 - Summary",
+      "file": "slide-19.html",
+      "visible": true,
+      "notes": "Summary and insights",
+      "duration": null
+    },
+    {
+      "id": "slide-20",
+      "title": "Summary and Insights",
+      "file": "slide-20.html",
+      "visible": true,
+      "notes": "AI vs Human roles, precise requirement expression",
+      "duration": null
+    },
+    {
+      "id": "slide-21",
+      "title": "Thank You",
+      "file": "slide-21.html",
+      "visible": true,
+      "notes": "Q&A Welcome",
+      "duration": null
+    }
+  ]
+}

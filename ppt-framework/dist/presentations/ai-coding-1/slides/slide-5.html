@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Engineering</title>
+  <style>
+    body { height:100vh; margin:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #0b1220 0%, #0e1628 50%, #0a0f1a 100%); color:#e5e7eb; font-family: system-ui, -apple-system, Segoe UI, PingFang SC, Microsoft YaHei, sans-serif; overflow: hidden; }
+    .decor-one { position: fixed; top: -80px; right: -80px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(96,165,250,.15), rgba(96,165,250,0) 60%); filter: blur(2px); }
+    .decor-two { position: fixed; bottom: -90px; left: -90px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(139,92,246,.12), rgba(139,92,246,0) 60%); filter: blur(3px); }
+    .card { width:96%; max-width:1200px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 48px 56px; box-shadow: 0 10px 50px rgba(0,0,0,.35); backdrop-filter: blur(6px); position: relative; z-index: 1; }
+    h2 { font-size: 2.6rem; margin: 0 0 24px; color:#ffffff; font-weight: 700; display:flex; align-items:center; gap:12px; }
+    .ico { width:32px; height:32px; stroke:#60a5fa; stroke-width:2; fill:none; }
+    .section { margin-bottom: 24px; }
+    .section-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 12px; color: #60a5fa; }
+    .content { font-size: 1.15rem; line-height: 1.9; opacity: .95; padding: 20px; background: rgba(96,165,250,.08); border-left: 4px solid #60a5fa; border-radius: 8px; }
+    .pain-point { margin-top: 24px; padding: 20px; background: rgba(239,68,68,.12); border-left: 4px solid #ef4444; border-radius: 8px; }
+    .pain-point .label { font-weight: 700; color: #fca5a5; margin-bottom: 8px; }
+    .tags { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+    .tag { padding: 6px 14px; background: rgba(96,165,250,.15); border: 1px solid rgba(96,165,250,.3); border-radius: 20px; font-size: 0.9rem; }
+    @media (max-width: 768px) { .card { width:94%; padding:32px; } h2 { font-size: 2rem; } .content { font-size: 1rem; } }
+  </style>
+</head>
+<body>
+  <div class="decor-one"></div>
+  <div class="decor-two"></div>
+  <div class="card">
+    <h2>
+      <svg class="ico" viewBox="0 0 24 24"><path d="M8 9h8M8 13h6M6 3h12a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V5a2 2 0 012-2z"></path></svg>
+      Prompt Engineering
+    </h2>
+    <div class="section">
+      <div class="content">
+        强调使用准确具体的提示词；常见技巧：预设角色（chatGPT）、结构化指令、分步骤输出。
+        <div class="tags">
+          <span class="tag">Role Preset</span>
+          <span class="tag">Structured Instructions</span>
+          <span class="tag">Step-by-step Output</span>
+        </div>
+      </div>
+    </div>
+    <div class="pain-point">
+      <div class="label">⚠️ Pain Point</div>
+      上下文有限，必定出现AI幻觉
+    </div>
+  </div>
+</body>
+</html>

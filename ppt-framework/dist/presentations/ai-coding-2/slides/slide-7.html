@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Specs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a192f 0%, #112240 100%);
+            color: #ccd6f6;
+            overflow-y: auto;
+            min-height: 100vh;
+            position: relative;
+            padding: 3rem 0;
+        }
+
+        /* Document & Code double arrow background */
+        .doc-code-background {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.05;
+            top: 0;
+            left: 0;
+        }
+
+        .arrow-path {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 200px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 4rem;
+            z-index: 10;
+            position: relative;
+        }
+
+        .title-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .title-icon {
+            font-size: 3rem;
+            color: #64ffda;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #64ffda;
+            text-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+            text-align: center;
+        }
+
+        .intro-section {
+            background: rgba(17, 34, 64, 0.4);
+            border-left: 4px solid #64ffda;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: #8892b0;
+        }
+
+        .core-solution {
+            background: rgba(100, 255, 218, 0.1);
+            border: 2px solid #64ffda;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .core-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #64ffda;
+            margin-bottom: 1.5rem;
+        }
+
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .flow-item {
+            color: #ccd6f6;
+            padding: 1rem 2rem;
+            background: rgba(17, 34, 64, 0.6);
+            border-radius: 8px;
+            border: 2px solid rgba(100, 255, 218, 0.3);
+        }
+
+        .flow-arrow {
+            color: #64ffda;
+            font-size: 2rem;
+        }
+
+        .description-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #8892b0;
+            margin-top: 1.5rem;
+        }
+
+        .advantages-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #64ffda;
+            margin: 3rem 0 2rem 0;
+            text-align: center;
+        }
+
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .advantage-card {
+            background: rgba(17, 34, 64, 0.6);
+            border: 2px solid rgba(100, 255, 218, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .advantage-card:hover {
+            border-color: rgba(100, 255, 218, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(100, 255, 218, 0.2);
+        }
+
+        .advantage-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #64ffda;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .advantage-desc {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #8892b0;
+        }
+
+        .conclusion {
+            background: rgba(100, 255, 218, 0.05);
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 3rem;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #ccd6f6;
+            font-style: italic;
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .conclusion::before {
+            content: '"';
+            position: absolute;
+            left: 1rem;
+            top: 1.5rem;
+            font-size: 4rem;
+            color: #64ffda;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Document & Code Background -->
+    <div class="doc-code-background">
+        <div class="arrow-path">
+            <svg width="400" height="200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#64ffda" />
+                    </marker>
+                </defs>
+                <path d="M 50 100 Q 200 50 350 100" stroke="#64ffda" stroke-width="2" fill="none" marker-end="url(#arrowhead)" />
+                <path d="M 350 100 Q 200 150 50 100" stroke="#64ffda" stroke-width="2" fill="none" marker-end="url(#arrowhead)" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="title-wrapper">
+            <i class="fas fa-file-contract title-icon"></i>
+            <h1>Vibe Specs</h1>
+        </div>
+
+        <div class="intro-section">
+            Have you ever fallen into the "vibe trap" of AI programming?
+            <br><br>
+            You sit in front of your IDE with what you think is a clear task. You confidently open the AI assistant and give a vague instruction, engaging in so-called "Vibe Coding". As a result, the AI, like an overly enthusiastic intern, gives you a bunch of seemingly reasonable but completely useless "slop software", leaving you in endless revisions and frustration.
+        </div>
+
+        <div class="core-solution">
+            <div class="core-title">Core Solution: Embrace "Spec-First"</div>
+            
+            <div class="flow-diagram">
+                <div class="flow-item">LLM</div>
+                <i class="fas fa-arrow-right flow-arrow"></i>
+                <div class="flow-item">Spec</div>
+                <i class="fas fa-arrow-right flow-arrow"></i>
+                <div class="flow-item">Code</div>
+            </div>
+
+            <div class="description-text">
+                Vibe Specs completely overturns the traditional AI programming process. It transforms the direct path from Prompt to Code into a more stable and efficient three-step process.
+                <br><br>
+                The first interaction with the AI assistant is not to have it write code, but to have it help you write a requirements specification (Spec).
+            </div>
+        </div>
+
+        <h2 class="advantages-title">Seven Major Advantages</h2>
+
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <div class="advantage-title">
+                    <i class="fas fa-anchor"></i>
+                    From "Conversation Drift" to "Stable Documentation"
+                </div>
+                <div class="advantage-desc">
+                    AI conversation context easily becomes chaotic. A .md format Spec document is stable and a reliable source of truth.
+                </div>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-title">
+                    <i class="fas fa-users"></i>
+                    From "Solo Performance" to "Team Collaboration"
+                </div>
+                <div class="advantage-desc">
+                    AI chat history is private. A Spec document can be easily handed to colleagues or picked up again a week later with clear context.
+                </div>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-title">
+                    <i class="fas fa-code-branch"></i>
+                    From "No Structure" to "Version Control"
+                </div>
+                <div class="advantage-desc">
+                    Git cannot track conversation history. But it can perfectly track the evolution of a WidgetFeature.md file.
+                </div>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-title">
+                    <i class="fas fa-border-all"></i>
+                    From "Feature Creep" to "Defined Scope"
+                </div>
+                <div class="advantage-desc">
+                    A vague request may be interpreted infinitely by AI. A clear Spec completely prevents feature creep.
+                </div>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-title">
+                    <i class="fas fa-history"></i>
+                    From "Context Loss" to "Instant Recovery"
+                </div>
+                <div class="advantage-desc">
+                    Project shelved for a week, forgot why you designed it this way? With Spec, you can instantly recover full context.
+                </div>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-title">
+                    <i class="fas fa-rocket"></i>
+                    From "Blank Page Syndrome" to "Structured Start"
+                </div>
+                <div class="advantage-desc">
+                    Facing a new feature and don't know where to start? Now, AI becomes your documentation assistant, helping you propose structure while you just criticize and fill in.
+                </div>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-title">
+                    <i class="fas fa-coins"></i>
+                    From "Token Waste" to "Efficient Utilization"
+                </div>
+                <div class="advantage-desc">
+                    Rather than wasting tokens on aimless conversations, use them to generate and parse structured Specs for more precise responses.
+                </div>
+            </div>
+        </div>
+
+        <div class="conclusion">
+            Regardless of how AI's form evolves, from "copilot" assisting in coding to autonomous "agents", the first principle of software engineering - "define the problem clearly before solving it" - still applies. "Spec-first" is not outdated; rather, it plays the key role of "safety belt" and "navigation map" in more advanced human-machine collaboration.
+        </div>
+    </div>
+</body>
+</html>

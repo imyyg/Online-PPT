@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Summary and Insights</title>
+  <style>
+    body { height:100vh; margin:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #0b1220 0%, #0e1628 50%, #0a0f1a 100%); color:#e5e7eb; font-family: system-ui, -apple-system, Segoe UI, PingFang SC, Microsoft YaHei, sans-serif; overflow: hidden; }
+    .decor-one { position: fixed; top: -80px; right: -80px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(96,165,250,.15), rgba(96,165,250,0) 60%); filter: blur(2px); }
+    .decor-two { position: fixed; bottom: -90px; left: -90px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(139,92,246,.12), rgba(139,92,246,0) 60%); filter: blur(3px); }
+    .card { width:96%; max-width:1300px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 48px 56px; box-shadow: 0 10px 50px rgba(0,0,0,.35); backdrop-filter: blur(6px); position: relative; z-index: 1; max-height: 90vh; overflow-y: auto; }
+    .insight { margin-bottom: 28px; padding: 24px; background: rgba(96,165,250,.08); border-left: 4px solid #60a5fa; border-radius: 12px; }
+    .insight-number { font-size: 1.1rem; color: #60a5fa; font-weight: 700; margin-bottom: 8px; }
+    .insight-text { font-size: 1.15rem; line-height: 1.9; }
+    .roles-section { margin-top: 32px; padding: 28px; background: rgba(139,92,246,.08); border: 1px solid rgba(139,92,246,.25); border-radius: 12px; }
+    .roles-title { font-size: 1.6rem; font-weight: 700; color: #c4b5fd; margin-bottom: 20px; text-align: center; }
+    .roles-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .role-box { padding: 20px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.15); border-radius: 12px; }
+    .role-box.ai { border-color: rgba(34,197,94,.3); background: rgba(34,197,94,.08); }
+    .role-box.human { border-color: rgba(251,191,36,.3); background: rgba(251,191,36,.08); }
+    .role-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 12px; }
+    .role-box.ai .role-title { color: #86efac; }
+    .role-box.human .role-title { color: #fde68a; }
+    .role-list { list-style: none; padding: 0; margin: 0; }
+    .role-list li { padding: 8px 0; font-size: 1rem; line-height: 1.7; border-bottom: 1px dashed rgba(255,255,255,.1); }
+    .role-list li:last-child { border-bottom: none; }
+    @media (max-width: 768px) { .card { width:94%; padding:32px; } .roles-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="decor-one"></div>
+  <div class="decor-two"></div>
+  <div class="card">
+    <div class="insight">
+      <div class="insight-number">Insight 1</div>
+      <div class="insight-text">AI辅助开发的未来，不在于生成更花哨的代码，而在于更精准的需求表达。</div>
+    </div>
+    <div class="insight">
+      <div class="insight-number">Insight 2</div>
+      <div class="insight-text">个人的一点思考：我觉得不是说要用Vibe Specs或者Context engineering，就完全抛弃"Vibe Coding"，AI的知识储备远大于人类，限制过于严格，会无法发挥出AI的真正实力。在小范围可控的基础上，让AI自由发挥，可能就会抽到"大奖"。</div>
+    </div>
+    <div class="roles-section">
+      <div class="roles-title">AI在研发流程中的角色分工</div>
+      <div class="roles-grid">
+        <div class="role-box ai">
+          <div class="role-title">🤖 AI适合做的事情</div>
+          <ul class="role-list">
+            <li>• 辅助设计</li>
+            <li>• 代码生成</li>
+            <li>• Code Review</li>
+          </ul>
+        </div>
+        <div class="role-box human">
+          <div class="role-title">👤 人类应把控的部分</div>
+          <ul class="role-list">
+            <li>• 需求澄清与边界条件、异常处理</li>
+            <li>• 架构设计与选型、关键路径与性能</li>
+            <li>• 安全与合规、隐私与数据治理</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a192f 0%, #112240 100%);
+            color: #ccd6f6;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Chaos vs Clean code background */
+        .split-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            display: flex;
+        }
+
+        .chaos-side {
+            flex: 1;
+            background: linear-gradient(90deg, rgba(255, 107, 107, 0.05) 0%, transparent 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .clean-side {
+            flex: 1;
+            background: linear-gradient(270deg, rgba(100, 255, 218, 0.05) 0%, transparent 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .code-snippet {
+            position: absolute;
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            opacity: 0.2;
+            white-space: nowrap;
+        }
+
+        .chaos-code {
+            color: #ff6b6b;
+            transform: rotate(5deg);
+        }
+
+        .clean-code {
+            color: #64ffda;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem;
+            z-index: 10;
+            position: relative;
+            display: flex;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .content-section {
+            flex: 1;
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .icon-section {
+            flex: 0 0 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .title-icon {
+            font-size: 3rem;
+            color: #64ffda;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #64ffda;
+            text-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+        }
+
+        .content-box {
+            background: rgba(17, 34, 64, 0.4);
+            border-left: 4px solid #64ffda;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .description {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: #8892b0;
+            font-weight: 400;
+        }
+
+        .highlight-section {
+            background: rgba(17, 34, 64, 0.6);
+            border-left: 4px solid #ff6b6b;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .pain-point-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #ff6b6b;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .pain-point-text {
+            font-size: 1.3rem;
+            color: #ccd6f6;
+            line-height: 1.6;
+        }
+
+        /* VS icon animation */
+        .vs-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .code-icon {
+            font-size: 5rem;
+            opacity: 0.3;
+        }
+
+        .chaos-icon {
+            color: #ff6b6b;
+            animation: shake 2s ease-in-out infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: rotate(-5deg);
+            }
+            50% {
+                transform: rotate(5deg);
+            }
+        }
+
+        .clean-icon {
+            color: #64ffda;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        .vs-text {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #8892b0;
+            text-shadow: 0 0 10px rgba(136, 146, 176, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Split Background -->
+    <div class="split-background">
+        <div class="chaos-side" id="chaosSide"></div>
+        <div class="clean-side" id="cleanSide"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="content-section">
+            <div class="title-wrapper">
+                <i class="fas fa-magic title-icon"></i>
+                <h1>Vibe Coding</h1>
+            </div>
+            
+            <div class="content-box">
+                <div class="description">
+                    With the capability enhancement of models like Claude 3.5, short prompts can complete a large amount of development work, significantly improving efficiency. However, it's easy to produce "spaghetti code".
+                </div>
+            </div>
+
+            <div class="highlight-section">
+                <div class="pain-point-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Pain Point:</span>
+                </div>
+                <div class="pain-point-text">
+                    Easy to produce "spaghetti code" and unpredictable results
+                </div>
+            </div>
+        </div>
+
+        <div class="icon-section">
+            <div class="vs-container">
+                <i class="fas fa-code chaos-icon code-icon"></i>
+                <span class="vs-text">VS</span>
+                <i class="fas fa-code clean-icon code-icon"></i>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate chaos code snippets
+        const chaosSide = document.getElementById('chaosSide');
+        const chaosSnippets = [
+            'if(x){if(y){if(z){doSomething();}}}',
+            'var a,b,c,d,e,f,g,h,i,j,k;',
+            'function foo(){return bar();}',
+            '// TODO: fix this later',
+            'catch(e){}',
+        ];
+
+        for (let i = 0; i < 20; i++) {
+            const snippet = document.createElement('div');
+            snippet.className = 'code-snippet chaos-code';
+            snippet.textContent = chaosSnippets[i % chaosSnippets.length];
+            snippet.style.left = Math.random() * 80 + '%';
+            snippet.style.top = Math.random() * 100 + '%';
+            chaosSide.appendChild(snippet);
+        }
+
+        // Generate clean code snippets
+        const cleanSide = document.getElementById('cleanSide');
+        const cleanSnippets = [
+            'const isValid = validate(input);',
+            'function calculateTotal() {}',
+            '// Clear documentation',
+            'interface User { name: string; }',
+            'export default Component;',
+        ];
+
+        for (let i = 0; i < 20; i++) {
+            const snippet = document.createElement('div');
+            snippet.className = 'code-snippet clean-code';
+            snippet.textContent = cleanSnippets[i % cleanSnippets.length];
+            snippet.style.left = Math.random() * 80 + '%';
+            snippet.style.top = Math.random() * 100 + '%';
+            cleanSide.appendChild(snippet);
+        }
+    </script>
+</body>
+</html>
