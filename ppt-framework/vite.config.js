@@ -389,10 +389,32 @@ function copyPresentationsPlugin() {
   }
 }
 
+// 生成 404.html 以在 GitHub Pages 上支持 SPA 深链接回退
+function spa404Plugin() {
+  return {
+    name: 'spa-404-plugin',
+    apply: 'build',
+    closeBundle() {
+      try {
+        const root = process.cwd()
+        const distDir = path.join(root, 'dist')
+        const indexPath = path.join(distDir, 'index.html')
+        const notFoundPath = path.join(distDir, '404.html')
+        if (fs.existsSync(indexPath)) {
+          const html = fs.readFileSync(indexPath, 'utf-8')
+          fs.writeFileSync(notFoundPath, html, 'utf-8')
+        }
+      } catch (e) {
+        console.error('[spa-404-plugin] Failed to generate 404.html:', e)
+      }
+    }
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   base,
-  plugins: [vue(), fileOpsPlugin(), copyPresentationsPlugin()],
+  plugins: [vue(), fileOpsPlugin(), copyPresentationsPlugin(), spa404Plugin()],
   server: {
     watch: {
       // Ignore changes inside presentations to prevent dev server full reloads
