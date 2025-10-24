@@ -1,45 +1,47 @@
 <template>
-  <div id="app" :class="{ 'presentation-mode': store.isPresenting }">
+  <div id="app" :class="{ 'presentation-mode': store.isPresenting, 'expanded-mode': store.isExpanded }">
     <!-- Left menu column -->
     <LeftMenu />
     <!-- Sidebar -->
-    <aside 
-      v-if="!store.isPresenting"
-      class="sidebar"
-      :class="{ 'collapsed': store.isSidebarCollapsed }"
-    >
-      <div class="sidebar-header">
-        <h1 class="sidebar-title">{{ store.config.title }}</h1>
-        <button 
-          @click="store.toggleSidebar" 
-          class="sidebar-toggle"
-        >
-          <ChevronLeft v-if="!store.isSidebarCollapsed" class="w-5 h-5" />
-          <ChevronRight v-else class="w-5 h-5" />
-        </button>
-      </div>
-      
-      <div class="sidebar-content">
-        <div v-if="!store.isSidebarCollapsed" class="sidebar-section">
-          <div class="thumbnails-list">
-              <SlidePreview
-                v-for="(slide, index) in store.visibleSlides"
-                :key="slide.id"
-                :slide="slide"
-                :index="index"
-                :is-active="store.currentIndex === index"
-                :readonly="false"
-                @select="store.goToSlide(index)"
-                @duplicate="onDuplicateSlide(slide.id)"
-                @delete="onRequestDelete(slide)"
-                @reorder="onReorder($event)"
-              />
-            </div>
+    <Transition name="home-slide-left">
+      <aside 
+        v-if="!store.isPresenting"
+        class="sidebar"
+        :class="{ 'collapsed': store.isSidebarCollapsed }"
+      >
+        <div class="sidebar-header">
+          <h1 class="sidebar-title">{{ store.config.title }}</h1>
+          <button 
+            @click="store.toggleSidebar" 
+            class="sidebar-toggle"
+          >
+            <ChevronLeft v-if="!store.isSidebarCollapsed" class="w-5 h-5" />
+            <ChevronRight v-else class="w-5 h-5" />
+          </button>
         </div>
-      </div>
-      
-      <!-- Removed sidebar-footer actions (Manage Slides, Create New PPT) -->
-    </aside>
+        
+        <div class="sidebar-content">
+          <div v-if="!store.isSidebarCollapsed" class="sidebar-section">
+            <div class="thumbnails-list">
+                <SlidePreview
+                  v-for="(slide, index) in store.visibleSlides"
+                  :key="slide.id"
+                  :slide="slide"
+                  :index="index"
+                  :is-active="store.currentIndex === index"
+                  :readonly="false"
+                  @select="store.goToSlide(index)"
+                  @duplicate="onDuplicateSlide(slide.id)"
+                  @delete="onRequestDelete(slide)"
+                  @reorder="onReorder($event)"
+                />
+              </div>
+          </div>
+        </div>
+        
+        <!-- Removed sidebar-footer actions (Manage Slides, Create New PPT) -->
+      </aside>
+    </Transition>
 
     <!-- Main content -->
     <main class="main-content">
@@ -360,11 +362,37 @@ onUnmounted(() => {
 
 .presentation-mode .sidebar { @apply hidden; }
 
+/* Sidebar slide-in on reveal */
+.sidebar.home-slide-left-enter-active, .sidebar.home-slide-left-leave-active { transition: transform 2s ease, opacity 2s ease; }
+.home-slide-left-enter-from, .home-slide-left-leave-to { transform: translateX(-100%); opacity: 0; }
+.home-slide-left-enter-to, .home-slide-left-leave-from { transform: translateX(0); opacity: 1; }
+
 /* Adjust sidebar width */
 .sidebar { width: calc(var(--spacing, 0.25rem) * 75); @apply bg-gray-800 border-r border-gray-700 flex flex-col transition-all duration-300; }
 /* Collapse width to minimal footprint */
 .sidebar.collapsed { width: calc(var(--spacing, 0.25rem) * 8); }
 
+/* Expanded mode: smoothly push sidebar out */
+.expanded-mode .sidebar {
+  width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  flex: 0 0 0;
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: transform 2s ease, width 2s ease, opacity 1.5s ease;
+}
+
+/* Ensure main-content fills remaining space fully in expanded mode */
+.expanded-mode .main-content {
+  @apply flex-1;
+}
+
+/* Remove left-menu right margin in expanded mode to avoid 1px gap */
+.expanded-mode .left-menu {
+  margin-right: 0;
+}
 .sidebar-header { padding-block: calc(var(--spacing, 0.25rem) * 2); @apply flex items-center justify-between px-4 border-b border-gray-700; }
 /* Compact header in collapsed mode */
 .sidebar.collapsed .sidebar-header { @apply justify-center p-2; }

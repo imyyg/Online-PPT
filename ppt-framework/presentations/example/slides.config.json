@@ -9,7 +9,7 @@
   },
   "settings": {
     "autoPlay": false,
-    "autoPlayInterval": 5000,
+    "autoPlayInterval": 2500,
     "loop": false,
     "showProgress": true,
     "showThumbnails": true,

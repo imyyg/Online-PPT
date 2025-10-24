@@ -31,6 +31,8 @@ export const useSlidesStore = defineStore('slides', () => {
   const isSidebarCollapsed = ref(false)
   const loadingConfig = ref(false)
   const configReady = ref(false)
+  // 新增：展开模式状态
+  const isExpanded = ref(false)
 
   // Current presentation group (folder under /presentations)
   const currentGroup = ref('example')
@@ -128,6 +130,14 @@ export const useSlidesStore = defineStore('slides', () => {
     isSidebarCollapsed.value = !isSidebarCollapsed.value
   }
   
+  function toggleExpand(val) {
+    if (typeof val === 'boolean') {
+      isExpanded.value = val
+    } else {
+      isExpanded.value = !isExpanded.value
+    }
+  }
+  
   function addSlide(slide) {
     const newSlide = {
       id: `slide-${Date.now()}`,
@@ -186,6 +196,7 @@ export const useSlidesStore = defineStore('slides', () => {
     configReady,
     currentGroup,
     groupBasePath,
+    isExpanded,
     
     // Getters
     currentSlide,
@@ -203,6 +214,7 @@ export const useSlidesStore = defineStore('slides', () => {
     prevSlide,
     togglePresentation,
     toggleSidebar,
+    toggleExpand,
     addSlide,
     removeSlide,
     duplicateSlide,

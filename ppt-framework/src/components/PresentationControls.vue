@@ -22,6 +22,23 @@
     <!-- Top toolbar (only right controls) -->
     <div class="top-toolbar">
       <div class="toolbar-right">
+        <!-- Expand toggle -->
+        <button
+          @click="store.toggleExpand()"
+          class="toolbar-btn"
+          :class="{ 'active': store.isExpanded }"
+          :title="store.isExpanded ? '收起侧栏' : '展开铺满'"
+        >
+          <span v-if="!store.isExpanded" class="icon-pair">
+            <ChevronLeft class="w-4 h-4" />
+            <ChevronRight class="w-4 h-4" />
+          </span>
+          <span v-else class="icon-pair">
+            <ChevronRight class="w-4 h-4" />
+            <ChevronLeft class="w-4 h-4" />
+          </span>
+        </button>
+
         <button
           @click="toggleFullscreen"
           class="toolbar-btn"
@@ -43,10 +60,10 @@
         
         <!-- Presentation mode toggle -->
         <button
-          @click="store.togglePresentation"
+          @click="onTogglePresentation"
           class="toolbar-btn"
           :class="{ 'active': store.isPresenting }"
-          :title="store.isPresenting ? 'Exit presentation' : 'Enter presentation'"
+          :title="store.isPresenting ? '退出演示' : '进入演示并全屏（隐藏导航UI）'"
         >
           <Play v-if="!store.isPresenting" class="w-5 h-5" />
           <StopCircle v-else class="w-5 h-5" />
@@ -63,50 +80,6 @@
     </div>
   </div>
 </template>
-
-<style scoped>
-@reference "../tw.css";
-.presentation-controls {
-  @apply pointer-events-none absolute inset-0;
-}
-
-.presentation-controls.hidden .top-toolbar,
-.presentation-controls.hidden .progress-bar {
-  @apply opacity-0;
-}
-
-/* Stick progress bar to the top edge of slide-container */
-.progress-bar { @apply absolute top-0 left-0 right-0 h-0.5 bg-white/5 transition-opacity duration-300; }
-.progress-fill { @apply h-full transition-all duration-300 ease-out; }
-
-/* Transparent floating toolbar buttons */
-.nav-btn {
-  @apply absolute top-1/2 -translate-y-1/2 w-12 h-12 rounded-full;
-  @apply bg-black/20 border border-white/10;
-  @apply flex items-center justify-center text-white;
-  @apply transition-all duration-300 pointer-events-auto;
-  @apply hover:bg-black/40 hover:border-white/20;
-  @apply disabled:opacity-30 disabled:cursor-not-allowed;
-}
-
-.nav-prev { @apply left-4; }
-.nav-next { @apply right-4; }
-
-.top-toolbar {
-  @apply absolute top-0 left-0 right-0 h-16 bg-transparent;
-  @apply flex items-center justify-end px-4;
-  @apply transition-opacity duration-300 pointer-events-auto;
-  transform: translate(-0.5rem, 0.5rem);
-}
-
-.toolbar-right { @apply flex items-center gap-2; }
-
-.toolbar-btn { 
-  @apply w-10 h-10 rounded-full flex items-center justify-center text-white transition-colors duration-150; 
-  @apply bg-white/5 hover:bg-white/10 border border-white/20 backdrop-blur-sm;
-}
-.toolbar-btn.active { @apply ring-1 ring-white/40; }
-</style>
 
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
@@ -152,9 +125,20 @@ function onPointerProxy() {
 
 function toggleFullscreen() {
   if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen?.()
+    const opts = { navigationUI: 'hide' }
+    document.documentElement.requestFullscreen?.(opts)
+      ?.catch?.((err) => console.warn('Failed to request fullscreen:', err))
   } else {
     document.exitFullscreen?.()
+  }
+}
+function onTogglePresentation() {
+  const entering = !store.isPresenting
+  store.togglePresentation()
+  if (entering && !document.fullscreenElement) {
+    const opts = { navigationUI: 'hide' }
+    document.documentElement.requestFullscreen?.(opts)
+      ?.catch?.((err) => console.warn('Failed to request fullscreen:', err))
   }
 }
 
@@ -219,3 +203,49 @@ onUnmounted(() => {
   if (hideTimer) { clearTimeout(hideTimer); hideTimer = null }
 })
 </script>
+
+<style scoped>
+@reference "../tw.css";
+.presentation-controls {
+  @apply pointer-events-none absolute inset-0;
+}
+
+.presentation-controls.hidden .top-toolbar,
+.presentation-controls.hidden .progress-bar {
+  @apply opacity-0;
+}
+
+/* Stick progress bar to the top edge of slide-container */
+.progress-bar { @apply absolute top-0 left-0 right-0 h-0.5 bg-white/5 transition-opacity duration-300; }
+.progress-fill { @apply h-full transition-all duration-300 ease-out; }
+
+/* Transparent floating toolbar buttons */
+.nav-btn {
+  @apply absolute top-1/2 -translate-y-1/2 w-12 h-12 rounded-full;
+  @apply bg-black/20 border border-white/10;
+  @apply flex items-center justify-center text-white;
+  @apply transition-all duration-300 pointer-events-auto;
+  @apply hover:bg-black/40 hover:border-white/20;
+  @apply disabled:opacity-30 disabled:cursor-not-allowed;
+}
+
+.nav-prev { @apply left-4; }
+.nav-next { @apply right-4; }
+
+.top-toolbar {
+  @apply absolute top-0 left-0 right-0 h-16 bg-transparent;
+  @apply flex items-center justify-end px-4;
+  @apply transition-opacity duration-300 pointer-events-auto;
+  transform: translate(-0.5rem, 0.5rem);
+}
+
+.toolbar-right { @apply flex items-center gap-2; }
+
+.toolbar-btn { 
+  @apply w-10 h-10 rounded-full flex items-center justify-center text-white transition-colors duration-150; 
+  @apply bg-white/5 hover:bg-white/10 border border-white/20 backdrop-blur-sm;
+}
+.toolbar-btn.active { @apply ring-1 ring-white/40; }
+.icon-pair { @apply flex items-center gap-0.5; }
+.icon-pair { @apply flex items-center gap-0.5; }
+</style>

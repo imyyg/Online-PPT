@@ -23,6 +23,21 @@ store.setGroup(nameFromPath)
 // Preload slides config before first render
 await store.loadConfig()
 
+// Auto-start presentation and autoplay on home path
+const isHomePath = groupParts.length === 0
+const autoStartHome = (store.config?.settings?.autoStartOnHome ?? true)
+const autoFsHome = (store.config?.settings?.autoFullscreenOnHome ?? true)
+if (isHomePath && store.totalSlides > 0 && autoStartHome) {
+  // Hide left menu and preview sidebar by entering presentation mode
+  store.isPresenting = true
+  // Optionally enter fullscreen on home
+  if (autoFsHome) {
+    document.documentElement.requestFullscreen?.().catch(() => {})
+  }
+  // Enable autoplay
+  store.config.settings.autoPlay = true
+}
+
 // Go to slide if provided (1-based)
 const params = new URLSearchParams(window.location.search)
 const slideParam = params.get('slide')
