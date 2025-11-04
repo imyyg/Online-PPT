@@ -14,47 +14,52 @@
       </div>
 
       <!-- Centered popup for dev notice -->
-      <div v-if="showToast" class="fixed inset-0 z-50 flex items-center justify-center">
-        <div class="px-3 py-2 text-sm bg-gray-800 border border-gray-700 rounded-lg text-gray-100 shadow-xl">
-          {{ toastMessage }}
+      <Teleport to="body">
+        <div v-if="showToast" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm">
+          <div class="px-4 py-3 text-sm bg-gray-800 border border-gray-700 rounded-lg text-gray-100 shadow-xl">
+            {{ toastMessage }}
+          </div>
         </div>
-      </div>
+      </Teleport>
 
       <!-- Create PPT Modal -->
-      <div v-if="showCreate" class="fixed inset-0 z-50 flex items-center justify-center" @click.self="closeCreate">
-        <div class="bg-gray-800 border border-gray-700 rounded-xl shadow-2xl w-full max-w-sm overflow-hidden">
-          <div class="flex items-center justify-between p-4 border-b border-gray-700">
-            <h3 class="text-lg font-semibold">New PPT</h3>
-            <button class="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/20" @click="closeCreate">✕</button>
-          </div>
-          <form @submit.prevent="createPpt" class="p-4 space-y-3">
-            <label class="flex items-center justify-between gap-3">
-              <span>name</span>
-              <input v-model="createForm.name" type="text" class="w-36 px-2 py-1 bg-gray-700 border border-gray-600 rounded-lg text-gray-100" placeholder="my-ppt" pattern="[a-zA-Z0-9-_]+" required />
-            </label>
-            <label class="flex items-center justify-between gap-3">
-              <span>title</span>
-              <input v-model="createForm.title" type="text" class="w-36 px-2 py-1 bg-gray-700 border border-gray-600 rounded-lg text-gray-100" placeholder="Presentation Title" />
-            </label>
-            <label class="flex items-center justify-between gap-3">
-              <span>description</span>
-              <input v-model="createForm.description" type="text" class="w-36 px-2 py-1 bg-gray-700 border border-gray-600 rounded-lg text-gray-100" placeholder="Presentation Description" />
-            </label>
-            <div class="flex items-center justify-end gap-2 pt-2">
-              <button type="button" class="w-24 px-3 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-100" @click="closeCreate">Cancel</button>
-              <button type="submit" class="w-24 px-3 py-2 rounded-lg bg-primary-600 hover:bg-primary-500 text-white">Create</button>
+      <Teleport to="body">
+        <div v-if="showCreate" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm" @click.self="closeCreate">
+          <div class="bg-gray-800 border border-gray-700 rounded-xl shadow-2xl w-full max-w-sm overflow-hidden">
+            <div class="flex items-center justify-between p-4 border-b border-gray-700">
+              <h3 class="text-lg font-semibold">New PPT</h3>
+              <button class="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/20" @click="closeCreate">✕</button>
             </div>
-          </form>
-        </div>
-      </div>
-
-      <div v-if="showSettings" class="settings-panel" @click.self="showSettings=false">
-        <div class="panel">
-          <div class="panel-header">
-            <h3 class="text-lg font-semibold">Settings</h3>
-            <button class="close-btn" @click="showSettings=false">✕</button>
+            <form @submit.prevent="createPpt" class="p-4 space-y-3">
+              <label class="flex items-center justify-between gap-3">
+                <span>name</span>
+                <input v-model="createForm.name" type="text" class="w-36 px-2 py-1 bg-gray-700 border border-gray-600 rounded-lg text-gray-100" placeholder="my-ppt" pattern="[a-zA-Z0-9-_]+" required />
+              </label>
+              <label class="flex items-center justify-between gap-3">
+                <span>title</span>
+                <input v-model="createForm.title" type="text" class="w-36 px-2 py-1 bg-gray-700 border border-gray-600 rounded-lg text-gray-100" placeholder="Presentation Title" />
+              </label>
+              <label class="flex items-center justify-between gap-3">
+                <span>description</span>
+                <input v-model="createForm.description" type="text" class="w-36 px-2 py-1 bg-gray-700 border border-gray-600 rounded-lg text-gray-100" placeholder="Presentation Description" />
+              </label>
+              <div class="flex items-center justify-end gap-2 pt-2">
+                <button type="button" class="w-24 px-3 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-100" @click="closeCreate">Cancel</button>
+                <button type="submit" class="w-24 px-3 py-2 rounded-lg bg-primary-600 hover:bg-primary-500 text-white">Create</button>
+              </div>
+            </form>
           </div>
-          <div class="panel-body" @focusout="scheduleAutoSave">
+        </div>
+      </Teleport>
+
+      <Teleport to="body">
+        <div v-if="showSettings" class="settings-panel" @click.self="showSettings=false">
+          <div class="panel">
+            <div class="panel-header">
+              <h3 class="text-lg font-semibold">Settings</h3>
+              <button class="close-btn" @click="showSettings=false">✕</button>
+            </div>
+            <div class="panel-body" @focusout="scheduleAutoSave">
             <label class="form-row">
               <span>Autoplay</span>
               <input type="checkbox" v-model="store.config.settings.autoPlay" @change="saveSettings" />
@@ -121,10 +126,11 @@
             </label>
 
             <!-- Removed manual Save button -->
+            </div>
           </div>
         </div>
-      </div>
-    </aside>
+      </Teleport>
+  </aside>
   </Transition>
 </template>
 
@@ -214,21 +220,32 @@ async function saveSettings() {
 </script>
 
 <style scoped>
-@reference "../tw.css";
-/* Sidebar slide-in reused for left menu */
-.home-slide-left-enter-active, .home-slide-left-leave-active { transition: transform 2s ease, opacity 2s ease; }
-.home-slide-left-enter-from, .home-slide-left-leave-to { transform: translateX(-100%); opacity: 0; }
-.home-slide-left-enter-to, .home-slide-left-leave-from { transform: translateX(0); opacity: 1; }
+@import "../tw.css";
+/* Bottom slide-in animation for left menu */
+.home-slide-left-enter-active, .home-slide-left-leave-active { transition: transform 0.3s ease, opacity 0.3s ease; }
+.home-slide-left-enter-from, .home-slide-left-leave-to { transform: translateY(100%); opacity: 0; }
+.home-slide-left-enter-to, .home-slide-left-leave-from { transform: translateY(0); opacity: 1; }
 
 .left-menu {
-  @apply bg-gray-800 flex flex-col items-center justify-between;
-  @apply mr-px px-px;
-  width: calc(var(--spacing, 0.25rem) * 10);
+  @apply flex items-center;
+  margin-top: auto;
+  margin-bottom: 0;
+  align-self: stretch;
+  width: 100%;
+  height: 40px;
+  padding: 4px 16px;
+  background: transparent;
+  border: none;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 0;
+  box-shadow: none;
+  transition: background 0.2s ease;
 }
-.menu-inner { @apply flex flex-col items-center gap-2 px-2 py-3; }
-.toolbar-btn { 
-  @apply w-10 h-10 rounded-full flex items-center justify-center text-white transition-colors duration-150; 
-  @apply bg-white/5 hover:bg-white/10 border border-white/20 backdrop-blur-sm;
+.left-menu:hover { background: transparent; }
+.menu-inner { @apply flex items-center justify-center gap-6 w-full h-full; }
+.toolbar-btn {
+  @apply w-8 h-8 rounded-lg flex items-center justify-center text-white transition-colors duration-200;
+  @apply bg-white/5 hover:bg-white/15;
 }
 .btn-user:hover { @apply ring-1 ring-white/40; }
 .btn-settings .icon { @apply transition-transform; }
@@ -237,10 +254,12 @@ async function saveSettings() {
 .btn-add:hover .icon { transform: scale(1.15); }
 
 .settings-panel {
-  @apply fixed inset-0 z-40 flex items-start justify-start;
+  @apply fixed inset-0 z-40 flex items-center justify-center;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(6px);
 }
 .panel {
-  @apply mt-16 ml-16 bg-gray-800 border border-gray-700 rounded-xl shadow-2xl w-[22rem] overflow-hidden;
+  @apply bg-gray-800 border border-gray-700 rounded-xl shadow-2xl w-[22rem] overflow-hidden;
 }
 .panel-header { @apply flex items-center justify-between p-4 border-b border-gray-700; }
 .panel-body { @apply p-4 space-y-3; }
@@ -250,15 +269,8 @@ async function saveSettings() {
 .form-row input[type="text"] { @apply w-36 px-2 py-1 bg-gray-700 border border-gray-600 rounded-lg text-gray-100; }
 .form-row input[type="color"] { @apply h-9 w-9 p-1 bg-gray-700 border border-gray-600 rounded-lg; }
 .close-btn { @apply w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/20; }
-/* Expanded mode: smoothly push left menu out */
+/* Expanded mode: keep menu visible in bottom-left */
 .left-menu.expanded {
-  width: 0;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  flex: 0 0 0;
-  transform: translateX(-100%);
-  opacity: 0;
-  transition: transform 2s ease, width 2s ease, opacity 1.5s ease;
+  /* Keep menu visible even in expanded mode */
 }
 </style>

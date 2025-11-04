@@ -1,7 +1,5 @@
 <template>
   <div id="app" :class="{ 'presentation-mode': store.isPresenting, 'expanded-mode': store.isExpanded }">
-    <!-- Left menu column -->
-    <LeftMenu />
     <!-- Sidebar -->
     <Transition name="home-slide-left">
       <aside 
@@ -39,7 +37,8 @@
           </div>
         </div>
         
-        <!-- Removed sidebar-footer actions (Manage Slides, Create New PPT) -->
+        <!-- Floating left menu inside sidebar -->
+        <LeftMenu />
       </aside>
     </Transition>
 
@@ -368,30 +367,38 @@ onUnmounted(() => {
 .home-slide-left-enter-to, .home-slide-left-leave-from { transform: translateX(0); opacity: 1; }
 
 /* Adjust sidebar width */
-.sidebar { width: calc(var(--spacing, 0.25rem) * 75); @apply bg-gray-800 border-r border-gray-700 flex flex-col transition-all duration-300; }
+.sidebar { width: calc(var(--spacing, 0.25rem) * 75); @apply bg-gray-800 border-r border-gray-700 flex flex-col transition-all duration-300; overflow: hidden; transition: width 0.7s ease-out; }
 /* Collapse width to minimal footprint */
 .sidebar.collapsed { width: calc(var(--spacing, 0.25rem) * 8); }
 
-/* Expanded mode: smoothly push sidebar out */
+/* Expanded mode: main content pushes sidebar out */
+aside, .sidebar, aside.sidebar {
+  transition: transform 0.5s ease-out;
+  z-index: 10;
+}
+
+/* Normal state positioning */
+#app:not(.expanded-mode) aside,
+#app:not(.expanded-mode) .sidebar {
+  transform: translateX(0);
+}
+
+/* Expanded mode: smoothly shrink sidebar without instant translate */
 .expanded-mode .sidebar {
   width: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  flex: 0 0 0;
-  transform: translateX(-100%);
-  opacity: 0;
-  transition: transform 2s ease, width 2s ease, opacity 1.5s ease;
+  overflow: hidden;
+  transition: width 0.5s ease-out;
 }
 
-/* Ensure main-content fills remaining space fully in expanded mode */
+/* Main content slides to fill space */
+.main-content {
+  transition: margin-left 0.5s ease-out, width 0.5s ease-out;
+}
+
 .expanded-mode .main-content {
   @apply flex-1;
-}
-
-/* Remove left-menu right margin in expanded mode to avoid 1px gap */
-.expanded-mode .left-menu {
-  margin-right: 0;
+  width: 100%;
+  margin-left: 0;
 }
 .sidebar-header { padding-block: calc(var(--spacing, 0.25rem) * 2); @apply flex items-center justify-between px-4 border-b border-gray-700; }
 /* Compact header in collapsed mode */
@@ -402,8 +409,12 @@ onUnmounted(() => {
 .sidebar-toggle { @apply p-2 rounded hover:bg-gray-700 transition-colors; }
 .sidebar.collapsed .sidebar-toggle { @apply w-8 h-8 flex items-center justify-center; }
 
-/* Reduce sidebar content padding */
-.sidebar-content { padding: calc(var(--spacing, 0.25rem) * 2); @apply flex-1 overflow-y-auto; }
+/* Sidebar content spacing */
+.sidebar-content {
+  padding: calc(var(--spacing, 0.25rem) * 2);
+  padding-bottom: calc(var(--spacing, 0.25rem) * 8);
+  @apply flex-1 overflow-y-auto;
+}
 .sidebar-section { @apply mb-6; }
 
 .section-title { /* removed: element no longer rendered */ }
