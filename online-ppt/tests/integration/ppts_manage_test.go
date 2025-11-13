@@ -35,7 +35,7 @@ type recordsTestContext struct {
 }
 
 const (
-	selectRecordQuery = "SELECT id, user_id, name, description, group_name, relative_path, canonical_path, tags, created_at, updated_at FROM ppt_records WHERE user_id = \\? AND id = \\? LIMIT 1"
+	selectRecordQuery = "SELECT id, user_id, name, title, description, group_name, relative_path, canonical_path, tags, created_at, updated_at FROM ppt_records WHERE user_id = \\? AND id = \\? LIMIT 1"
 	baseDescription   = "Primary deck"
 )
 
@@ -108,14 +108,14 @@ func TestListPptRecords(t *testing.T) {
 
 	like := "%demo%"
 	ctx.mock.ExpectQuery("SELECT COUNT\\(\\*\\) FROM ppt_records").
-		WithArgs(ctx.userID, like, like, "tag1").
+		WithArgs(ctx.userID, like, like, like, "tag1").
 		WillReturnRows(sqlmock.NewRows([]string{"count"}).AddRow(2))
 
-	ctx.mock.ExpectQuery("SELECT id, user_id, name, description, group_name, relative_path, canonical_path, tags, created_at, updated_at FROM ppt_records").
-		WithArgs(ctx.userID, like, like, "tag1", 10, 5).
-		WillReturnRows(sqlmock.NewRows([]string{"id", "user_id", "name", "description", "group_name", "relative_path", "canonical_path", "tags", "created_at", "updated_at"}).
-			AddRow(int64(10), ctx.userID, "DeckOne", baseDescription, "deckone", rel, canonicalValid, "[\"tag1\",\"tag2\"]", now, now).
-			AddRow(int64(11), ctx.userID, "DeckTwo", nil, "decktwo", relMissing, canonicalMissing, nil, now, now))
+	ctx.mock.ExpectQuery("SELECT id, user_id, name, title, description, group_name, relative_path, canonical_path, tags, created_at, updated_at FROM ppt_records").
+		WithArgs(ctx.userID, like, like, like, "tag1", 10, 5).
+		WillReturnRows(sqlmock.NewRows([]string{"id", "user_id", "name", "title", "description", "group_name", "relative_path", "canonical_path", "tags", "created_at", "updated_at"}).
+			AddRow(int64(10), ctx.userID, "DeckOne", nil, baseDescription, "deckone", rel, canonicalValid, "[\"tag1\",\"tag2\"]", now, now).
+			AddRow(int64(11), ctx.userID, "DeckTwo", nil, nil, "decktwo", relMissing, canonicalMissing, nil, now, now))
 
 	req := httptest.NewRequest(http.MethodGet, "/api/v1/ppts?q=demo&tag=tag1&sort=name_asc&limit=10&offset=5", nil)
 	ctx.authorize(req)
@@ -175,8 +175,8 @@ func TestGetPptRecord(t *testing.T) {
 
 	ctx.mock.ExpectQuery(selectRecordQuery).
 		WithArgs(ctx.userID, int64(42)).
-		WillReturnRows(sqlmock.NewRows([]string{"id", "user_id", "name", "description", "group_name", "relative_path", "canonical_path", "tags", "created_at", "updated_at"}).
-			AddRow(int64(42), ctx.userID, "DeckOne", baseDescription, "deckone", rel, canonical, "[\"tag1\"]", now, now))
+		WillReturnRows(sqlmock.NewRows([]string{"id", "user_id", "name", "title", "description", "group_name", "relative_path", "canonical_path", "tags", "created_at", "updated_at"}).
+			AddRow(int64(42), ctx.userID, "DeckOne", nil, baseDescription, "deckone", rel, canonical, "[\"tag1\"]", now, now))
 
 	req := httptest.NewRequest(http.MethodGet, "/api/v1/ppts/42", nil)
 	ctx.authorize(req)
@@ -233,20 +233,20 @@ func TestUpdatePptRecord(t *testing.T) {
 
 	ctx.mock.ExpectQuery(selectRecordQuery).
 		WithArgs(ctx.userID, int64(7)).
-		WillReturnRows(sqlmock.NewRows([]string{"id", "user_id", "name", "description", "group_name", "relative_path", "canonical_path", "tags", "created_at", "updated_at"}).
-			AddRow(int64(7), ctx.userID, "DeckOne", baseDescription, "deckone", existingRel, existingCanonical, "[\"tag1\"]", now, now))
+		WillReturnRows(sqlmock.NewRows([]string{"id", "user_id", "name", "title", "description", "group_name", "relative_path", "canonical_path", "tags", "created_at", "updated_at"}).
+			AddRow(int64(7), ctx.userID, "DeckOne", nil, baseDescription, "deckone", existingRel, existingCanonical, "[\"tag1\"]", now, now))
 
 	newRel := filepath.ToSlash(filepath.Join("presentations", ctx.userUUID, "decktwo", "slides"))
 	newCanonical := filepath.Join(ctx.root, ctx.userUUID, "decktwo", "slides")
 
 	ctx.mock.ExpectExec("UPDATE ppt_records SET").
-		WithArgs("DeckTwo", sqlmock.AnyArg(), "decktwo", newRel, newCanonical, sqlmock.AnyArg(), ctx.userID, int64(7)).
+		WithArgs("DeckTwo", sqlmock.AnyArg(), sqlmock.AnyArg(), "decktwo", newRel, newCanonical, sqlmock.AnyArg(), ctx.userID, int64(7)).
 		WillReturnResult(sqlmock.NewResult(0, 1))
 
 	ctx.mock.ExpectQuery(selectRecordQuery).
 		WithArgs(ctx.userID, int64(7)).
-		WillReturnRows(sqlmock.NewRows([]string{"id", "user_id", "name", "description", "group_name", "relative_path", "canonical_path", "tags", "created_at", "updated_at"}).
-			AddRow(int64(7), ctx.userID, "DeckTwo", "Updated deck", "decktwo", newRel, newCanonical, "[\"tag2\"]", now, now))
+		WillReturnRows(sqlmock.NewRows([]string{"id", "user_id", "name", "title", "description", "group_name", "relative_path", "canonical_path", "tags", "created_at", "updated_at"}).
+			AddRow(int64(7), ctx.userID, "DeckTwo", nil, "Updated deck", "decktwo", newRel, newCanonical, "[\"tag2\"]", now, now))
 
 	payload := map[string]any{
 		"name":        "DeckTwo",

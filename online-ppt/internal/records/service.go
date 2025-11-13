@@ -61,6 +61,7 @@ type CreateParams struct {
 	UserID      int64
 	UserUUID    string
 	Name        string
+	Title       string
 	Description string
 	Tags        []string
 }
@@ -71,6 +72,7 @@ type UpdateParams struct {
 	UserUUID    string
 	RecordID    int64
 	Name        *string
+	Title       *string
 	Description *string
 	Tags        *[]string
 }
@@ -166,6 +168,17 @@ func (s *Service) CreateRecord(ctx context.Context, params CreateParams) (Record
 		RelativePath:  paths.Relative,
 		CanonicalPath: paths.Canonical,
 		Tags:          tags,
+	}
+	if title := strings.TrimSpace(params.Title); title != "" {
+		if len(title) > 255 {
+			s.audit.Log("records.create", map[string]any{
+				"status": "validation_failed",
+				"userId": params.UserID,
+				"reason": "title exceeds 255 characters",
+			})
+			return RecordView{}, fmt.Errorf("title must not exceed 255 characters")
+		}
+		record.Title = sql.NullString{String: title, Valid: true}
 	}
 	if desc := strings.TrimSpace(params.Description); desc != "" {
 		record.Description = sql.NullString{String: desc, Valid: true}
@@ -327,6 +340,16 @@ func (s *Service) UpdateRecord(ctx context.Context, params UpdateParams) (Record
 	updated := current
 
 	if err := s.applyNameUpdate(&updated, params.UserUUID, params.Name); err != nil {
+		s.audit.Log("records.update", map[string]any{
+			"status":   "validation_failed",
+			"userId":   params.UserID,
+			"recordId": params.RecordID,
+			"reason":   err.Error(),
+		})
+		return RecordView{}, err
+	}
+
+	if err := applyTitleUpdate(&updated, params.Title); err != nil {
 		s.audit.Log("records.update", map[string]any{
 			"status":   "validation_failed",
 			"userId":   params.UserID,
@@ -504,6 +527,25 @@ func (s *Service) applyNameUpdate(record *PptRecord, userUUID string, namePtr *s
 	}
 	record.RelativePath = paths.Relative
 	record.CanonicalPath = paths.Canonical
+	return nil
+}
+
+func applyTitleUpdate(record *PptRecord, title *string) error {
+	if title == nil {
+		return nil
+	}
+
+	titleVal := strings.TrimSpace(*title)
+	if titleVal == "" {
+		record.Title = sql.NullString{}
+		return nil
+	}
+
+	if len(titleVal) > 255 {
+		return fmt.Errorf("title must not exceed 255 characters")
+	}
+
+	record.Title = sql.NullString{String: titleVal, Valid: true}
 	return nil
 }
 

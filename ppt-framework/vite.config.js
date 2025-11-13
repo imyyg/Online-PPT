@@ -420,5 +420,10 @@ export default defineConfig({
       // Ignore changes inside presentations to prevent dev server full reloads
       ignored: ['**/presentations/**']
     }
+  },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['./tests/setup.ts']
   }
 })

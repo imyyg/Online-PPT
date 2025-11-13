@@ -18,6 +18,7 @@ type PptRecord struct {
 	ID            int64
 	UserID        int64
 	Name          string
+	Title         sql.NullString
 	Description   sql.NullString
 	GroupName     string
 	RelativePath  string
@@ -87,10 +88,11 @@ func (rt RepositoryTx) CreateWithinTx(ctx context.Context, record PptRecord) (in
 		return 0, err
 	}
 
-	stmt := `INSERT INTO ppt_records (user_id, name, description, group_name, relative_path, canonical_path, tags) VALUES (?, ?, ?, ?, ?, ?, ?)`
+	stmt := `INSERT INTO ppt_records (user_id, name, title, description, group_name, relative_path, canonical_path, tags) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
 	res, err := rt.tx.ExecContext(ctx, stmt,
 		record.UserID,
 		record.Name,
+		record.Title,
 		record.Description,
 		record.GroupName,
 		record.RelativePath,
@@ -115,10 +117,11 @@ func (r *Repository) Create(ctx context.Context, record PptRecord) (PptRecord, e
 		return PptRecord{}, err
 	}
 
-	stmt := `INSERT INTO ppt_records (user_id, name, description, group_name, relative_path, canonical_path, tags) VALUES (?, ?, ?, ?, ?, ?, ?)`
+	stmt := `INSERT INTO ppt_records (user_id, name, title, description, group_name, relative_path, canonical_path, tags) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
 	res, err := r.db.ExecContext(ctx, stmt,
 		record.UserID,
 		record.Name,
+		record.Title,
 		record.Description,
 		record.GroupName,
 		record.RelativePath,
@@ -139,7 +142,7 @@ func (r *Repository) Create(ctx context.Context, record PptRecord) (PptRecord, e
 
 // GetByID fetches a single record for a user.
 func (r *Repository) GetByID(ctx context.Context, userID, id int64) (PptRecord, error) {
-	stmt := `SELECT id, user_id, name, description, group_name, relative_path, canonical_path, tags, created_at, updated_at FROM ppt_records WHERE user_id = ? AND id = ? LIMIT 1`
+	stmt := `SELECT id, user_id, name, title, description, group_name, relative_path, canonical_path, tags, created_at, updated_at FROM ppt_records WHERE user_id = ? AND id = ? LIMIT 1`
 	row := r.db.QueryRowContext(ctx, stmt, userID, id)
 	return scanRecord(row)
 }
@@ -170,9 +173,10 @@ func (r *Repository) Update(ctx context.Context, record PptRecord) (PptRecord, e
 		return PptRecord{}, err
 	}
 
-	stmt := `UPDATE ppt_records SET name = ?, description = ?, group_name = ?, relative_path = ?, canonical_path = ?, tags = ?, updated_at = NOW() WHERE user_id = ? AND id = ?`
+	stmt := `UPDATE ppt_records SET name = ?, title = ?, description = ?, group_name = ?, relative_path = ?, canonical_path = ?, tags = ?, updated_at = NOW() WHERE user_id = ? AND id = ?`
 	res, err := r.db.ExecContext(ctx, stmt,
 		record.Name,
+		record.Title,
 		record.Description,
 		record.GroupName,
 		record.RelativePath,
@@ -240,6 +244,7 @@ func scanRecord(row interface{ Scan(dest ...any) error }) (PptRecord, error) {
 		&record.ID,
 		&record.UserID,
 		&record.Name,
+		&record.Title,
 		&record.Description,
 		&record.GroupName,
 		&record.RelativePath,

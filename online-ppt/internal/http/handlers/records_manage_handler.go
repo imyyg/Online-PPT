@@ -83,6 +83,7 @@ func (h *RecordsHandler) Update(c *gin.Context) {
 
 	var req struct {
 		Name        *string   `json:"name"`
+		Title       *string   `json:"title"`
 		Description *string   `json:"description"`
 		Tags        *[]string `json:"tags"`
 	}
@@ -96,6 +97,7 @@ func (h *RecordsHandler) Update(c *gin.Context) {
 		UserUUID:    claims.UserUUID,
 		RecordID:    recordID,
 		Name:        req.Name,
+		Title:       req.Title,
 		Description: req.Description,
 		Tags:        req.Tags,
 	})

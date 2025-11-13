@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { pptsApi } from '../api'
+import { useAuthStore } from './auth'
 
 export const useSlidesStore = defineStore('slides', () => {
   // State
@@ -33,6 +35,7 @@ export const useSlidesStore = defineStore('slides', () => {
   const configReady = ref(false)
   // 新增：展开模式状态
   const isExpanded = ref(false)
+  const isHomepageMode = ref(false)
 
   // Current presentation group (folder under /presentations)
   const currentGroup = ref('example')
@@ -67,25 +70,66 @@ export const useSlidesStore = defineStore('slides', () => {
     return currentIndex.value > 0
   })
   
+  async function tryLoadFromApi() {
+    const authStore = useAuthStore()
+    if (!authStore.isAuthenticated || currentGroup.value === 'example') {
+      return false
+    }
+
+    try {
+      const records = await pptsApi.list({ 
+        q: currentGroup.value,
+        limit: 1 
+      })
+      
+      const record = records.items?.[0]
+      if (!record || record.name !== currentGroup.value) {
+        return false
+      }
+
+      return await loadConfigFromUrl(`${groupBasePath.value}/slides.config.json`)
+    } catch (apiError) {
+      console.warn('Failed to load from API, falling back to local:', apiError)
+      return false
+    }
+  }
+
+  async function loadConfigFromUrl(url) {
+    const response = await fetch(url)
+    if (!response.ok) {
+      return false
+    }
+
+    const data = await response.json()
+    config.value = data
+    configReady.value = true
+    return true
+  }
+
+  function clampCurrentIndex() {
+    const total = totalSlides.value
+    if (currentIndex.value >= total) {
+      currentIndex.value = Math.max(0, total - 1)
+    }
+  }
+
   // Actions
   async function loadConfig() {
+    if (isHomepageMode.value) {
+      return
+    }
     try {
       loadingConfig.value = true
       configReady.value = false
-      const url = `${groupBasePath.value}/slides.config.json`
-      const response = await fetch(url)
-      if (response.ok) {
-        const data = await response.json()
-        config.value = data
-        configReady.value = true
-        // Clamp current index to valid range
-        const total = totalSlides.value
-        if (currentIndex.value >= total) {
-          currentIndex.value = Math.max(0, total - 1)
-        }
-      } else {
-        // No config found for this group yet
-        configReady.value = false
+      
+      const loadedFromApi = await tryLoadFromApi()
+      
+      if (!loadedFromApi) {
+        await loadConfigFromUrl(`${groupBasePath.value}/slides.config.json`)
+      }
+      
+      if (configReady.value) {
+        clampCurrentIndex()
       }
     } catch (error) {
       console.error('Failed to load slides config:', error)
@@ -98,6 +142,17 @@ export const useSlidesStore = defineStore('slides', () => {
   function setGroup(group) {
     currentGroup.value = group
     currentIndex.value = 0
+    if (isHomepageMode.value) {
+      isHomepageMode.value = false
+    }
+  }
+
+  function setHomepageMode(value) {
+    isHomepageMode.value = Boolean(value)
+    if (isHomepageMode.value) {
+      isPresenting.value = false
+      configReady.value = false
+    }
   }
   
   function goToSlide(index) {
@@ -195,8 +250,9 @@ export const useSlidesStore = defineStore('slides', () => {
     loadingConfig,
     configReady,
     currentGroup,
-    groupBasePath,
-    isExpanded,
+  groupBasePath,
+  isExpanded,
+  isHomepageMode,
     
     // Getters
     currentSlide,
@@ -215,6 +271,7 @@ export const useSlidesStore = defineStore('slides', () => {
     togglePresentation,
     toggleSidebar,
     toggleExpand,
+    setHomepageMode,
     addSlide,
     removeSlide,
     duplicateSlide,

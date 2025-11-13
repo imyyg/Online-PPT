@@ -42,6 +42,7 @@
   - `id` (INT AUTO_INCREMENT): 主键。
   - `user_id` (INT, FK → UserAccount.id): 记录归属。
   - `name` (VARCHAR(120)): 展示名称（允许字母、数字、下划线、中划线）。
+  - `title` (VARCHAR(255) NULL): 用户友好的展示标题，支持中文、英文、数字、空格和常见标点，用于前台展示；若为空则前端回退显示 `name`。
   - `description` (VARCHAR(500) NULL): 备注说明。
   - `group_name` (VARCHAR(120)): 目录名，默认等于 `name` 的 slug 化结果，同字符规则。
   - `relative_path` (VARCHAR(255)): `presentations/<user-uuid>/<group_name>/slides`。

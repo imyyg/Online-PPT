@@ -38,7 +38,7 @@ paths:
 
 ## 启动服务
 ```bash
-go run ./cmd/server
+go run cmd/server/main.go
 ```
 服务默认暴露在 `http://localhost:8080`，API 前缀为 `/api/v1`。首次启动会自动执行 `migrations/` 目录下的全部 SQL 脚本。
 

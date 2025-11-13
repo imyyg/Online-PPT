@@ -18,23 +18,24 @@ const parts = pathname.split('/').filter(Boolean)
 const baseParts = BASE_URL.split('/').filter(Boolean)
 const groupParts = parts.slice(baseParts.length)
 const nameFromPath = groupParts[0] || 'example'
-store.setGroup(nameFromPath)
+const isHomepageRoute = groupParts.length === 0
+store.setHomepageMode(isHomepageRoute)
 
-// Preload slides config before first render
-await store.loadConfig()
+if (!isHomepageRoute) {
+  store.setGroup(nameFromPath)
+  await store.loadConfig()
+} else {
+  store.isPresenting = false
+}
 
-// Auto-start presentation and autoplay on home path
-const isHomePath = groupParts.length === 0
-const autoStartHome = (store.config?.settings?.autoStartOnHome ?? true)
-const autoFsHome = (store.config?.settings?.autoFullscreenOnHome ?? true)
-if (isHomePath && store.totalSlides > 0 && autoStartHome) {
-  // Hide left menu and preview sidebar by entering presentation mode
+// Auto-start presentation and autoplay on non-home presentation paths
+const autoStartHome = store.config?.settings?.autoStartOnHome ?? true
+const autoFsHome = store.config?.settings?.autoFullscreenOnHome ?? true
+if (!isHomepageRoute && store.totalSlides > 0 && autoStartHome) {
   store.isPresenting = true
-  // Optionally enter fullscreen on home
   if (autoFsHome) {
     document.documentElement.requestFullscreen?.().catch(() => {})
   }
-  // Enable autoplay
   store.config.settings.autoPlay = true
 }
 
@@ -42,7 +43,7 @@ if (isHomePath && store.totalSlides > 0 && autoStartHome) {
 const params = new URLSearchParams(window.location.search)
 const slideParam = params.get('slide')
 if (slideParam) {
-  const n = parseInt(slideParam, 10)
+  const n = Number.parseInt(slideParam, 10)
   if (!Number.isNaN(n) && n > 0) {
     store.goToSlide(n - 1)
   }
@@ -50,6 +51,9 @@ if (slideParam) {
 
 // Sync current PPT name to path (example -> BASE_URL)
 watch(() => store.currentGroup, (val) => {
+  if (store.isHomepageMode) {
+    return
+  }
   const url = new URL(window.location.href)
   const newPath = (val === 'example') ? BASE_URL : `${BASE_URL}${val}`
   url.pathname = newPath
@@ -58,6 +62,9 @@ watch(() => store.currentGroup, (val) => {
 
 // Keep slide number in query for deep-linking
 watch(() => store.currentIndex, (idx) => {
+  if (store.isHomepageMode) {
+    return
+  }
   const url = new URL(window.location.href)
   const n = Number(idx) + 1
   url.searchParams.set('slide', String(n))

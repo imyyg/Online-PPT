@@ -39,6 +39,7 @@ func (h *RecordsHandler) Create(c *gin.Context) {
 
 	var req struct {
 		Name        string   `json:"name"`
+		Title       string   `json:"title"`
 		Description string   `json:"description"`
 		Tags        []string `json:"tags"`
 	}
@@ -51,6 +52,7 @@ func (h *RecordsHandler) Create(c *gin.Context) {
 		UserID:      claims.UserID,
 		UserUUID:    claims.UserUUID,
 		Name:        req.Name,
+		Title:       req.Title,
 		Description: req.Description,
 		Tags:        req.Tags,
 	})
@@ -72,6 +74,11 @@ func (h *RecordsHandler) Create(c *gin.Context) {
 func makeRecordResponse(view records.RecordView) gin.H {
 	record := view.Record
 
+	var title any
+	if record.Title.Valid {
+		title = record.Title.String
+	}
+
 	var description any
 	if record.Description.Valid {
 		description = record.Description.String
@@ -85,6 +92,7 @@ func makeRecordResponse(view records.RecordView) gin.H {
 	return gin.H{
 		"id":            record.ID,
 		"name":          record.Name,
+		"title":         title,
 		"groupName":     record.GroupName,
 		"description":   description,
 		"relativePath":  record.RelativePath,

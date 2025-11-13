@@ -1,0 +1,43 @@
+openapi: 3.0.3
+info:
+  title: Homepage CTA Tracking
+  version: 1.0.0
+  description: Schema for homepage call-to-action click events emitted by the frontend.
+paths: {}
+components:
+  schemas:
+    HomepageCtaEvent:
+      type: object
+      required:
+        - eventName
+        - placement
+        - timestamp
+      properties:
+        eventName:
+          type: string
+          enum: [cta_click]
+          description: Fixed event identifier for CTA interactions.
+        placement:
+          type: string
+          description: Semantic location of the CTA (e.g., header-register, hero-primary, features-secondary).
+          pattern: ^[a-z0-9-]+$
+        content:
+          type: string
+          description: User-facing label or contextual copy associated with the CTA.
+        variant:
+          type: string
+          enum: [primary, secondary, link]
+          description: Visual styling variant of the CTA.
+        target:
+          type: string
+          enum: [_self, _blank]
+          description: Navigation target used when the CTA is clicked.
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Optional structured data (e.g., experiment bucket, copy version).
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp recorded at click time.
+      description: "Analytics payload emitted when a homepage CTA is clicked."

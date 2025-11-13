@@ -3,14 +3,20 @@ package main
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"os/signal"
 	"syscall"
 
+	"github.com/redis/go-redis/v9"
+
 	"online-ppt/internal/auth"
+	"online-ppt/internal/cache"
+	"online-ppt/internal/captcha"
 	"online-ppt/internal/config"
 	internalhttp "online-ppt/internal/http"
 	"online-ppt/internal/http/handlers"
+	"online-ppt/internal/mail"
 	"online-ppt/internal/records"
 	"online-ppt/internal/storage"
 )
@@ -47,7 +53,37 @@ func main() {
 
 	auditLogger := storage.NewAuditLogger(nil)
 
-	authService, err := auth.NewService(authRepo, tokenManager, auditLogger)
+	// 初始化 Redis 客户端
+	redisClient := redis.NewClient(&redis.Options{
+		Addr:     fmt.Sprintf("%s:%d", cfg.Redis.Host, cfg.Redis.Port),
+		Password: cfg.Redis.Password,
+		DB:       cfg.Redis.DB,
+		PoolSize: cfg.Redis.PoolSize,
+	})
+	defer redisClient.Close()
+
+	// 测试 Redis 连接
+	if err := redisClient.Ping(ctx).Err(); err != nil {
+		log.Fatalf("connect redis: %v", err)
+	}
+
+	// 初始化 Cache Service
+	cacheService := cache.NewRedisService(redisClient)
+
+	// 初始化 Captcha Service
+	captchaService := captcha.NewService(cacheService)
+
+	// 初始化 Mail Service
+	mailService := mail.NewSMTPService(mail.Config{
+		Host:     cfg.SMTP.Host,
+		Port:     cfg.SMTP.Port,
+		Username: cfg.SMTP.Username,
+		Password: cfg.SMTP.Password,
+		From:     cfg.SMTP.From,
+		FromName: cfg.SMTP.FromName,
+	})
+
+	authService, err := auth.NewService(authRepo, tokenManager, auditLogger, cacheService, captchaService, mailService)
 	if err != nil {
 		log.Fatalf("init auth service: %v", err)
 	}

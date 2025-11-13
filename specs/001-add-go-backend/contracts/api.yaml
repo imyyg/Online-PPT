@@ -6,9 +6,56 @@ info:
 servers:
   - url: http://localhost:8080/api/v1
 paths:
+  /auth/captcha:
+    get:
+      summary: Get captcha image for verification
+      description: Generate a new captcha image and return base64-encoded image with captcha ID
+      responses:
+        '200':
+          description: Captcha generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaptchaResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/send-verification-code:
+    post:
+      summary: Send email verification code
+      description: Validate captcha and send a 6-digit verification code to the provided email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendVerificationCodeRequest'
+      responses:
+        '200':
+          description: Verification code sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendVerificationCodeResponse'
+        '400':
+          description: Invalid captcha or validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limited - too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /auth/register:
     post:
-      summary: Register a new user with email and password
+      summary: Register a new user with email verification code
+      description: Complete user registration using email and verification code received via email
       requestBody:
         required: true
         content:
@@ -17,19 +64,25 @@ paths:
               $ref: '#/components/schemas/RegisterRequest'
       responses:
         '201':
-          description: User created successfully
+          description: User created successfully and auto-login
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthResponse'
         '400':
-          description: Validation error
+          description: Validation error or invalid verification code
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '409':
           description: Email already registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too many verification attempts
           content:
             application/json:
               schema:
@@ -245,9 +298,46 @@ components:
         type: integer
         format: int64
   schemas:
+    CaptchaResponse:
+      type: object
+      required: [captcha_id, image, expires_in]
+      properties:
+        captcha_id:
+          type: string
+          description: Unique identifier for the captcha
+        image:
+          type: string
+          description: Base64-encoded captcha image
+        expires_in:
+          type: integer
+          description: Captcha validity duration in seconds
+    SendVerificationCodeRequest:
+      type: object
+      required: [email, captcha_id, captcha_code]
+      properties:
+        email:
+          type: string
+          format: email
+          description: Email address to send verification code
+        captcha_id:
+          type: string
+          description: Captcha ID obtained from /auth/captcha
+        captcha_code:
+          type: string
+          description: User input for captcha verification
+    SendVerificationCodeResponse:
+      type: object
+      required: [message, expires_in]
+      properties:
+        message:
+          type: string
+          description: Success message
+        expires_in:
+          type: integer
+          description: Verification code validity duration in seconds
     RegisterRequest:
       type: object
-      required: [email, password]
+      required: [email, password, email_code]
       properties:
         email:
           type: string
@@ -255,6 +345,9 @@ components:
         password:
           type: string
           minLength: 10
+        email_code:
+          type: string
+          description: 6-digit verification code received via email
     LoginRequest:
       type: object
       required: [email, password]
@@ -288,9 +381,8 @@ components:
           type: string
           enum: [active, locked, pending]
         lastLoginAt:
-          type: string
+          type: [string, 'null']
           format: date-time
-          nullable: true
     PptRecordCreateRequest:
       type: object
       required: [name]
@@ -300,10 +392,13 @@ components:
           maxLength: 120
           pattern: '^[A-Za-z0-9_-]+$'
           description: Display name and folder group identifier
+        title:
+          type: [string, 'null']
+          maxLength: 255
+          description: User-friendly display title supporting Chinese, English, numbers, spaces, and common punctuation
         description:
-          type: string
+          type: [string, 'null']
           maxLength: 500
-          nullable: true
         tags:
           type: array
           items:
@@ -317,10 +412,13 @@ components:
           maxLength: 120
           pattern: '^[A-Za-z0-9_-]+$'
           description: If changed, server regenerates folder name
+        title:
+          type: [string, 'null']
+          maxLength: 255
+          description: User-friendly display title supporting Chinese, English, numbers, spaces, and common punctuation
         description:
-          type: string
+          type: [string, 'null']
           maxLength: 500
-          nullable: true
         tags:
           type: array
           items:
@@ -334,11 +432,13 @@ components:
           format: int64
         name:
           type: string
+        title:
+          type: [string, 'null']
+          description: User-friendly display title; if null, frontend should fallback to name
         groupName:
           type: string
         description:
-          type: string
-          nullable: true
+          type: [string, 'null']
         relativePath:
           type: string
           description: Relative path in format presentations/<user-uuid>/<group>/slides
@@ -376,8 +476,21 @@ components:
       properties:
         code:
           type: string
+          description: |
+            Error code identifier:
+            - invalid_request: Malformed request or validation error
+            - invalid_captcha: Captcha verification failed or expired
+            - invalid_code: Email verification code invalid or expired
+            - email_exists: Email already registered
+            - invalid_credentials: Login failed - invalid email or password
+            - session_not_found: Refresh token invalid or expired
+            - rate_limited: Too many requests, please retry later
+            - too_many_attempts: Too many verification attempts, need new code
+            - server_error: Internal server error
         message:
           type: string
+          description: Human-readable error message
         details:
           type: object
           additionalProperties: true
+          description: Optional additional error context

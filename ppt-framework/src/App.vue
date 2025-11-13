@@ -1,26 +1,28 @@
 <template>
-  <div id="app" :class="{ 'presentation-mode': store.isPresenting, 'expanded-mode': store.isExpanded }">
-    <!-- Sidebar -->
-    <Transition name="home-slide-left">
-      <aside 
-        v-if="!store.isPresenting"
-        class="sidebar"
-        :class="{ 'collapsed': store.isSidebarCollapsed }"
-      >
-        <div class="sidebar-header">
-          <h1 class="sidebar-title">{{ store.config.title }}</h1>
-          <button 
-            @click="store.toggleSidebar" 
-            class="sidebar-toggle"
-          >
-            <ChevronLeft v-if="!store.isSidebarCollapsed" class="w-5 h-5" />
-            <ChevronRight v-else class="w-5 h-5" />
-          </button>
-        </div>
-        
-        <div class="sidebar-content">
-          <div v-if="!store.isSidebarCollapsed" class="sidebar-section">
-            <div class="thumbnails-list">
+  <div id="app" :class="rootClasses">
+    <HomepageShell v-if="store.isHomepageMode" />
+    <template v-else>
+      <!-- Sidebar -->
+      <Transition name="home-slide-left">
+        <aside 
+          v-if="!store.isPresenting"
+          class="sidebar"
+          :class="{ 'collapsed': store.isSidebarCollapsed }"
+        >
+          <div class="sidebar-header">
+            <h1 class="sidebar-title">{{ store.config.title }}</h1>
+            <button 
+              @click="store.toggleSidebar" 
+              class="sidebar-toggle"
+            >
+              <ChevronLeft v-if="!store.isSidebarCollapsed" class="w-5 h-5" />
+              <ChevronRight v-else class="w-5 h-5" />
+            </button>
+          </div>
+          
+          <div class="sidebar-content">
+            <div v-if="!store.isSidebarCollapsed" class="sidebar-section">
+              <div class="thumbnails-list">
                 <SlidePreview
                   v-for="(slide, index) in store.visibleSlides"
                   :key="slide.id"
@@ -34,74 +36,82 @@
                   @reorder="onReorder($event)"
                 />
               </div>
+            </div>
           </div>
-        </div>
-        
-        <!-- Floating left menu inside sidebar -->
-        <LeftMenu />
-      </aside>
-    </Transition>
-
-    <!-- Main content -->
-    <main class="main-content">
-      <Transition :name="transitionName" mode="out-in">
-        <div :key="store.currentIndex" class="slide-container">
-          <SlideLoader
-            v-if="store.currentSlide"
-            :slide="store.currentSlide"
-            :load-mode="loadMode"
-            :is-fullscreen="store.isPresenting || isFullscreen"
-          />
-          <div v-else class="no-slides">
-            <FileX v-if="!store.loadingConfig" class="w-16 h-16 text-gray-600 mb-4" />
-            <div v-else class="loading-placeholder w-16 h-16 mb-4 rounded-full bg-gray-700 animate-pulse" />
-            <p class="text-xl text-gray-400">
-              {{ store.loadingConfig ? 'Loading slides…' : 'No slides available' }}
-            </p>
-
-          </div>
-          <!-- Keep controls inside slide-container to align progress bar -->
-          <PresentationControls v-if="store.totalSlides > 0" />
-        </div>
+          
+          <!-- Floating left menu inside sidebar -->
+          <LeftMenu />
+        </aside>
       </Transition>
-    </main>
 
-    <!-- Delete Confirm Bubble -->
-    <div v-if="showDeleteConfirm" class="modal-backdrop" @click.self="cancelDelete">
-      <div class="modal-panel">
-        <div class="p-5 flex items-center gap-3 border-b border-gray-700">
-          <AlertTriangle class="w-5 h-5 text-red-500" />
-          <h3 class="text-lg font-semibold">Confirm Deletion</h3>
-        </div>
-        <div class="p-6 space-y-2 text-sm">
-          <p class="text-gray-200">Deletion cannot be undone.</p>
-          <p class="text-gray-400">Confirm deletion of Slide <span class="font-semibold">{{ pendingDeleteNumber }}</span>?</p>
-        </div>
-        <div class="flex items-center justify-end gap-3 p-5 border-t border-gray-700">
-          <button class="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-100" @click="cancelDelete">Cancel</button>
-          <button class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-white flex items-center gap-2" @click="confirmDelete">
-            <Trash2 class="w-4 h-4" /> Delete
-          </button>
+      <!-- Main content -->
+      <main class="main-content">
+        <Transition :name="transitionName" mode="out-in">
+          <div :key="store.currentIndex" class="slide-container">
+            <SlideLoader
+              v-if="store.currentSlide"
+              :slide="store.currentSlide"
+              :load-mode="loadMode"
+              :is-fullscreen="store.isPresenting || isFullscreen"
+            />
+            <div v-else class="no-slides">
+              <FileX v-if="!store.loadingConfig" class="w-16 h-16 text-gray-600 mb-4" />
+              <div v-else class="loading-placeholder w-16 h-16 mb-4 rounded-full bg-gray-700 animate-pulse" />
+              <p class="text-xl text-gray-400">
+                {{ store.loadingConfig ? 'Loading slides…' : 'No slides available' }}
+              </p>
+
+            </div>
+            <!-- Keep controls inside slide-container to align progress bar -->
+            <PresentationControls v-if="store.totalSlides > 0" />
+          </div>
+        </Transition>
+      </main>
+
+      <!-- Delete Confirm Bubble -->
+      <div v-if="showDeleteConfirm" class="modal-backdrop" @click.self="cancelDelete">
+        <div class="modal-panel">
+          <div class="p-5 flex items-center gap-3 border-b border-gray-700">
+            <AlertTriangle class="w-5 h-5 text-red-500" />
+            <h3 class="text-lg font-semibold">Confirm Deletion</h3>
+          </div>
+          <div class="p-6 space-y-2 text-sm">
+            <p class="text-gray-200">Deletion cannot be undone.</p>
+            <p class="text-gray-400">Confirm deletion of Slide <span class="font-semibold">{{ pendingDeleteNumber }}</span>?</p>
+          </div>
+          <div class="flex items-center justify-end gap-3 p-5 border-t border-gray-700">
+            <button class="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-100" @click="cancelDelete">Cancel</button>
+            <button class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-white flex items-center gap-2" @click="confirmDelete">
+              <Trash2 class="w-4 h-4" /> Delete
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </template>
 
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import { useSlidesStore } from './stores/slides'
 import SlidePreview from './components/SlidePreview.vue'
 import SlideLoader from './components/SlideLoader.vue'
 import PresentationControls from './components/PresentationControls.vue'
 import LeftMenu from './components/LeftMenu.vue'
+import HomepageShell from './components/homepage/HomepageShell.vue'
 import { ChevronLeft, ChevronRight, FileX, AlertTriangle, Trash2 } from 'lucide-vue-next'
 
 const store = useSlidesStore()
 
 const loadMode = ref('iframe')
 const isFullscreen = ref(false)
+const rootClasses = computed(() => ({
+  'presentation-mode': store.isPresenting && !store.isHomepageMode,
+  'expanded-mode': store.isExpanded && !store.isHomepageMode,
+  'viewer-root': !store.isHomepageMode,
+  'homepage-mode': store.isHomepageMode
+}))
 
 const transitionPresets = ['slide','zoom','blur','flip','rotate','skew','fade','cover','push','cube','parallax','zoomfade','tilt']
 
@@ -135,7 +145,7 @@ function resetNumberBuffer() {
   if (numberBufferTimer) { clearTimeout(numberBufferTimer); numberBufferTimer = null }
 }
 function commitNumberBuffer() {
-  const n = parseInt(numberBuffer.value, 10)
+  const n = Number.parseInt(numberBuffer.value, 10)
   if (!Number.isNaN(n) && n > 0) {
     const target = Math.min(Math.max(n - 1, 0), store.totalSlides - 1)
     store.goToSlide(target)
@@ -169,16 +179,13 @@ function onKeydown(e) {
 
   switch (key) {
     case 'ArrowRight':
+    case ' ':
       e.preventDefault()
       store.nextSlide()
       break
     case 'ArrowLeft':
       e.preventDefault()
       store.prevSlide()
-      break
-    case ' ': // Space: next slide
-      e.preventDefault()
-      store.nextSlide()
       break
     case 'Enter': // immediate commit numeric buffer
       if (numberBuffer.value) {
@@ -224,7 +231,6 @@ onUnmounted(() => {
 
 // 排序：支持 before/after 和持久化
 function onReorder({ from, to, position }) {
-  const visible = store.visibleSlides
   const toIndex = position === 'before' ? to : to + 1
   // Map visible indices to absolute indices in config.slides
   const mapVisibleToAbsolute = (visIdx) => {
@@ -308,7 +314,7 @@ const pendingDeleteNumber = ref(null)
 function onRequestDelete(slide) {
   pendingDelete.value = slide
   const idx = store.visibleSlides.findIndex(s => s.id === slide.id)
-  pendingDeleteNumber.value = idx !== -1 ? (idx + 1) : null
+  pendingDeleteNumber.value = idx === -1 ? null : (idx + 1)
   showDeleteConfirm.value = true
 }
 
@@ -355,9 +361,9 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped>
-@reference "./tw.css";
-#app { @apply h-screen flex bg-gray-900 text-gray-100 overflow-hidden; }
+<style scoped lang="postcss">
+@import "./tw.css";
+.viewer-root { @apply h-screen flex bg-gray-900 text-gray-100 overflow-hidden; }
 
 .presentation-mode .sidebar { @apply hidden; }
 
@@ -378,8 +384,8 @@ aside, .sidebar, aside.sidebar {
 }
 
 /* Normal state positioning */
-#app:not(.expanded-mode) aside,
-#app:not(.expanded-mode) .sidebar {
+.viewer-root:not(.expanded-mode) aside,
+.viewer-root:not(.expanded-mode) .sidebar {
   transform: translateX(0);
 }
 
@@ -392,6 +398,7 @@ aside, .sidebar, aside.sidebar {
 
 /* Main content slides to fill space */
 .main-content {
+  @apply flex-1 relative overflow-hidden;
   transition: margin-left 0.5s ease-out, width 0.5s ease-out;
 }
 
@@ -414,10 +421,10 @@ aside, .sidebar, aside.sidebar {
   padding: calc(var(--spacing, 0.25rem) * 2);
   padding-bottom: calc(var(--spacing, 0.25rem) * 8);
   @apply flex-1 overflow-y-auto;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
 }
 .sidebar-section { @apply mb-6; }
-
-.section-title { /* removed: element no longer rendered */ }
 
 .thumbnails-list { @apply space-y-3; }
 
@@ -425,22 +432,11 @@ aside, .sidebar, aside.sidebar {
 .sidebar-footer { @apply p-4 border-t border-gray-700; }
 .sidebar-action { @apply w-full flex items-center justify-center px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors; }
 
-.main-content { @apply flex-1 relative overflow-hidden; }
-
-/* Ensure left menu overlays within slide container nicely */
-.main-content { position: relative; }
-
 .slide-container { padding: calc(var(--spacing, 0.25rem) * 3); @apply w-full h-full flex items-center justify-center; }
 
 .presentation-mode .slide-container { @apply p-0; }
 
 .no-slides { @apply text-center; }
-
-/* Scrollbar styling for sidebar */
-.sidebar-content { 
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: rgba(255,255,255,0.2) transparent;
-}
 .sidebar-content::-webkit-scrollbar {
   width: 8px;
 }

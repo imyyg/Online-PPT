@@ -17,6 +17,8 @@ type Config struct {
 	Server   ServerConfig
 	Security SecurityConfig
 	Storage  StorageConfig
+	Redis    RedisConfig
+	SMTP     SMTPConfig
 	Paths    PathConfig
 }
 
@@ -41,6 +43,26 @@ type StorageConfig struct {
 // PathConfig keeps filesystem root references.
 type PathConfig struct {
 	PresentationsRoot string
+}
+
+// RedisConfig stores Redis connectivity settings.
+type RedisConfig struct {
+	Host     string `yaml:"host"`
+	Port     int    `yaml:"port"`
+	Password string `yaml:"password"`
+	DB       int    `yaml:"db"`
+	PoolSize int    `yaml:"poolSize"`
+}
+
+// SMTPConfig stores email server settings.
+type SMTPConfig struct {
+	Host     string `yaml:"host"`
+	Port     int    `yaml:"port"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
+	From     string `yaml:"from"`
+	FromName string `yaml:"fromName"`
+	UseTLS   bool   `yaml:"useTLS"`
 }
 
 type securityRaw struct {

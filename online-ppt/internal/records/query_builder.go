@@ -67,7 +67,7 @@ func newListQueryBuilder(userID int64, filters ListFilters) *listQueryBuilder {
 
 func (b *listQueryBuilder) selectQuery() (string, []any) {
 	var query strings.Builder
-	query.WriteString(`SELECT id, user_id, name, description, group_name, relative_path, canonical_path, tags, created_at, updated_at FROM ppt_records`)
+	query.WriteString(`SELECT id, user_id, name, title, description, group_name, relative_path, canonical_path, tags, created_at, updated_at FROM ppt_records`)
 	query.WriteString(b.whereClause())
 	query.WriteRune(' ')
 	query.WriteString(b.sortClause)
@@ -96,9 +96,9 @@ func (b *listQueryBuilder) applyQuery() {
 	if b.filters.Query == "" {
 		return
 	}
-	b.whereItems = append(b.whereItems, "(name LIKE ? OR description LIKE ?)")
+	b.whereItems = append(b.whereItems, "(name LIKE ? OR title LIKE ? OR description LIKE ?)")
 	like := fmt.Sprintf("%%%s%%", b.filters.Query)
-	b.args = append(b.args, like, like)
+	b.args = append(b.args, like, like, like)
 }
 
 func (b *listQueryBuilder) applyTag() {

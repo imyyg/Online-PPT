@@ -102,7 +102,13 @@ func RegisterAuthRoutes(engine *gin.Engine, handler *handlers.AuthHandler) {
 		return
 	}
 	authGroup := engine.Group(apiPrefix + "/auth")
-	authGroup.POST("/register", handler.Register)
+
+	// 新的注册流程（带验证码）
+	authGroup.GET("/captcha", handler.GetCaptcha)
+	authGroup.POST("/send-verification-code", handler.SendVerificationCode)
+	authGroup.POST("/register", handler.RegisterWithCode)
+
+	// 原有的登录、刷新、登出
 	authGroup.POST("/login", handler.Login)
 	authGroup.POST("/refresh", handler.Refresh)
 	authGroup.POST("/logout", handler.Logout)

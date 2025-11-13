@@ -2,9 +2,11 @@ package auth
 
 import (
 	"context"
+	"crypto/rand"
 	"database/sql"
 	"errors"
 	"fmt"
+	"math/big"
 	"net/mail"
 	"strings"
 	"time"
@@ -12,6 +14,9 @@ import (
 	"github.com/go-sql-driver/mysql"
 	"github.com/google/uuid"
 
+	"online-ppt/internal/cache"
+	"online-ppt/internal/captcha"
+	mailpkg "online-ppt/internal/mail"
 	"online-ppt/internal/storage"
 )
 
@@ -22,6 +27,14 @@ var (
 	ErrEmailAlreadyRegistered = errors.New("email already registered")
 	// ErrSessionNotFound indicates the refresh token does not exist or is revoked.
 	ErrSessionNotFound = errors.New("session not found")
+	// ErrInvalidCaptcha indicates the captcha is incorrect or expired.
+	ErrInvalidCaptcha = errors.New("invalid captcha")
+	// ErrRateLimited indicates too many requests.
+	ErrRateLimited = errors.New("rate limited")
+	// ErrInvalidVerificationCode indicates the email verification code is incorrect or expired.
+	ErrInvalidVerificationCode = errors.New("invalid verification code")
+	// ErrTooManyAttempts indicates too many verification attempts.
+	ErrTooManyAttempts = errors.New("too many verification attempts")
 )
 
 // Service coordinates authentication workflows.
@@ -29,6 +42,9 @@ type Service struct {
 	repo    *Repository
 	tokens  *TokenManager
 	audit   *storage.AuditLogger
+	cache   cache.Service
+	captcha captcha.Service
+	mail    mailpkg.Service
 	clockFn func() time.Time
 }
 
@@ -42,7 +58,14 @@ type AuthResult struct {
 }
 
 // NewService builds a Service with sane defaults.
-func NewService(repo *Repository, tokens *TokenManager, audit *storage.AuditLogger) (*Service, error) {
+func NewService(
+	repo *Repository,
+	tokens *TokenManager,
+	audit *storage.AuditLogger,
+	cacheService cache.Service,
+	captchaService captcha.Service,
+	mailService mailpkg.Service,
+) (*Service, error) {
 	if repo == nil {
 		return nil, fmt.Errorf("auth service requires repository")
 	}
@@ -52,10 +75,22 @@ func NewService(repo *Repository, tokens *TokenManager, audit *storage.AuditLogg
 	if audit == nil {
 		audit = storage.NewAuditLogger(nil)
 	}
+	if cacheService == nil {
+		return nil, fmt.Errorf("auth service requires cache service")
+	}
+	if captchaService == nil {
+		return nil, fmt.Errorf("auth service requires captcha service")
+	}
+	if mailService == nil {
+		return nil, fmt.Errorf("auth service requires mail service")
+	}
 	return &Service{
 		repo:    repo,
 		tokens:  tokens,
 		audit:   audit,
+		cache:   cacheService,
+		captcha: captchaService,
+		mail:    mailService,
 		clockFn: time.Now,
 	}, nil
 }
@@ -358,4 +393,219 @@ func validatePassword(password string) error {
 		return fmt.Errorf("password must be at least 10 characters")
 	}
 	return nil
+}
+
+// GenerateCaptcha 生成图形验证码
+func (s *Service) GenerateCaptcha(ctx context.Context) (captchaID, imageBase64 string, expiresIn int, err error) {
+	captchaID, imageBase64, err = s.captcha.Generate(ctx)
+	if err != nil {
+		s.audit.Log("auth.captcha.generate", map[string]any{
+			"status": "error",
+			"reason": err.Error(),
+		})
+		return "", "", 0, fmt.Errorf("failed to generate captcha: %w", err)
+	}
+
+	s.audit.Log("auth.captcha.generate", map[string]any{
+		"status":    "success",
+		"captchaId": captchaID,
+		"expiresIn": 300,
+	})
+
+	return captchaID, imageBase64, 300, nil
+}
+
+// SendVerificationCode 发送邮箱验证码
+func (s *Service) SendVerificationCode(ctx context.Context, email, captchaID, captchaCode string) (int, error) {
+	// 验证邮箱格式
+	normalized, err := normalizeEmail(email)
+	if err != nil {
+		s.audit.Log("auth.send_code", map[string]any{
+			"status": "validation_failed",
+			"reason": err.Error(),
+		})
+		return 0, err
+	}
+
+	// 验证图形验证码
+	valid, err := s.captcha.Verify(ctx, captchaID, captchaCode)
+	if err != nil || !valid {
+		s.audit.Log("auth.send_code", map[string]any{
+			"status": "invalid_captcha",
+			"email":  normalized,
+		})
+		return 0, ErrInvalidCaptcha
+	}
+
+	// 检查频率限制
+	limited, err := s.cache.CheckRateLimit(ctx, normalized)
+	if err != nil {
+		s.audit.Log("auth.send_code", map[string]any{
+			"status": "error",
+			"email":  normalized,
+			"reason": err.Error(),
+		})
+		return 0, err
+	}
+	if limited {
+		s.audit.Log("auth.send_code", map[string]any{
+			"status": "rate_limited",
+			"email":  normalized,
+		})
+		return 0, ErrRateLimited
+	}
+
+	// 生成6位数字验证码
+	code, err := generateEmailCode()
+	if err != nil {
+		s.audit.Log("auth.send_code", map[string]any{
+			"status": "error",
+			"email":  normalized,
+			"reason": err.Error(),
+		})
+		return 0, err
+	}
+
+	// 存储到缓存
+	codeData := &cache.EmailCodeData{
+		Code:      code,
+		Attempts:  0,
+		CreatedAt: s.clockFn(),
+	}
+	if err := s.cache.SetEmailCode(ctx, normalized, codeData); err != nil {
+		s.audit.Log("auth.send_code", map[string]any{
+			"status": "error",
+			"email":  normalized,
+			"reason": err.Error(),
+		})
+		return 0, err
+	}
+
+	// 设置频率限制
+	if err := s.cache.SetRateLimit(ctx, normalized, 60*time.Second); err != nil {
+		s.audit.Log("auth.send_code", map[string]any{
+			"status": "error",
+			"email":  normalized,
+			"reason": err.Error(),
+		})
+		return 0, err
+	}
+
+	// 发送邮件
+	if err := s.mail.SendVerificationCode(normalized, code); err != nil {
+		s.audit.Log("auth.send_code", map[string]any{
+			"status": "error",
+			"email":  normalized,
+			"reason": err.Error(),
+		})
+		return 0, fmt.Errorf("failed to send email: %w", err)
+	}
+
+	s.audit.Log("auth.send_code", map[string]any{
+		"status": "success",
+		"email":  normalized,
+	})
+
+	return 600, nil // 10分钟有效期
+}
+
+// RegisterWithEmailCode 使用邮箱验证码注册
+func (s *Service) RegisterWithEmailCode(ctx context.Context, email, password, emailCode string) (UserAccount, error) {
+	// 验证邮箱和密码格式
+	normalized, err := normalizeEmail(email)
+	if err != nil {
+		s.audit.Log("auth.register", map[string]any{
+			"status": "validation_failed",
+			"reason": err.Error(),
+		})
+		return UserAccount{}, err
+	}
+	if err := validatePassword(password); err != nil {
+		s.audit.Log("auth.register", map[string]any{
+			"status": "validation_failed",
+			"reason": err.Error(),
+		})
+		return UserAccount{}, err
+	}
+
+	// 验证邮箱验证码
+	codeData, err := s.cache.GetEmailCode(ctx, normalized)
+	if err != nil {
+		s.audit.Log("auth.register", map[string]any{
+			"status": "invalid_code",
+			"email":  normalized,
+			"reason": "code not found or expired",
+		})
+		return UserAccount{}, ErrInvalidVerificationCode
+	}
+
+	// 检查尝试次数
+	if codeData.Attempts >= 5 {
+		s.audit.Log("auth.register", map[string]any{
+			"status": "too_many_attempts",
+			"email":  normalized,
+		})
+		return UserAccount{}, ErrTooManyAttempts
+	}
+
+	// 验证码是否匹配
+	if codeData.Code != emailCode {
+		// 增加尝试次数
+		_ = s.cache.IncrementEmailCodeAttempts(ctx, normalized)
+		s.audit.Log("auth.register", map[string]any{
+			"status":   "invalid_code",
+			"email":    normalized,
+			"attempts": codeData.Attempts + 1,
+		})
+		return UserAccount{}, ErrInvalidVerificationCode
+	}
+
+	// 删除验证码
+	_ = s.cache.DeleteEmailCode(ctx, normalized)
+
+	// 创建用户账号
+	hash, err := HashPassword(password)
+	if err != nil {
+		s.audit.Log("auth.register", map[string]any{
+			"status": "error",
+			"reason": err.Error(),
+		})
+		return UserAccount{}, err
+	}
+
+	uuidValue := uuid.NewString()
+
+	user, err := s.repo.CreateUser(ctx, normalized, hash, uuidValue)
+	if err != nil {
+		var mysqlErr *mysql.MySQLError
+		if errors.As(err, &mysqlErr) && mysqlErr.Number == 1062 {
+			s.audit.Log("auth.register", map[string]any{
+				"status": "conflict",
+				"reason": ErrEmailAlreadyRegistered.Error(),
+				"email":  normalized,
+			})
+			return UserAccount{}, ErrEmailAlreadyRegistered
+		}
+		s.audit.Log("auth.register", map[string]any{
+			"status": "error",
+			"reason": err.Error(),
+			"email":  normalized,
+		})
+		return UserAccount{}, err
+	}
+
+	s.audit.Log("auth.register", map[string]any{
+		"status": "success",
+		"userId": user.ID,
+	})
+	return user, nil
+}
+
+// generateEmailCode 生成6位数字验证码
+func generateEmailCode() (string, error) {
+	n, err := rand.Int(rand.Reader, big.NewInt(1000000))
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("%06d", n.Int64()), nil
 }

@@ -42,7 +42,7 @@ paths:
 
 ## 步骤 3：启动后端服务
 ```bash
-go run ./cmd/server
+go run cmd/server/main.go
 ```
 首次启动会自动执行所有 SQL 迁移，创建用户、会话与 PPT 记录表。服务将监听 `http://localhost:8080`，提供 `/api/v1` 前缀的 REST API，终端会输出结构化审计日志（JSON Line 格式）。
 
