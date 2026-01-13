@@ -1,0 +1,192 @@
+{
+  "title": "AI Coding",
+  "author": "",
+  "description": "全面探索 AI Coding 发展历史、IDE 演进和团队实践",
+  "theme": {
+    "primaryColor": "#64ffda",
+    "secondaryColor": "#0a192f",
+    "fontFamily": "Inter, system-ui, -apple-system, sans-serif",
+    "transition": "fade"
+  },
+  "settings": {
+    "autoPlay": false,
+    "autoPlayInterval": 5000,
+    "loop": false,
+    "showProgress": true,
+    "showThumbnails": true,
+    "enableKeyboardNav": true,
+    "enableTouchNav": true,
+    "autoStartOnHome": false,
+    "autoFullscreenOnHome": false
+  },
+  "slides": [
+    {
+      "id": "slide-1",
+      "title": "AI Coding 技术实践分享",
+      "file": "slide-1.html",
+      "visible": true,
+      "notes": "主标题页面，带有未来科技设计",
+      "duration": null
+    },
+    {
+      "id": "slide-2",
+      "title": "目录",
+      "file": "slide-2.html",
+      "visible": true,
+      "notes": "包含四个主要部分的目录",
+      "duration": null
+    },
+    {
+      "id": "slide-3",
+      "title": "第一部分 - AI Coding 发展历程",
+      "file": "slide-3.html",
+      "visible": true,
+      "notes": "AI Coding 演进的五个阶段概览",
+      "duration": null
+    },
+    {
+      "id": "slide-4",
+      "title": "代码补全",
+      "file": "slide-4.html",
+      "visible": true,
+      "notes": "AI Coding 早期阶段的简单代码补全",
+      "duration": null
+    },
+    {
+      "id": "slide-5",
+      "title": "Prompt 工程",
+      "file": "slide-5.html",
+      "visible": true,
+      "notes": "强调准确和具体的提示词",
+      "duration": null
+    },
+    {
+      "id": "slide-6",
+      "title": "Vibe Coding",
+      "file": "slide-6.html",
+      "visible": true,
+      "notes": "短提示词高效率但可能存在代码质量问题",
+      "duration": null
+    },
+    {
+      "id": "slide-7",
+      "title": "Vibe Specs",
+      "file": "slide-7.html",
+      "visible": true,
+      "notes": "规范优先的方法，具有七大优势",
+      "duration": null
+    },
+    {
+      "id": "slide-8",
+      "title": "Context 工程",
+      "file": "slide-8.html",
+      "visible": true,
+      "notes": "统一规则、规范和上下文，实现可工程化控制的 AI Coding",
+      "duration": null
+    },
+    {
+      "id": "slide-9",
+      "title": "第二部分 - AI Coding IDE 演进",
+      "file": "slide-9.html",
+      "visible": true,
+      "notes": "与 AI Coding 历史对应的 IDE 发展五个阶段",
+      "duration": null
+    },
+    {
+      "id": "slide-10",
+      "title": "自动补全 & 多行自动补全",
+      "file": "slide-10.html",
+      "visible": true,
+      "notes": "IDE 代码补全与多行支持对比",
+      "duration": null
+    },
+    {
+      "id": "slide-11",
+      "title": "Ask & Context 感知",
+      "file": "slide-11.html",
+      "visible": true,
+      "notes": "IDE 内的上下文感知 AI 辅助",
+      "duration": null
+    },
+    {
+      "id": "slide-12",
+      "title": "Agent & 代码生成",
+      "file": "slide-12.html",
+      "visible": true,
+      "notes": "Agent 模式实现自动代码生成",
+      "duration": null
+    },
+    {
+      "id": "slide-13",
+      "title": "Plan & 协作开发",
+      "file": "slide-13.html",
+      "visible": true,
+      "notes": "Cursor 中的 Plan 模式与规范优先方法",
+      "duration": null
+    },
+    {
+      "id": "slide-14",
+      "title": "Trae Solo & Context 工程",
+      "file": "slide-14.html",
+      "visible": true,
+      "notes": "Trae Solo 作为 Context 工程的代表",
+      "duration": null
+    },
+    {
+      "id": "slide-15",
+      "title": "第三部分 - 团队 AI Coding 实践分享",
+      "file": "slide-15.html",
+      "visible": true,
+      "notes": "团队实践包括成果和实施方法",
+      "duration": null
+    },
+    {
+      "id": "slide-16",
+      "title": "当前成果",
+      "file": "slide-16.html",
+      "visible": true,
+      "notes": "显示效率提升和采用率的关键指标",
+      "duration": null
+    },
+    {
+      "id": "slide-17",
+      "title": "如何实现 - 6A 工作流",
+      "file": "slide-17.html",
+      "visible": true,
+      "notes": "从 Align 到 Assess 的六步工作流",
+      "duration": null
+    },
+    {
+      "id": "slide-18",
+      "title": "如何实现 - 团队流程",
+      "file": "slide-18.html",
+      "visible": true,
+      "notes": "以统一规则为核心的八步团队流程",
+      "duration": null
+    },
+    {
+      "id": "slide-19",
+      "title": "第四部分 - 总结",
+      "file": "slide-19.html",
+      "visible": true,
+      "notes": "带有优雅星空设计的总结标题页",
+      "duration": null
+    },
+    {
+      "id": "slide-20",
+      "title": "总结详情",
+      "file": "slide-20.html",
+      "visible": true,
+      "notes": "关键洞察和 AI 与人类的角色划分",
+      "duration": null
+    },
+    {
+      "id": "slide-21",
+      "title": "谢谢",
+      "file": "slide-21.html",
+      "visible": true,
+      "notes": "结束页欢迎提问和讨论",
+      "duration": null
+    }
+  ]
+}

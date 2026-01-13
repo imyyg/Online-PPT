@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Specs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a192f 0%, #112240 100%);
+            color: #ccd6f6;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Document & Code double arrow background */
+        .doc-code-background {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.05;
+            top: 0;
+            left: 0;
+        }
+
+        .arrow-path {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 200px;
+        }
+
+        .container {
+            max-width: 1400px;
+            max-height: 90vh;
+            margin: 0 auto;
+            padding: 1.5rem 3rem;
+            z-index: 10;
+            position: relative;
+            overflow-y: auto;
+        }
+        
+        .container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .container::-webkit-scrollbar-track {
+            background: rgba(100, 255, 218, 0.1);
+            border-radius: 3px;
+        }
+        
+        .container::-webkit-scrollbar-thumb {
+            background: rgba(100, 255, 218, 0.5);
+            border-radius: 3px;
+        }
+
+        .title-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .title-icon {
+            font-size: 3rem;
+            color: #64ffda;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #64ffda;
+            text-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+            text-align: center;
+        }
+
+        .intro-section {
+            background: rgba(17, 34, 64, 0.4);
+            border-left: 4px solid #64ffda;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #8892b0;
+        }
+
+        .core-solution {
+            background: rgba(100, 255, 218, 0.1);
+            border: 2px solid #64ffda;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .core-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #64ffda;
+            margin-bottom: 0.8rem;
+        }
+
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .flow-item {
+            color: #ccd6f6;
+            padding: 0.6rem 1.2rem;
+            background: rgba(17, 34, 64, 0.6);
+            border-radius: 8px;
+            border: 2px solid rgba(100, 255, 218, 0.3);
+        }
+
+        .flow-arrow {
+            color: #64ffda;
+            font-size: 1.5rem;
+        }
+
+        .description-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #8892b0;
+            margin-top: 0.8rem;
+        }
+
+        .advantages-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #64ffda;
+            margin: 1.5rem 0 1rem 0;
+            text-align: center;
+        }
+
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .advantage-card {
+            background: rgba(17, 34, 64, 0.6);
+            border: 2px solid rgba(100, 255, 218, 0.2);
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .advantage-card:hover {
+            border-color: rgba(100, 255, 218, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(100, 255, 218, 0.2);
+        }
+
+        .advantage-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #64ffda;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .advantage-title i {
+            font-size: 0.8rem;
+        }
+
+        .advantage-desc {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: #8892b0;
+        }
+
+        .conclusion {
+            background: rgba(100, 255, 218, 0.05);
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            border-radius: 12px;
+            padding: 1rem 1rem 1rem 2.5rem;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #ccd6f6;
+            font-style: italic;
+            position: relative;
+        }
+
+        .conclusion::before {
+            content: '"';
+            position: absolute;
+            left: 0.5rem;
+            top: 0.5rem;
+            font-size: 2.5rem;
+            color: #64ffda;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Document & Code Background -->
+    <div class="doc-code-background">
+        <div class="arrow-path">
+            <svg width="400" height="200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#64ffda" />
+                    </marker>
+                </defs>
+                <path d="M 50 100 Q 200 50 350 100" stroke="#64ffda" stroke-width="2" fill="none" marker-end="url(#arrowhead)" />
+                <path d="M 350 100 Q 200 150 50 100" stroke="#64ffda" stroke-width="2" fill="none" marker-end="url(#arrowhead)" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="title-wrapper">
+            <i class="fas fa-file-contract title-icon"></i>
+            <h1>Vibe Specs</h1>
+        </div>
+
+        <div class="intro-section">
+            你是否曾陷入 AI 编程的"Vibe 陷阱"？
+            <br><br>
+            你坐在 IDE 前，带着你认为清晰的任务。你自信地打开 AI 助手，给出一个模糊的指令，开始所谓的 "Vibe Coding"。结果，AI 像一个过于热情的实习生，给你一堆看似合理但完全无用的"垃圾软件"，让你陷入无尽的修改和挫败中。
+        </div>
+
+        <div class="core-solution">
+            <div class="core-title">核心解决方案：拥抱 "Spec 优先"</div>
+            
+            <div class="flow-diagram">
+                <div class="flow-item">LLM</div>
+                <i class="fas fa-arrow-right flow-arrow"></i>
+                <div class="flow-item">Spec</div>
+                <i class="fas fa-arrow-right flow-arrow"></i>
+                <div class="flow-item">Code</div>
+            </div>
+
+            <div class="description-text">
+                Vibe Specs 完全颠覆了传统 AI 编程流程。它将从 Prompt 到 Code 的直接路径转变为更稳定和高效的三步过程。
+                <br><br>
+                与 AI 助手的第一次交互不是让它编写代码，而是让它帮你编写需求规范（Spec）。
+            </div>
+        </div>
+
+        <h2 class="advantages-title">七大优势</h2>
+
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <div class="advantage-title">
+                    <i class="fas fa-anchor"></i>
+                    从"对话漂移"到"稳定文档"
+                </div>
+                <div class="advantage-desc">
+                    AI 对话上下文容易变得混乱。.md 格式的 Spec 文档是稳定的、可靠的真相来源。
+                </div>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-title">
+                    <i class="fas fa-users"></i>
+                    从"独角戏"到"团队协作"
+                </div>
+                <div class="advantage-desc">
+                    AI 聊天记录是私密的。Spec 文档可以轻松交给同事，或在一周后重新拾起并保持清晰的上下文。
+                </div>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-title">
+                    <i class="fas fa-code-branch"></i>
+                    从"无结构"到"版本控制"
+                </div>
+                <div class="advantage-desc">
+                    Git 无法追踪对话历史。但它可以完美追踪 WidgetFeature.md 文件的演变。
+                </div>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-title">
+                    <i class="fas fa-border-all"></i>
+                    从"功能蔓延"到"明确范围"
+                </div>
+                <div class="advantage-desc">
+                    模糊的请求可能被 AI 无限解读。清晰的 Spec 完全防止功能蔓延。
+                </div>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-title">
+                    <i class="fas fa-history"></i>
+                    从"上下文丢失"到"即时恢复"
+                </div>
+                <div class="advantage-desc">
+                    项目搁置一周，忘记为何这样设计？有了 Spec，你可以即时恢复完整上下文。
+                </div>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-title">
+                    <i class="fas fa-rocket"></i>
+                    从"白纸综合症"到"结构化开始"
+                </div>
+                <div class="advantage-desc">
+                    面对新功能不知从何下手？现在，AI 成为你的文档助手，帮你提出结构，你只需批判和填充。
+                </div>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-title">
+                    <i class="fas fa-coins"></i>
+                    从 "Token 浪费"到"高效利用"
+                </div>
+                <div class="advantage-desc">
+                    与其在漫无目的的对话中浪费 token，不如用它们生成和解析结构化的 Spec，获得更精确的响应。
+                </div>
+            </div>
+        </div>
+
+        <div class="conclusion">
+            无论 AI 的形态如何演进，从"副驾驶"辅助编码到自主"智能体"，软件工程的第一性原理——"明确定义问题再解决"——依然适用。"Spec 优先"不是过时，反而在更高级的人机协作中扮演"安全带"和"导航图"的关键角色。
+        </div>
+    </div>
+</body>
+</html>
