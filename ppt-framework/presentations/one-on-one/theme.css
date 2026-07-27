@@ -167,6 +167,26 @@ h1 {
     font-size: 12px;
 }
 
+.project-future {
+    opacity: 0.48;
+    position: relative;
+}
+
+.project-future .project-code {
+    background: rgba(145, 161, 157, 0.08);
+    border-color: rgba(145, 161, 157, 0.28);
+    color: var(--muted);
+}
+
+.project-future .future-label {
+    border: 1px solid rgba(145, 161, 157, 0.3);
+    border-radius: 3px;
+    font-size: 9px;
+    font-weight: 800;
+    margin-left: auto;
+    padding: 3px 5px;
+}
+
 .knowledge-head {
     align-items: center;
     display: flex;
@@ -332,7 +352,7 @@ h1 {
     display: grid;
     flex: 1;
     gap: 18px;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 0.55fr 0.55fr 1.9fr;
     min-height: 0;
 }
 
@@ -344,6 +364,53 @@ h1 {
     flex-direction: column;
     padding: 26px;
     position: relative;
+}
+
+.stage-compact {
+    padding: 20px 16px;
+}
+
+.stage-compact::after {
+    font-size: 72px;
+    right: 8px;
+}
+
+.stage-compact .stage-number {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+}
+
+.stage-compact h2 {
+    font-size: 19px;
+}
+
+.stage-featured {
+    background:
+        linear-gradient(135deg, rgba(55, 230, 189, 0.1), transparent 48%),
+        var(--panel);
+    border-color: rgba(55, 230, 189, 0.38);
+}
+
+.pr-metric {
+    align-items: flex-end;
+    display: flex;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.pr-metric strong {
+    color: var(--mint);
+    font-size: 58px;
+    font-weight: 800;
+    line-height: 0.85;
+}
+
+.pr-metric span {
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.25;
+    max-width: 90px;
 }
 
 .stage::after {
