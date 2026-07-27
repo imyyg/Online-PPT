@@ -326,7 +326,22 @@ h1 {
 }
 
 .domain-slide .project {
-    padding: 5px 0;
+    gap: 10px;
+    padding: 2px 0;
+}
+
+.domain-slide .project-code {
+    font-size: 10px;
+    height: 28px;
+    width: 42px;
+}
+
+.domain-slide .project strong {
+    font-size: 13px;
+}
+
+.domain-slide .project span {
+    font-size: 9px;
 }
 
 .domain-slide .knowledge-head {
