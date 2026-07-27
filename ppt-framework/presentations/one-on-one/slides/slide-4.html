@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strengths and Growth</title>
+    <script>
+        fetch('/presentations/one-on-one/theme.css')
+            .then((response) => response.text())
+            .then((css) => {
+                const style = document.createElement('style');
+                style.textContent = css;
+                document.head.appendChild(style);
+            });
+    </script>
+</head>
+<body>
+    <main class="slide">
+        <header class="header">
+            <div>
+                <div class="eyebrow">Reflection · Next Step</div>
+                <h1>Strengths &amp; Growth Areas</h1>
+                <p class="lead">保持平台化思维，让成长方向具体可见</p>
+            </div>
+            <div class="page-no">04 / 04</div>
+        </header>
+
+        <section class="reflection-grid">
+            <article class="panel reflection good">
+                <div class="reflection-kicker">Strength</div>
+                <h2>平台化思维</h2>
+                <div class="point-list">
+                    <div class="point"><b>01</b><span>不止解决单次问题，关注长期复用价值</span></div>
+                    <div class="point"><b>02</b><span>将领域经验沉淀为 Knowledge Base</span></div>
+                    <div class="point"><b>03</b><span>将重复工作沉淀为 Command / Skill</span></div>
+                    <div class="point"><b>04</b><span>从个人使用逐步走向团队复用</span></div>
+                </div>
+            </article>
+
+            <article class="panel reflection grow">
+                <div class="reflection-kicker">Growth</div>
+                <h2>团队协作 · 思考全面</h2>
+                <div class="point-list">
+                    <div class="point"><b>01</b><span>更主动地同步信息与推动协作</span></div>
+                    <div class="point"><b>02</b><span>更完整地考虑业务边界与特殊场景</span></div>
+                    <div class="point"><b>03</b><span>开发前识别依赖、风险与影响范围</span></div>
+                    <div class="point"><b>04</b><span>持续更新知识库并完成团队分享</span></div>
+                </div>
+            </article>
+        </section>
+
+        <div class="summary">持续深化 Domain Expertise，通过 AI 与平台化思维，将个人经验转化为可复用的团队能力。</div>
+    </main>
+</body>
+</html>

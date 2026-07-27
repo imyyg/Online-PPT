@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain Expertise</title>
+    <script>
+        fetch('/presentations/one-on-one/theme.css')
+            .then((response) => response.text())
+            .then((css) => {
+                const style = document.createElement('style');
+                style.textContent = css;
+                document.head.appendChild(style);
+            });
+    </script>
+</head>
+<body>
+    <main class="slide domain-slide">
+        <header class="header">
+            <div>
+                <div class="eyebrow">Key Engineer · Hard Skill 01</div>
+                <h1>Domain Expertise</h1>
+                <p class="lead">从复杂项目交付，到 Pricing 领域知识沉淀</p>
+            </div>
+            <div class="page-no">01 / 04</div>
+        </header>
+
+        <section class="grid-2">
+            <article class="panel">
+                <div class="panel-label">完整项目经验</div>
+                <div class="project-list">
+                    <div class="project">
+                        <div class="project-code">GD</div>
+                        <div><strong>Glasses Direct</strong><span>SAP Integration</span></div>
+                    </div>
+                    <div class="project">
+                        <div class="project-code">HTO</div>
+                        <div><strong>Order Lifecycle</strong><span>Order State Machine</span></div>
+                    </div>
+                    <div class="project">
+                        <div class="project-code">RX</div>
+                        <div><strong>Rx Refactoring</strong><span>Complex Domain Refactoring</span></div>
+                    </div>
+                    <div class="project">
+                        <div class="project-code">CART</div>
+                        <div><strong>Cart Refactoring</strong><span>Pricing Engine</span></div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="panel">
+                <div class="knowledge-head">
+                    <div>
+                        <div class="panel-label">Knowledge Base · Current Focus</div>
+                        <h2>Pricing Engine</h2>
+                    </div>
+                    <span class="badge">Knowledge Building</span>
+                </div>
+
+                <div class="deliverables">
+                    <div class="deliverable"><b>Design Document</b><span>系统设计与关键决策</span></div>
+                    <div class="deliverable"><b>Knowledge Base</b><span>业务规则持续沉淀</span></div>
+                    <div class="deliverable"><b>Business Alignment</b><span>主动发现并确认问题</span></div>
+                </div>
+
+                <div class="decisions">
+                    <div class="decision"><span class="dot"></span><p>Credits 保持<em>税前扣减</em></p></div>
+                    <div class="decision"><span class="dot"></span><p>Credits 可拆分至 <em>Shipping Fee</em></p></div>
+                    <div class="decision"><span class="dot"></span><p>税率缓存 <em>30 min</em>，窗口期可接受</p></div>
+                    <div class="decision"><span class="dot"></span><p>RDF：<em>0.28 → 0.31</em></p></div>
+                    <div class="decision"><span class="dot"></span><p>确认军事基地、美国领地运费规则</p></div>
+                </div>
+
+            </article>
+        </section>
+
+        <div class="next-strip">
+            <strong>NEXT</strong>
+            <div class="next-action"><b>01</b><span>持续更新 Knowledge Base</span></div>
+            <div class="next-action"><b>02</b><span>Pricing Knowledge Sharing</span></div>
+        </div>
+    </main>
+</body>
+</html>

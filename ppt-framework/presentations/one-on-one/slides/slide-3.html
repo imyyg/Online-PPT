@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrum and Agile</title>
+    <script>
+        fetch('/presentations/one-on-one/theme.css')
+            .then((response) => response.text())
+            .then((css) => {
+                const style = document.createElement('style');
+                style.textContent = css;
+                document.head.appendChild(style);
+            });
+    </script>
+</head>
+<body>
+    <main class="slide">
+        <header class="header">
+            <div>
+                <div class="eyebrow">Key Engineer · Hard Skill 03</div>
+                <h1>Scrum / Agile</h1>
+                <p class="lead">以 AI 实践支持团队更顺畅、更高效地完成任务</p>
+            </div>
+            <div class="page-no">03 / 04</div>
+        </header>
+
+        <section class="flow">
+            <article class="flow-node">
+                <div class="symbol">C</div>
+                <h2>Command</h2>
+                <p>规范重复任务<br>统一执行方式</p>
+            </article>
+            <div class="arrow">→</div>
+            <article class="flow-node">
+                <div class="symbol">S</div>
+                <h2>Skill</h2>
+                <p>沉淀工程经验<br>形成可复用能力</p>
+            </article>
+            <div class="arrow">→</div>
+            <article class="flow-node">
+                <div class="symbol">A</div>
+                <h2>Agent Teams</h2>
+                <p>支持任务协作<br>推动团队复用</p>
+            </article>
+        </section>
+
+        <div class="value-row">
+            <div class="value">减少重复工作</div>
+            <div class="value">提升执行效率</div>
+            <div class="value">协作过程更顺畅</div>
+            <div class="value">经验在团队内复用</div>
+        </div>
+    </main>
+</body>
+</html>

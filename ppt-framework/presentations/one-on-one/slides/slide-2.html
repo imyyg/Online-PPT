@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Practices and Insights</title>
+    <script>
+        fetch('/presentations/one-on-one/theme.css')
+            .then((response) => response.text())
+            .then((css) => {
+                const style = document.createElement('style');
+                style.textContent = css;
+                document.head.appendChild(style);
+            });
+    </script>
+</head>
+<body>
+    <main class="slide">
+        <header class="header">
+            <div>
+                <div class="eyebrow">Key Engineer · Hard Skill 02</div>
+                <h1>AI Practices &amp; Insights</h1>
+                <p class="lead">从单点工具，到工作流，再到 Agent 协作</p>
+            </div>
+            <div class="page-no">02 / 04</div>
+        </header>
+
+        <section class="stage-grid">
+            <article class="stage" data-step="1">
+                <div class="stage-number">Stage 01 · Skill</div>
+                <h2>Full-Stack-Dev<br>Skill</h2>
+                <p>将重复的工程任务封装为可复用能力，建立个人 AI 实践起点。</p>
+                <div class="stage-tags"><span class="tag">Reusable</span><span class="tag">Command</span></div>
+            </article>
+            <article class="stage" data-step="2">
+                <div class="stage-number">Stage 02 · Workflow</div>
+                <h2>AI Workflow</h2>
+                <p>让 AI 融入研发过程，规范任务执行方式，提升交付效率。</p>
+                <div class="stage-tags"><span class="tag">Process</span><span class="tag">Efficiency</span></div>
+            </article>
+            <article class="stage" data-step="3">
+                <div class="stage-number">Stage 03 · Agent</div>
+                <h2>Agent Teams</h2>
+                <p>持续贡献并学习 Harness，探索多 Agent 协作的工程化实践。</p>
+                <div class="stage-tags"><span class="tag">Contribution</span><span class="tag">Harness</span><span class="tag">OpenClaw</span></div>
+            </article>
+        </section>
+
+        <div class="learning-bar">
+            <strong>AI KNOWLEDGE · COMPLETED</strong>
+            <div class="learning-items">
+                <span>Foundation Layer</span>
+                <span>Prompt &amp; Control</span>
+                <span>Tool / Function Calling</span>
+                <span>Engineering Workflow</span>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

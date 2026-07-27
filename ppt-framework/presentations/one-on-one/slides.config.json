@@ -1,0 +1,56 @@
+{
+  "title": "Key Engineer Review",
+  "author": "",
+  "description": "Domain expertise, AI practices, methodology and growth reflection",
+  "theme": {
+    "primaryColor": "#37e6bd",
+    "secondaryColor": "#12171c",
+    "fontFamily": "Manrope, Noto Sans SC, sans-serif",
+    "transition": "fade"
+  },
+  "settings": {
+    "autoPlay": false,
+    "autoPlayInterval": 5000,
+    "loop": false,
+    "showProgress": true,
+    "showThumbnails": true,
+    "enableKeyboardNav": true,
+    "enableTouchNav": true,
+    "autoStartOnHome": false,
+    "autoFullscreenOnHome": false
+  },
+  "slides": [
+    {
+      "id": "slide-1",
+      "title": "Domain Expertise",
+      "file": "slide-1.html",
+      "visible": true,
+      "notes": "Project experience and Pricing Engine knowledge base",
+      "duration": null
+    },
+    {
+      "id": "slide-2",
+      "title": "AI Practices and Insights",
+      "file": "slide-2.html",
+      "visible": true,
+      "notes": "Three-stage AI practice evolution",
+      "duration": null
+    },
+    {
+      "id": "slide-3",
+      "title": "Scrum and Agile",
+      "file": "slide-3.html",
+      "visible": true,
+      "notes": "AI practices supporting team delivery",
+      "duration": null
+    },
+    {
+      "id": "slide-4",
+      "title": "Strengths and Growth",
+      "file": "slide-4.html",
+      "visible": true,
+      "notes": "Platform thinking, collaboration and comprehensive thinking",
+      "duration": null
+    }
+  ]
+}
