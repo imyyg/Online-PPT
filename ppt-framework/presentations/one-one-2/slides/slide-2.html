@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Methodology</title>
+    <script>
+        fetch('../theme.css')
+            .then((response) => response.text())
+            .then((css) => {
+                const style = document.createElement('style');
+                style.textContent = css;
+                document.head.appendChild(style);
+            });
+    </script>
+</head>
+<body>
+    <main class="slide">
+        <header class="header">
+            <div>
+                <div class="eyebrow">Topic 02 · Methodology</div>
+                <h1>Three Principles I <em>Actually Run On</em></h1>
+                <p class="lead">不是口号 —— 每一条都能在这个季度的实际工作里找到对应的落点。</p>
+            </div>
+            <div class="page-no"><b>02</b> / 05</div>
+        </header>
+
+        <section class="stack">
+          <div class="row-3">
+            <article class="card method card-accent">
+                <div class="wm">01</div>
+                <h2>Platform<br>Thinking</h2>
+                <div class="motto">Configure, don't fork.</div>
+                <p class="note">把已有的与可预见的 banner 差异大量抽取为<b>配置</b>；无法配置化的 banner 专属逻辑，提前预留<b>扩展接口</b>。</p>
+                <p class="note-muted">后续 roll out 只需改配置，或只实现对应接口，不再反复改动主流程。</p>
+                <div class="proof">
+                    <div class="lbl">In Practice</div>
+                    <p><b>Pricing Engine</b> · 差异 → 配置项，例外 → 扩展点</p>
+                </div>
+                <div class="tags">
+                    <span class="tag tag-solid">Config-Driven</span>
+                    <span class="tag">Extension Point</span>
+                </div>
+            </article>
+
+            <article class="card method">
+                <div class="wm">02</div>
+                <h2>AI-First<br>Mindset</h2>
+                <div class="motto">Ask AI first, every time.</div>
+                <p class="note">面对任何任务，第一反应是先判断：<b>AI 能否提升效率或质量</b>，而不是凭习惯直接手工开干。</p>
+                <p class="note-muted">把这个判断变成本能，个人能力才能跟着模型一起复利增长。</p>
+                <div class="proof">
+                    <div class="lbl">In Practice</div>
+                    <p><b>Shadow Triage</b> · 全量自动校验替代人工抽样</p>
+                </div>
+                <div class="tags">
+                    <span class="tag tag-solid">Default Reflex</span>
+                    <span class="tag">Compounding</span>
+                </div>
+            </article>
+
+            <article class="card method">
+                <div class="wm">03</div>
+                <h2>Think Slow,<br>Execute Fast</h2>
+                <div class="motto">Check inside Plan, not after Do.</div>
+                <p class="note">PDCA 中把 <b>Plan 阶段的 Check 做足</b>：边界、依赖、风险在动手之前就对齐清楚。</p>
+                <p class="note-muted">前期多花的时间，换回的是执行期大幅减少的返工，整体交付反而更快更稳。</p>
+                <div class="proof">
+                    <div class="lbl">In Practice</div>
+                    <p><b>Checkout Study</b> · 开工前完成架构方案预研</p>
+                </div>
+                <div class="tags">
+                    <span class="tag tag-solid">PDCA</span>
+                    <span class="tag">Less Rework</span>
+                </div>
+            </article>
+          </div>
+
+          <div class="strip">
+              <strong>HOW THEY COMPOUND</strong>
+              <p>想清楚再动手（03）&#8594; 用 AI 放大效率与质量（02）&#8594; 把一次性成果沉淀为平台能力（01）。</p>
+          </div>
+        </section>
+    </main>
+</body>
+</html>

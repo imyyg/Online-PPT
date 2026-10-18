@@ -1,0 +1,1176 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+
+/* =========================================================
+   one-one-2 · Light Futuristic / HUD theme
+   ========================================================= */
+
+:root {
+    --ink: #0b1b33;
+    --ink-soft: #27405f;
+    --muted: #64789a;
+    --faint: #93a6c0;
+
+    --accent: #1763ff;
+    --cyan: #00b2c9;
+    --violet: #7b4dff;
+    --amber: #d07a00;
+    --rose: #e0346b;
+
+    --line: rgba(23, 99, 255, 0.16);
+    --line-soft: rgba(23, 99, 255, 0.09);
+    --glass: rgba(255, 255, 255, 0.74);
+    --glass-strong: rgba(255, 255, 255, 0.9);
+    --shadow: 0 20px 44px -28px rgba(13, 40, 84, 0.45);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    align-items: center;
+    background:
+        radial-gradient(circle at 88% 6%, rgba(0, 178, 201, 0.16), transparent 34%),
+        radial-gradient(circle at 4% 92%, rgba(123, 77, 255, 0.14), transparent 36%),
+        radial-gradient(circle at 50% 0%, rgba(23, 99, 255, 0.08), transparent 42%),
+        linear-gradient(160deg, #f7fafd 0%, #eef3fa 54%, #f4f7fc 100%);
+    color: var(--ink);
+    display: flex;
+    font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+    overflow: hidden;
+}
+
+/* fine HUD grid */
+body::before {
+    background-image:
+        linear-gradient(rgba(13, 40, 84, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(13, 40, 84, 0.045) 1px, transparent 1px);
+    background-size: 34px 34px;
+    content: '';
+    inset: 0;
+    mask-image: radial-gradient(circle at 50% 46%, #000 32%, transparent 86%);
+    pointer-events: none;
+    position: fixed;
+}
+
+/* slow scan sweep */
+body::after {
+    animation: sweep 11s linear infinite;
+    background: linear-gradient(90deg, transparent, rgba(0, 178, 201, 0.5), transparent);
+    content: '';
+    height: 1px;
+    left: 0;
+    opacity: 0.55;
+    pointer-events: none;
+    position: fixed;
+    right: 0;
+    top: 0;
+}
+
+@keyframes sweep {
+    0% { transform: translateY(0); opacity: 0; }
+    12% { opacity: 0.55; }
+    88% { opacity: 0.55; }
+    100% { transform: translateY(100vh); opacity: 0; }
+}
+
+/* ---------------------------------------------------------
+   Slide shell
+   --------------------------------------------------------- */
+
+.slide {
+    display: flex;
+    flex-direction: column;
+    height: min(100vh, 620px);
+    padding: 34px 54px 30px;
+    position: relative;
+    width: 100%;
+}
+
+.slide::before {
+    background: linear-gradient(90deg, var(--accent), var(--cyan) 70%, transparent);
+    content: '';
+    height: 3px;
+    left: 54px;
+    position: absolute;
+    top: 0;
+    width: 140px;
+}
+
+.slide::after {
+    background: repeating-linear-gradient(90deg, var(--line) 0 6px, transparent 6px 14px);
+    bottom: 16px;
+    content: '';
+    height: 1px;
+    left: 54px;
+    position: absolute;
+    right: 54px;
+}
+
+/* ---------------------------------------------------------
+   Header
+   --------------------------------------------------------- */
+
+.header {
+    align-items: flex-end;
+    display: flex;
+    gap: 24px;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.eyebrow {
+    align-items: center;
+    color: var(--accent);
+    display: flex;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    gap: 8px;
+    letter-spacing: 0.18em;
+    margin-bottom: 9px;
+    text-transform: uppercase;
+}
+
+.eyebrow::before {
+    background: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(0, 178, 201, 0.18);
+    content: '';
+    height: 6px;
+    transform: rotate(45deg);
+    width: 6px;
+}
+
+h1 {
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.06;
+}
+
+h1 em {
+    background: linear-gradient(100deg, var(--accent), var(--cyan));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-style: normal;
+}
+
+.lead {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.6;
+    margin-top: 9px;
+    max-width: 760px;
+}
+
+.page-no {
+    color: var(--faint);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+}
+
+.page-no b {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+/* ---------------------------------------------------------
+   Layout helpers
+   --------------------------------------------------------- */
+
+.stack {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 0;
+}
+
+.row-2 {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: 1fr 1fr;
+}
+
+.row-3 {
+    display: grid;
+    flex: 1;
+    gap: 14px;
+    grid-template-columns: repeat(3, 1fr);
+    min-height: 0;
+}
+
+.row-2-fill {
+    display: grid;
+    flex: 1;
+    gap: 16px;
+    grid-template-columns: 1fr 1fr;
+    min-height: 0;
+}
+
+/* ---------------------------------------------------------
+   Card / panel (HUD bracket corners)
+   --------------------------------------------------------- */
+
+.card {
+    backdrop-filter: blur(12px);
+    background: var(--glass);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    padding: 18px 20px;
+    position: relative;
+}
+
+.card::before,
+.card::after {
+    content: '';
+    height: 13px;
+    position: absolute;
+    width: 13px;
+}
+
+.card::before {
+    border-left: 2px solid var(--accent);
+    border-top: 2px solid var(--accent);
+    left: -1px;
+    top: -1px;
+}
+
+.card::after {
+    border-bottom: 2px solid rgba(0, 178, 201, 0.75);
+    border-right: 2px solid rgba(0, 178, 201, 0.75);
+    bottom: -1px;
+    right: -1px;
+}
+
+.card-flat {
+    background: rgba(255, 255, 255, 0.52);
+    box-shadow: none;
+}
+
+.card-accent {
+    background:
+        linear-gradient(145deg, rgba(23, 99, 255, 0.07), transparent 46%),
+        var(--glass-strong);
+    border-color: rgba(23, 99, 255, 0.3);
+}
+
+.card-head {
+    align-items: flex-start;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.kicker {
+    color: var(--faint);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.card h2 {
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+}
+
+.card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+/* status pill */
+.pill {
+    background: rgba(23, 99, 255, 0.08);
+    border: 1px solid rgba(23, 99, 255, 0.26);
+    border-radius: 999px;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 5px 9px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.pill-live {
+    background: rgba(0, 178, 201, 0.1);
+    border-color: rgba(0, 178, 201, 0.34);
+    color: #017d8e;
+}
+
+.pill-study {
+    background: rgba(123, 77, 255, 0.09);
+    border-color: rgba(123, 77, 255, 0.3);
+    color: var(--violet);
+}
+
+.pill-next {
+    background: rgba(208, 122, 0, 0.1);
+    border-color: rgba(208, 122, 0, 0.32);
+    color: var(--amber);
+}
+
+/* ---------------------------------------------------------
+   Metrics
+   --------------------------------------------------------- */
+
+.metrics {
+    display: flex;
+    gap: 26px;
+    margin: 2px 0 10px;
+}
+
+.metric {
+    align-items: baseline;
+    display: flex;
+    gap: 7px;
+}
+
+.metric strong {
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+}
+
+.metric-cyan strong { color: #017d8e; }
+.metric-violet strong { color: var(--violet); }
+.metric-rose strong { color: var(--rose); }
+
+.metric span {
+    color: var(--muted);
+    font-size: 10.5px;
+    font-weight: 500;
+    line-height: 1.25;
+    max-width: 92px;
+}
+
+.note {
+    color: var(--ink-soft);
+    font-size: 12.5px;
+    line-height: 1.65;
+}
+
+.note-muted {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.note + .note,
+.note + .note-muted {
+    margin-top: 7px;
+}
+
+/* ---------------------------------------------------------
+   Mini item list (bordered left accent)
+   --------------------------------------------------------- */
+
+.items {
+    display: grid;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 12px;
+}
+
+.items-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.item {
+    background: rgba(23, 99, 255, 0.045);
+    border-left: 2px solid var(--accent);
+    padding: 9px 11px;
+}
+
+.item-cyan { border-left-color: var(--cyan); background: rgba(0, 178, 201, 0.055); }
+.item-violet { border-left-color: var(--violet); background: rgba(123, 77, 255, 0.05); }
+.item-amber { border-left-color: var(--amber); background: rgba(208, 122, 0, 0.055); }
+
+.item b {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 700;
+    margin-bottom: 3px;
+}
+
+.item span {
+    color: var(--muted);
+    display: block;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* numbered point list */
+.points {
+    display: grid;
+    gap: 7px;
+}
+
+.point {
+    align-items: flex-start;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid var(--line-soft);
+    display: flex;
+    gap: 10px;
+    padding: 8px 11px;
+}
+
+.point i {
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding-top: 2px;
+}
+
+.point p {
+    color: var(--ink-soft);
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+.point p b {
+    color: var(--ink);
+    font-weight: 700;
+}
+
+/* tag chips */
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.tag {
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.07em;
+    padding: 4px 7px;
+    text-transform: uppercase;
+}
+
+.tag-solid {
+    background: rgba(23, 99, 255, 0.08);
+    border-color: rgba(23, 99, 255, 0.24);
+    color: var(--accent);
+}
+
+/* ---------------------------------------------------------
+   Methodology cards (big index watermark)
+   --------------------------------------------------------- */
+
+.method {
+    overflow: hidden;
+    padding: 22px 22px 20px;
+}
+
+.method .wm {
+    color: rgba(23, 99, 255, 0.07);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 78px;
+    font-weight: 700;
+    line-height: 0.8;
+    position: absolute;
+    right: 12px;
+    top: 10px;
+}
+
+.method h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.motto {
+    align-items: center;
+    color: var(--cyan);
+    display: flex;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    gap: 6px;
+    letter-spacing: 0.02em;
+    margin-bottom: 14px;
+}
+
+.motto::before {
+    content: '>';
+    font-weight: 700;
+    opacity: 0.8;
+}
+
+/* ---------------------------------------------------------
+   Pipeline flow strip
+   --------------------------------------------------------- */
+
+.flow {
+    align-items: stretch;
+    display: grid;
+    gap: 8px;
+    grid-template-columns: 1fr 22px 1fr 22px 1fr 22px 1fr;
+}
+
+.flow-node {
+    backdrop-filter: blur(10px);
+    background: var(--glass);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 12px 14px;
+    position: relative;
+}
+
+.flow-node .step {
+    color: var(--faint);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    margin-bottom: 5px;
+}
+
+.flow-node b {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.flow-node span {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.flow-node-key {
+    background: linear-gradient(150deg, rgba(0, 178, 201, 0.12), rgba(255, 255, 255, 0.9) 52%);
+    border-color: rgba(0, 178, 201, 0.36);
+}
+
+.arrow {
+    align-items: center;
+    color: var(--accent);
+    display: flex;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    justify-content: center;
+    opacity: 0.6;
+}
+
+/* bi-directional check */
+.bidir {
+    display: grid;
+    gap: 9px;
+}
+
+.bidir-row {
+    background: rgba(255, 255, 255, 0.62);
+    border: 1px solid var(--line-soft);
+    border-left: 2px solid var(--cyan);
+    padding: 10px 12px;
+}
+
+.bidir-row:nth-child(2) {
+    border-left-color: var(--violet);
+}
+
+.bidir-row b {
+    align-items: center;
+    display: flex;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    gap: 7px;
+    letter-spacing: 0.04em;
+    margin-bottom: 5px;
+}
+
+.bidir-row b em {
+    color: var(--accent);
+    font-style: normal;
+}
+
+.bidir-row span {
+    color: var(--ink-soft);
+    display: block;
+    font-size: 11.5px;
+    line-height: 1.55;
+}
+
+/* ---------------------------------------------------------
+   Output table
+   --------------------------------------------------------- */
+
+.otable {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.otable th {
+    border-bottom: 1px solid var(--line);
+    color: var(--faint);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    padding: 0 8px 7px;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.otable td {
+    border-bottom: 1px dashed var(--line-soft);
+    color: var(--ink-soft);
+    font-size: 11px;
+    line-height: 1.4;
+    padding: 8px;
+    vertical-align: middle;
+}
+
+.otable tr:last-child td {
+    border-bottom: 0;
+}
+
+.otable td:first-child {
+    color: var(--ink);
+    font-weight: 700;
+}
+
+.otable .owner {
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+/* ---------------------------------------------------------
+   Footer strip
+   --------------------------------------------------------- */
+
+.strip {
+    align-items: center;
+    background: linear-gradient(100deg, rgba(23, 99, 255, 0.08), rgba(0, 178, 201, 0.06));
+    border: 1px solid rgba(23, 99, 255, 0.2);
+    border-left: 3px solid var(--accent);
+    display: flex;
+    flex: 0 0 auto;
+    gap: 16px;
+    margin-top: 12px;
+    padding: 10px 14px;
+}
+
+.strip strong {
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    white-space: nowrap;
+}
+
+.strip p {
+    color: var(--ink-soft);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.strip-amber {
+    background: linear-gradient(100deg, rgba(208, 122, 0, 0.1), rgba(224, 52, 107, 0.05));
+    border-color: rgba(208, 122, 0, 0.26);
+    border-left-color: var(--amber);
+}
+
+.strip-amber strong {
+    color: var(--amber);
+}
+
+/* commitment chips */
+.chips {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.chip {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.66);
+    border: 1px solid var(--line-soft);
+    display: flex;
+    gap: 9px;
+    padding: 9px 11px;
+}
+
+.chip::before {
+    background: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(0, 178, 201, 0.14);
+    content: '';
+    flex: 0 0 auto;
+    height: 6px;
+    transform: rotate(45deg);
+    width: 6px;
+}
+
+.chip div b {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.chip div span {
+    color: var(--muted);
+    font-size: 10.5px;
+    line-height: 1.4;
+}
+
+/* phase blocks */
+.phases {
+    display: grid;
+    gap: 8px;
+}
+
+.phase {
+    background: rgba(255, 255, 255, 0.62);
+    border: 1px solid var(--line-soft);
+    display: flex;
+    gap: 11px;
+    padding: 9px 12px;
+}
+
+.phase .lbl {
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding-top: 2px;
+    white-space: nowrap;
+}
+
+.phase p {
+    color: var(--ink-soft);
+    font-size: 11.5px;
+    line-height: 1.55;
+}
+
+.phase-why {
+    background: linear-gradient(100deg, rgba(123, 77, 255, 0.08), rgba(255, 255, 255, 0.7));
+    border-color: rgba(123, 77, 255, 0.24);
+}
+
+.phase-why .lbl {
+    color: var(--violet);
+}
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+
+@media (max-width: 1000px), (max-height: 650px) {
+    .slide {
+        min-height: 520px;
+        padding: 26px 34px 24px;
+    }
+
+    .slide::before { left: 34px; }
+    .slide::after { left: 34px; right: 34px; }
+
+    h1 { font-size: 31px; }
+
+    .header { margin-bottom: 14px; }
+
+    .card { padding: 14px 15px; }
+
+    .method { padding: 16px; }
+
+    .method .wm { font-size: 58px; }
+
+    .metric strong { font-size: 27px; }
+
+    .card h2 { font-size: 18px; }
+}
+
+/* ---------------------------------------------------------
+   Fit-and-finish overrides
+   --------------------------------------------------------- */
+
+/* unit suffix inside big metric numbers */
+.metric strong small {
+    font-size: 0.5em;
+    font-weight: 700;
+    letter-spacing: 0;
+    margin-left: 1px;
+}
+
+/* inline emphasis inside explanatory Chinese text */
+.bidir-row span strong {
+    color: var(--ink);
+    font-weight: 700;
+}
+
+.note b,
+.phase p b,
+.strip p b {
+    color: var(--ink);
+    font-weight: 700;
+}
+
+/* let the top row stretch, keep the bottom card content-sized */
+.stack > .row-2 {
+    flex: 1;
+    min-height: 0;
+}
+
+.stack > .card {
+    flex: 0 0 auto;
+}
+
+/* equal-height rows for the 2x2 card grid */
+.row-2-fill {
+    grid-auto-rows: minmax(0, 1fr);
+}
+
+/* anchor trailing blocks to the card bottom */
+.card > .strip:last-child,
+.card > .tags:last-child,
+.card > .items:last-child {
+    margin-top: auto;
+}
+
+/* page number sits top-right like a HUD readout */
+.header {
+    align-items: flex-start;
+}
+
+.page-no {
+    padding-top: 4px;
+}
+
+/* two-column split where the left side is a stack of cards */
+.split {
+    display: grid;
+    flex: 1;
+    gap: 14px;
+    grid-template-columns: 1.08fr 1fr;
+    min-height: 0;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 0;
+}
+
+.col > .card {
+    flex: 1;
+    min-height: 0;
+}
+
+/* vertical item list that stretches to fill the card */
+.items-col {
+    align-content: stretch;
+    display: grid;
+    flex: 1;
+    gap: 10px;
+    grid-auto-rows: minmax(0, 1fr);
+    margin-top: 0;
+    min-height: 0;
+    padding-top: 2px;
+}
+
+.items-col .item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px 13px;
+}
+
+.items-col .item b {
+    font-size: 13.5px;
+    margin-bottom: 4px;
+}
+
+.items-col .item span {
+    font-size: 11.5px;
+    line-height: 1.55;
+}
+
+/* big numerals read better in the display face than in mono */
+.metric strong {
+    font-family: 'Space Grotesk', sans-serif;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+}
+
+/* ---------------------------------------------------------
+   Methodology · "in practice" proof inset
+   --------------------------------------------------------- */
+
+.method .wm {
+    font-size: 96px;
+    right: 14px;
+    top: 6px;
+}
+
+.method h2 {
+    font-size: 23px;
+    margin-bottom: 9px;
+}
+
+.method .note {
+    font-size: 13px;
+    line-height: 1.75;
+}
+
+.proof {
+    background: rgba(23, 99, 255, 0.055);
+    border: 1px dashed rgba(23, 99, 255, 0.3);
+    margin-top: auto;
+    padding: 11px 13px;
+    position: relative;
+}
+
+.proof .lbl {
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.proof p {
+    color: var(--ink);
+    font-size: 11.5px;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+.proof p b {
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.card > .tags:last-child {
+    margin-top: 12px;
+}
+
+.card > .proof + .tags {
+    margin-top: 10px;
+}
+
+/* distribute methodology card content instead of leaving one big hole */
+.method {
+    justify-content: space-between;
+}
+
+.method h2 {
+    font-size: 25px;
+    line-height: 1.18;
+}
+
+.method .motto {
+    font-size: 11.5px;
+    margin-bottom: 0;
+}
+
+.method .note {
+    font-size: 13.5px;
+    line-height: 1.85;
+}
+
+.method .note-muted {
+    font-size: 12.5px;
+    line-height: 1.75;
+}
+
+.method .note + .note-muted {
+    margin-top: 10px;
+}
+
+.method .proof {
+    margin-top: 0;
+}
+
+.method > .tags {
+    margin-top: 0;
+}
+
+/* trailing blocks hug the card bottom (methodology cards opt out) */
+.card > .tags:last-child {
+    margin-top: auto;
+    padding-top: 12px;
+}
+
+.method > .tags:last-child {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+/* ---------------------------------------------------------
+   Deep-dive slide: stretch the bi-directional rows and table
+   --------------------------------------------------------- */
+
+.card > .bidir {
+    align-content: stretch;
+    flex: 1;
+    grid-auto-rows: minmax(0, 1fr);
+    min-height: 0;
+}
+
+.bidir-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.bidir-row b {
+    font-size: 11.5px;
+    margin-bottom: 7px;
+}
+
+.bidir-row span {
+    font-size: 12.5px;
+    line-height: 1.7;
+}
+
+.card > .bidir + .note-muted {
+    margin-top: 12px;
+}
+
+.card > .otable {
+    flex: 1;
+    height: 100%;
+}
+
+.card > .otable td {
+    padding: 10px 8px;
+}
+
+.flow-node {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.flow-node span {
+    font-size: 11.5px;
+    line-height: 1.6;
+}
+
+/* ---------------------------------------------------------
+   Next-step slide: stretch chips and phases to fill the card
+   --------------------------------------------------------- */
+
+.card > .chips {
+    flex: 1;
+    grid-auto-rows: minmax(0, 1fr);
+    min-height: 0;
+}
+
+.chip {
+    padding: 11px 13px;
+}
+
+.chip div b {
+    font-size: 12.5px;
+    margin-bottom: 3px;
+}
+
+.chip div span {
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.card > .phases {
+    flex: 1;
+    grid-auto-rows: minmax(0, 1fr);
+    min-height: 0;
+}
+
+.phase {
+    align-items: center;
+    padding: 11px 13px;
+}
+
+.phase p {
+    font-size: 12.5px;
+    line-height: 1.75;
+}
+
+.phase .lbl {
+    padding-top: 0;
+}
+
+/* keep a gap when a stretched block is followed by a footer strip */
+.card > .chips + .strip,
+.card > .phases + .strip,
+.card > .bidir + .strip,
+.card > .items-col + .strip {
+    margin-top: 12px;
+}
+
+/* ---------------------------------------------------------
+   AI practice slide: point lists stretch to fill the card
+   --------------------------------------------------------- */
+
+.card > .points {
+    align-content: stretch;
+    flex: 1;
+    grid-auto-rows: minmax(0, 1fr);
+    min-height: 0;
+}
+
+.card > .points .point {
+    align-items: center;
+}
+
+.card > .points .point i {
+    min-width: 46px;
+    padding-top: 0;
+}
+
+/* stacked cards: start from content height, then share leftover space
+   (flex-basis 0 would force equal heights and overflow the denser card) */
+.col > .card {
+    flex: 1 1 auto;
+}

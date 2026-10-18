@@ -220,13 +220,22 @@ onUnmounted(() => {
 .progress-fill { @apply h-full transition-all duration-300 ease-out; }
 
 /* Transparent floating toolbar buttons */
+/* Mid-tone surface so controls stay legible over both light and dark slides:
+   darker than a light slide, lighter than a dark one. */
 .nav-btn {
   @apply absolute top-1/2 -translate-y-1/2 w-12 h-12 rounded-full;
-  @apply bg-black/20 border border-white/10;
   @apply flex items-center justify-center text-white;
   @apply transition-all duration-300 pointer-events-auto;
-  @apply hover:bg-black/40 hover:border-white/20;
   @apply disabled:opacity-30 disabled:cursor-not-allowed;
+  background: rgba(52, 58, 72, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  box-shadow: 0 2px 10px rgba(12, 20, 40, 0.22);
+  backdrop-filter: blur(6px);
+}
+
+.nav-btn:hover:not(:disabled) {
+  background: rgba(52, 58, 72, 0.78);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .nav-prev { @apply left-4; }
@@ -241,11 +250,23 @@ onUnmounted(() => {
 
 .toolbar-right { @apply flex items-center gap-2; }
 
-.toolbar-btn { 
-  @apply w-10 h-10 rounded-full flex items-center justify-center text-white transition-colors duration-150; 
-  @apply bg-white/5 hover:bg-white/10 border border-white/20 backdrop-blur-sm;
+.toolbar-btn {
+  @apply w-10 h-10 rounded-full flex items-center justify-center text-white transition-colors duration-150;
+  @apply backdrop-blur-sm;
+  background: rgba(52, 58, 72, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  box-shadow: 0 2px 10px rgba(12, 20, 40, 0.22);
 }
-.toolbar-btn.active { @apply ring-1 ring-white/40; }
+
+.toolbar-btn:hover {
+  background: rgba(52, 58, 72, 0.78);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.toolbar-btn.active {
+  background: rgba(52, 58, 72, 0.85);
+  border-color: rgba(255, 255, 255, 0.6);
+}
 .icon-pair { @apply flex items-center gap-0.5; }
 .icon-pair { @apply flex items-center gap-0.5; }
 </style>

@@ -1,0 +1,64 @@
+{
+  "title": "1:1 Review · Round 2",
+  "author": "",
+  "description": "Business delivery, methodology, AI practice and next step",
+  "theme": {
+    "primaryColor": "#1763ff",
+    "secondaryColor": "#f4f7fb",
+    "fontFamily": "Space Grotesk, Noto Sans SC, sans-serif",
+    "transition": "fade"
+  },
+  "settings": {
+    "autoPlay": false,
+    "autoPlayInterval": 5000,
+    "loop": false,
+    "showProgress": true,
+    "showThumbnails": true,
+    "enableKeyboardNav": true,
+    "enableTouchNav": true,
+    "autoStartOnHome": false,
+    "autoFullscreenOnHome": false
+  },
+  "slides": [
+    {
+      "id": "slide-1",
+      "title": "Business Delivery",
+      "file": "slide-1.html",
+      "visible": true,
+      "notes": "Pricing Engine shipped with zero incidents; iDEAL Webhook verified in production (117 orders / 24 via webhook); Checkout Refactoring technical study done",
+      "duration": null
+    },
+    {
+      "id": "slide-2",
+      "title": "Methodology",
+      "file": "slide-2.html",
+      "visible": true,
+      "notes": "Platform Thinking, AI-First Mindset, Think Slow Execute Fast",
+      "duration": null
+    },
+    {
+      "id": "slide-3",
+      "title": "AI Practice",
+      "file": "slide-3.html",
+      "visible": true,
+      "notes": "Shadow Triage skill, agent teams worktree, USM authoring assist, KB evaluator POC",
+      "duration": null
+    },
+    {
+      "id": "slide-4",
+      "title": "KB Evaluator Deep Dive",
+      "file": "slide-4.html",
+      "visible": true,
+      "notes": "Pipeline, bi-directional cross check, deliverables and owners",
+      "duration": null
+    },
+    {
+      "id": "slide-5",
+      "title": "Next Step",
+      "file": "slide-5.html",
+      "visible": true,
+      "notes": "Checkout Refactoring as project POC; knowledge base evaluation v1 and v2",
+      "duration": null
+    }
+  ]
+}

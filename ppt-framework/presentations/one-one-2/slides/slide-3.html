@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Practice</title>
+    <script>
+        fetch('../theme.css')
+            .then((response) => response.text())
+            .then((css) => {
+                const style = document.createElement('style');
+                style.textContent = css;
+                document.head.appendChild(style);
+            });
+    </script>
+</head>
+<body>
+    <main class="slide">
+        <header class="header">
+            <div>
+                <div class="eyebrow">Topic 03 · AI Practice</div>
+                <h1>From Tooling to <em>Verifiable Output</em></h1>
+                <p class="lead">四项落地的 AI 实践：两项已产出可量化结果，一项完成 POC，一项正在服务下一个项目。</p>
+            </div>
+            <div class="page-no"><b>03</b> / 05</div>
+        </header>
+
+        <section class="row-2-fill">
+            <article class="card card-accent">
+                <div class="card-head">
+                    <div>
+                        <div class="kicker">Skill · In Use</div>
+                        <h2>Pricing Shadow Triage</h2>
+                    </div>
+                    <span class="pill">Impact</span>
+                </div>
+                <div class="metrics">
+                    <div class="metric"><strong>100K<small>+</small></strong><span>Orders auto-validated</span></div>
+                    <div class="metric metric-rose"><strong>10<small>+</small></strong><span>Real defects surfaced</span></div>
+                </div>
+                <p class="note">用影子比对自动校验全量订单，替代人工抽样。规模上去了，问题才藏不住。</p>
+                <div class="points" style="margin-top:12px">
+                    <div class="point"><i>HOW</i><p>线上真实请求旁路重放，新旧定价结果逐笔比对</p></div>
+                    <div class="point"><i>WHY</i><p>人工抽样覆盖不到的边界组合，交给规模去暴露</p></div>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-head">
+                    <div>
+                        <div class="kicker">Harness Contribution</div>
+                        <h2>Agent Teams · Worktree</h2>
+                    </div>
+                    <span class="pill pill-live">Merged</span>
+                </div>
+                <p class="note">为 agent teams 引入 <b>git worktree</b> 能力：同一个项目可以同时开启多个 agent team，互不干扰。</p>
+                <div class="points" style="margin-top:12px">
+                    <div class="point"><i>WAS</i><p>一个项目同时只能跑一个 agent team，任务排队等待</p></div>
+                    <div class="point"><i>NOW</i><p>worktree 隔离工作目录，多个 team 并行推进</p></div>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-head">
+                    <div>
+                        <div class="kicker">Skill · For Checkout</div>
+                        <h2>USM Authoring Assist</h2>
+                    </div>
+                    <span class="pill pill-study">Building</span>
+                </div>
+                <p class="note">反向挖掘需求：从真实用户行为和代码出发，而不是从空白文档开始写。</p>
+                <div class="points" style="margin-top:12px">
+                    <div class="point"><i>OBSERVE</i><p>Playwright 模拟并采集前台真实用户行为</p></div>
+                    <div class="point"><i>MINE</i><p>结合代码库分析，反向还原业务规则</p></div>
+                    <div class="point"><i>DRAFT</i><p>生成 USM 初稿，人工二次审核与补充</p></div>
+                </div>
+            </article>
+
+            <article class="card card-accent">
+                <div class="card-head">
+                    <div>
+                        <div class="kicker">POC Completed</div>
+                        <h2>Knowledge Base Evaluator</h2>
+                    </div>
+                    <span class="pill pill-next">Next Page</span>
+                </div>
+                <p class="note">把「知识库 × 测试用例」做<b>双向交叉验证</b>，输出可分派到责任人的清单，而不只是一个分数。</p>
+                <div class="points" style="margin-top:12px">
+                    <div class="point"><i>IN</i><p>OpenWiki 文档 + QA 测试用例（API Autotest / Zephyr）</p></div>
+                    <div class="point"><i>DO</i><p>归一化为业务规则后，做知识库与用例的双向比对</p></div>
+                    <div class="point"><i>OUT</i><p>4 项趋势指标 + 3 份可分派清单</p></div>
+                </div>
+            </article>
+        </section>
+    </main>
+</body>
+</html>

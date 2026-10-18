@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Delivery</title>
+    <script>
+        fetch('../theme.css')
+            .then((response) => response.text())
+            .then((css) => {
+                const style = document.createElement('style');
+                style.textContent = css;
+                document.head.appendChild(style);
+            });
+    </script>
+</head>
+<body>
+    <main class="slide">
+        <header class="header">
+            <div>
+                <div class="eyebrow">Topic 01 · Business Knowledge</div>
+                <h1>Delivered, Measured, <em>Next Ready</em></h1>
+                <p class="lead">独立交付 Pricing Engine 并稳定运行；iDEAL Webhook 上线后数据可验证；同时完成下一个项目的前置技术预研。</p>
+            </div>
+            <div class="page-no"><b>01</b> / 05</div>
+        </header>
+
+        <section class="split">
+            <div class="col">
+                <article class="card card-accent">
+                    <div class="card-head">
+                        <div>
+                            <div class="kicker">Owned End-to-End</div>
+                            <h2>Pricing Engine</h2>
+                        </div>
+                        <span class="pill">Shipped</span>
+                    </div>
+                    <div class="metrics">
+                        <div class="metric"><strong>0</strong><span>Incidents<br>since go-live</span></div>
+                    </div>
+                    <p class="note">从设计、开发到上线<b>独立负责</b>；上线后无异常，核心定价链路保持稳定。</p>
+                    <div class="tags">
+                        <span class="tag tag-solid">Design</span>
+                        <span class="tag">Development</span>
+                        <span class="tag">Release</span>
+                        <span class="tag">Stable in Prod</span>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card-head">
+                        <div>
+                            <div class="kicker">Live Since Oct 15</div>
+                            <h2>iDEAL Webhook</h2>
+                        </div>
+                        <span class="pill pill-live">Verified</span>
+                    </div>
+                    <div class="metrics">
+                        <div class="metric"><strong>117</strong><span>iDEAL orders<br>(Oct 15&ndash;17)</span></div>
+                        <div class="metric metric-cyan"><strong>24</strong><span>Completed by webhook</span></div>
+                        <div class="metric metric-violet"><strong>21<small>%</small></strong><span>Rescued by the fallback path</span></div>
+                    </div>
+                    <p class="note">约 <b>1/5</b> 的订单依赖 webhook 完成 —— 前台回调缺失的场景真实存在，兜底链路已在生产验证有效。</p>
+                    <div class="tags">
+                        <span class="tag tag-solid">Fallback Path</span>
+                        <span class="tag">Async Callback</span>
+                        <span class="tag">Prod Verified</span>
+                    </div>
+                </article>
+            </div>
+
+            <article class="card card-flat">
+                <div class="card-head">
+                    <div>
+                        <div class="kicker">Pre-Project Technical Study</div>
+                        <h2>Checkout Refactoring</h2>
+                    </div>
+                    <span class="pill pill-study">Study Done</span>
+                </div>
+                <div class="items items-col">
+                    <div class="item">
+                        <b>PSP Adapter</b>
+                        <span>统一多支付渠道接入，把渠道差异收敛在适配层。新增 PSP 不需要改动主流程。</span>
+                    </div>
+                    <div class="item item-cyan">
+                        <b>SQS · Throughput</b>
+                        <span>关键链路异步化与削峰，缓解下单高峰时的同步阻塞与响应抖动，提升系统性能上限。</span>
+                    </div>
+                    <div class="item item-violet">
+                        <b>SNS · Decoupling</b>
+                        <span>以事件驱动替代服务间直连调用，降低耦合度，避免单点故障沿调用链扩散。</span>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </main>
+</body>
+</html>

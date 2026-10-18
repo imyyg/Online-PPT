@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Base Evaluator</title>
+    <script>
+        fetch('../theme.css')
+            .then((response) => response.text())
+            .then((css) => {
+                const style = document.createElement('style');
+                style.textContent = css;
+                document.head.appendChild(style);
+            });
+    </script>
+</head>
+<body>
+    <main class="slide">
+        <header class="header">
+            <div>
+                <div class="eyebrow">Topic 03 · Deep Dive · POC Done</div>
+                <h1>Knowledge Base <em>Evaluator</em></h1>
+                <p class="lead">不问「知识库写得好不好」，而问「知识库与测试用例是否互相覆盖」—— 这才是能落到行动的问题。</p>
+            </div>
+            <div class="page-no"><b>04</b> / 05</div>
+        </header>
+
+        <section class="stack">
+            <div class="flow">
+                <div class="flow-node">
+                    <div class="step">STEP 01</div>
+                    <b>Input</b>
+                    <span>OpenWiki 文档作为 Ground Claims + QA 用例（API Autotest / Jira Zephyr）</span>
+                </div>
+                <div class="arrow">&#8594;</div>
+                <div class="flow-node">
+                    <div class="step">STEP 02</div>
+                    <b>Normalize</b>
+                    <span>将测试用例转化为可衡量、可比对的业务规则</span>
+                </div>
+                <div class="arrow">&#8594;</div>
+                <div class="flow-node flow-node-key">
+                    <div class="step">STEP 03</div>
+                    <b>Cross-Check</b>
+                    <span>知识库与测试用例双向比对，定位盲区</span>
+                </div>
+                <div class="arrow">&#8594;</div>
+                <div class="flow-node">
+                    <div class="step">STEP 04</div>
+                    <b>Output</b>
+                    <span>一组趋势指标 + 三份可分派的清单</span>
+                </div>
+            </div>
+
+            <div class="row-2-fill">
+                <article class="card">
+                    <div class="card-head">
+                        <div>
+                            <div class="kicker">The Core Idea</div>
+                            <h2>Two Questions, Both Actionable</h2>
+                        </div>
+                    </div>
+                    <div class="bidir">
+                        <div class="bidir-row">
+                            <b>Test <em>&#8594;</em> Knowledge</b>
+                            <span>QA 实际验证过的行为，知识库是否准确描述？找出的是<strong>文档与代码不一致</strong>的点。</span>
+                        </div>
+                        <div class="bidir-row">
+                            <b>Knowledge <em>&#8594;</em> Test</b>
+                            <span>知识库记录的行为，QA 是否有用例覆盖？找出的是<strong>测试盲区</strong>。</span>
+                        </div>
+                    </div>
+                    <p class="note-muted">双向比对的价值：输出的不是评分，而是两类具体、可指派的缺口。</p>
+                </article>
+
+                <article class="card card-accent">
+                    <div class="card-head">
+                        <div>
+                            <div class="kicker">Deliverables</div>
+                            <h2>Metrics for Trends, Lists for Owners</h2>
+                        </div>
+                    </div>
+                    <table class="otable">
+                        <thead>
+                            <tr>
+                                <th>Output</th>
+                                <th>Owner</th>
+                                <th>用途</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>4 Quality Metrics</td>
+                                <td class="owner">Management</td>
+                                <td>看知识库质量与版本间趋势</td>
+                            </tr>
+                            <tr>
+                                <td>KB Fix List</td>
+                                <td class="owner">Dev / Doc</td>
+                                <td>修文档与代码不一致的点</td>
+                            </tr>
+                            <tr>
+                                <td>Test Gap List</td>
+                                <td class="owner">QA</td>
+                                <td>补充缺失的测试场景</td>
+                            </tr>
+                            <tr>
+                                <td>INSTRUCTIONS.md Advice</td>
+                                <td class="owner">KB Governance</td>
+                                <td>优化生成约束，从源头减少盲区</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

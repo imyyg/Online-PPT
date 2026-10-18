@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next Step</title>
+    <script>
+        fetch('../theme.css')
+            .then((response) => response.text())
+            .then((css) => {
+                const style = document.createElement('style');
+                style.textContent = css;
+                document.head.appendChild(style);
+            });
+    </script>
+</head>
+<body>
+    <main class="slide">
+        <header class="header">
+            <div>
+                <div class="eyebrow">Topic 04 · Next Step</div>
+                <h1>Two Commitments for <em>the Next Cycle</em></h1>
+                <p class="lead">一个是交付承诺：Checkout Refactoring 按时落地。一个是长期投入：让知识库可被度量。</p>
+            </div>
+            <div class="page-no"><b>05</b> / 05</div>
+        </header>
+
+        <section class="row-2-fill">
+            <article class="card card-accent">
+                <div class="card-head">
+                    <div>
+                        <div class="kicker">Commitment 01 · First Time as Project POC</div>
+                        <h2>Checkout Refactoring</h2>
+                    </div>
+                    <span class="pill pill-next">On Me</span>
+                </div>
+                <p class="note">第一次作为项目 POC，我对交付结果负责，而不只对自己的代码负责。</p>
+                <div class="chips" style="margin-top:12px">
+                    <div class="chip">
+                        <div><b>Clear Goals</b><span>目标与范围提前对齐</span></div>
+                    </div>
+                    <div class="chip">
+                        <div><b>Visible Progress</b><span>进度透明、可随时查</span></div>
+                    </div>
+                    <div class="chip">
+                        <div><b>Early Risk Surfacing</b><span>风险提前暴露，不捂着</span></div>
+                    </div>
+                    <div class="chip">
+                        <div><b>Proactive Comms</b><span>主动推进、及时沟通</span></div>
+                    </div>
+                </div>
+                <div class="strip strip-amber">
+                    <strong>THE BAR</strong>
+                    <p>按时落地 —— 这是唯一的验收标准。</p>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-head">
+                    <div>
+                        <div class="kicker">Commitment 02 · Long-Term Asset</div>
+                        <h2>Knowledge Base Evaluation</h2>
+                    </div>
+                    <span class="pill pill-study">Roadmap</span>
+                </div>
+                <div class="phases">
+                    <div class="phase phase-why">
+                        <div class="lbl">WHY</div>
+                        <p>Harness 的很多能力最终会被 LLM 与 AI IDE 吸收，但 <b>knowledge base 是公司永恒的资产</b>，值得长期投入。</p>
+                    </div>
+                    <div class="phase">
+                        <div class="lbl">V1</div>
+                        <p>在 POC 基础上持续优化，尽早发布第一版并集成进 agent-teams，实现 <b>knowledge base × code × test case</b> 三方 cross check。先保证<b>准确识别</b>，再谈如何修复。</p>
+                    </div>
+                    <div class="phase">
+                        <div class="lbl">V2</div>
+                        <p>引入 <b>DeepEval</b> 等开源工具，评估知识库在 agent-teams 实际使用过程中的<b>召回率、准确率</b>等指标，让效果可量化、可对比。</p>
+                    </div>
+                </div>
+                <div class="strip strip-amber">
+                    <strong>NEED</strong>
+                    <p>需 <b>QA 团队</b>支持，共同完成 <b>Golden Dataset</b> 的建立。</p>
+                </div>
+            </article>
+        </section>
+    </main>
+</body>
+</html>
