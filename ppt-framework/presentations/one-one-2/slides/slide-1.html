@@ -12,6 +12,19 @@
                 style.textContent = css;
                 document.head.appendChild(style);
             });
+
+        // Scale the fixed 1280x720 canvas to fill its container, keeping proportions.
+        (function () {
+            const W = 1280, H = 720;
+            function fit() {
+                const slide = document.querySelector('.slide');
+                if (!slide) return;
+                slide.style.transform = 'scale(' + Math.min(innerWidth / W, innerHeight / H) + ')';
+            }
+            addEventListener('resize', fit);
+            addEventListener('DOMContentLoaded', fit);
+            fit();
+        })();
     </script>
 </head>
 <body>

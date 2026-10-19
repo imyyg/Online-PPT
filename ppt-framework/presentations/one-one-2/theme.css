@@ -37,6 +37,7 @@ body {
 
 body {
     align-items: center;
+    justify-content: center;
     background:
         radial-gradient(circle at 88% 6%, rgba(0, 178, 201, 0.16), transparent 34%),
         radial-gradient(circle at 4% 92%, rgba(123, 77, 255, 0.14), transparent 36%),
@@ -86,33 +87,38 @@ body::after {
    Slide shell
    --------------------------------------------------------- */
 
+/* Fixed 1280x720 design canvas. The inline script in each slide scales it
+   uniformly to fill whatever container it lands in, so type and spacing grow
+   together instead of leaving letterbox gutters on large screens. */
 .slide {
     display: flex;
+    flex: 0 0 auto;
     flex-direction: column;
-    height: min(100vh, 620px);
-    padding: 34px 54px 30px;
+    height: 720px;
+    padding: 40px 62px 34px;
     position: relative;
-    width: 100%;
+    transform-origin: center center;
+    width: 1280px;
 }
 
 .slide::before {
     background: linear-gradient(90deg, var(--accent), var(--cyan) 70%, transparent);
     content: '';
     height: 3px;
-    left: 54px;
+    left: 62px;
     position: absolute;
     top: 0;
-    width: 140px;
+    width: 150px;
 }
 
 .slide::after {
     background: repeating-linear-gradient(90deg, var(--line) 0 6px, transparent 6px 14px);
-    bottom: 16px;
+    bottom: 18px;
     content: '';
     height: 1px;
-    left: 54px;
+    left: 62px;
     position: absolute;
-    right: 54px;
+    right: 62px;
 }
 
 /* ---------------------------------------------------------
@@ -797,33 +803,10 @@ h1 em {
     color: var(--violet);
 }
 
-/* ---------------------------------------------------------
-   Responsive
-   --------------------------------------------------------- */
-
-@media (max-width: 1000px), (max-height: 650px) {
-    .slide {
-        min-height: 520px;
-        padding: 26px 34px 24px;
-    }
-
-    .slide::before { left: 34px; }
-    .slide::after { left: 34px; right: 34px; }
-
-    h1 { font-size: 31px; }
-
-    .header { margin-bottom: 14px; }
-
-    .card { padding: 14px 15px; }
-
-    .method { padding: 16px; }
-
-    .method .wm { font-size: 58px; }
-
-    .metric strong { font-size: 27px; }
-
-    .card h2 { font-size: 18px; }
-}
+/* No viewport breakpoints by design: the canvas is a fixed 1280x720 and is
+   scaled as a whole, so the layout must stay identical at every screen size.
+   A media query here would key off the viewport rather than the canvas and
+   shrink type that is already being scaled down. */
 
 /* ---------------------------------------------------------
    Fit-and-finish overrides
